@@ -15,13 +15,13 @@ class PeliculaSeeder extends Seeder
     public function run()
     {
         // Crea una película de ejemplo
-        Pelicula::factory()->create([
-            'título' => 'Película de Ejemplo',
-            'descripción' => 'Descripción de la película de ejemplo.',
+        Pelicula::create([
+            'titulo' => 'Película de Ejemplo',
+            'descripcion' => 'Descripción de la película de ejemplo.',
             'director' => 'Director de Ejemplo',
             'duracion' => 120, // Duración en minutos
-            'género' => 'Género de Ejemplo',
-            'año_estreno' => 2022,
+            'genero' => 'Género de Ejemplo',
+            'ano_estreno' => 2022,
             'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
         ]);
 
