@@ -9,6 +9,13 @@ class Ubicacion extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'ubicaciones';
+
     protected $fillable = [
         'nombre',
         'direccion',

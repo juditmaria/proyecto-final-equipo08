@@ -15,7 +15,7 @@ class EntradaSeeder extends Seeder
     public function run()
     {
         // Crea una entrada de ejemplo
-        Entrada::factory()->create([
+        Entrada::create([
             'precio' => 10.50, // Precio de la entrada
             'id_usuario' => 1, // ID del usuario asociado
             'id_pase' => 1, // ID del pase asociado

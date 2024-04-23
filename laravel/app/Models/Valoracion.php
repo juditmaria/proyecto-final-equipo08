@@ -5,19 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Entrada extends Model
+class Valoracion extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'valoraciones';
+
     protected $fillable = [
-        'precio',
+        'estrellas',
+        'comentario',
         'id_usuario',
-        'id_pase',
         'id_pelicula',
     ];
 
     /**
-     * Obtener el usuario asociado a la entrada.
+     * Obtener el usuario asociado a la valoración.
      */
     public function usuario()
     {
@@ -25,15 +32,7 @@ class Entrada extends Model
     }
 
     /**
-     * Obtener el pase asociado a la entrada.
-     */
-    public function pase()
-    {
-        return $this->belongsTo(Pase::class, 'id_pase');
-    }
-
-    /**
-     * Obtener la película asociada a la entrada.
+     * Obtener la película asociada a la valoración.
      */
     public function pelicula()
     {

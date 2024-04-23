@@ -15,7 +15,7 @@ class UbicacionSeeder extends Seeder
     public function run()
     {
         // Crea una ubicación de ejemplo
-        Ubicacion::factory()->create([
+        Ubicacion::create([
             'nombre' => 'Ubicación de Ejemplo',
             'direccion' => 'Calle Ejemplo 123',
             'telefono' => '123456789', // Número de teléfono de la ubicación
