@@ -43,21 +43,21 @@ Creacion del archivo **.env**:
 
 
 
-#RUTAS
+# RUTAS
 
-##controllers
+## controllers
     laravel/app/Http/Controllers
 
-##models
+## models
     laravel/app/Models
 
-##migrations
+## migrations
     laravel/database/migrations
 
-##seeders
+## seeders
     laravel/database/seeders
 
-##database
+## database
     laravel/database/database.sqlite
 
 ##.env
