@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_usuario');
             $table->string('nombre');
             $table->string('email')->unique();
-            $table->string('password'); // Agregar el campo password
+            $table->string('contrasena'); // Agregar el campo password
             $table->boolean('id_rol');
             $table->unsignedBigInteger('id_compra')->nullable()->index();
             $table->timestamps();

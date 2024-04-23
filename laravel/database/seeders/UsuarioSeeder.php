@@ -21,7 +21,7 @@ class UsuarioSeeder extends Seeder
         $admin = new Usuario([
             'nombre'    => config('admin.name'),
             'email'     => config('admin.email'),
-            'password'  => Hash::make(config('admin.password')), // Hashear la contraseña antes de guardarla
+            'contrasena'  => Hash::make(config('admin.password')), // Hashear la contraseña antes de guardarla
             'id_rol'    => 1, // Definir el rol del usuario según tus necesidades
         ]);
 
