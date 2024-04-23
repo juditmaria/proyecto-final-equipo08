@@ -60,7 +60,7 @@ Creacion del archivo **.env**:
 ## database
     laravel/database/database.sqlite
 
-##.env
+## .env
     laravel/.env
     
     
