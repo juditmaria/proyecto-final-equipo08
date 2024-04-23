@@ -9,12 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id('id_usuario');
+            $table->id();
             $table->string('nombre');
-            $table->string('email');
+            $table->string('email')->unique();
+            $table->string('password'); // Agregar el campo password
             $table->boolean('id_rol');
             $table->unsignedBigInteger('id_compra')->nullable()->index();
             $table->timestamps();
