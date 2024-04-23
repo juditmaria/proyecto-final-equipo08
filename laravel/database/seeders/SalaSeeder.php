@@ -15,7 +15,7 @@ class SalaSeeder extends Seeder
     public function run()
     {
         // Crea una sala de ejemplo
-        Sala::factory()->create([
+        Sala::create([
             'nombre' => 'Sala de Ejemplo',
             'capacidad' => 100, // Capacidad de la sala
             'num_fila' => 10, // Número de filas
