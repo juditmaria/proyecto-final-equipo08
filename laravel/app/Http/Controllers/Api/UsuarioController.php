@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Models\Usuario;
-use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -15,7 +15,18 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::all();
-        return response()->json(['data' => $usuarios]);
+
+        if ($usuarios->count() > 0) {
+            return response()->json([
+                'success' => true,
+                'data'    => $usuarios
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Files not found'
+            ], 500);
+        }
     }
 
     /**
@@ -23,62 +34,30 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string',
-            'email' => 'required|email|unique:usuarios,email',
-            'contrasena' => 'required|string|min:8',
-        ]);
-
-        $usuario = new Usuario([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-            'contrasena' => bcrypt($request->contrasena),
-        ]);
-
-        $usuario->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario creado exitosamente.',
-        ], 201);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
-        return response()->json(['data' => $usuario]);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        $usuario = Usuario::findOrFail($id);
-
-        $request->validate([
-            'nombre' => 'required|string',
-            'email' => 'required|email|unique:usuarios,email,' . $id,
-        ]);
-
-        $usuario->update([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-        ]);
-
-        return response()->json(['success' => true]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->delete();
-        return response()->json(['success' => true]);
+        //
     }
 }
