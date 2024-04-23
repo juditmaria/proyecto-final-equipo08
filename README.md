@@ -38,3 +38,29 @@ Al iniciar el proyecto por primera vez ejecutaremos las migraciones para la crea
 Creacion del archivo **.env**:
 
     nano .env
+
+
+
+
+
+#RUTAS
+
+##controllers
+    laravel/app/Http/Controllers
+
+##models
+    laravel/app/Models
+
+##migrations
+    laravel/database/migrations
+
+##seeders
+    laravel/database/seeders
+
+##database
+    laravel/database/database.sqlite
+
+##.env
+    laravel/.env
+    
+    
