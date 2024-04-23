@@ -15,7 +15,7 @@ class PaseSeeder extends Seeder
     public function run()
     {
         // Crea un pase de ejemplo
-        Pase::factory()->create([
+        Pase::create([
             'id_pelicula' => 1, // ID de la película asociada
             'id_sala' => 1, // ID de la sala asociada
             'fecha' => '2024-04-30', // Fecha del pase
