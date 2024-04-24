@@ -12,12 +12,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id('id_usuario');
+            $table->id('id');
             $table->string('nombre');
             $table->string('email')->unique();
             $table->string('contrasena'); // Agregar el campo password
-            $table->boolean('id_rol');
-            $table->unsignedBigInteger('id_compra')->nullable()->index();
+            $table->boolean('rol_id');
+            $table->unsignedBigInteger('compra_id')->nullable()->index();
             $table->timestamps();
         });
     }
