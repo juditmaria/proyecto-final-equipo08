@@ -2,23 +2,23 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Promotor; // Importa el modelo Promotor
 
-class PromotorSeeder extends Seeder
+use App\Models\Promotor;
+
+class PromoterSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Crea un promotor de ejemplo
-        Promotor::create([
-            'nombre' => 'Promotor de Ejemplo',
+        Promoter::create([
+            'name' => 'Promotor de Ejemplo',
             // Puedes definir aquí el ID del usuario asociado si es necesario
-            'id_usuario' => 1,
+            'user_id' => 1,
         ]);
 
         // También puedes usar la factory para crear múltiples promotores de prueba

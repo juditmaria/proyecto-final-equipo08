@@ -2,26 +2,26 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Pelicula;
 
-class PeliculaSeeder extends Seeder
+use App\Models\Movie;
+
+class MovieSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Crea una película de ejemplo
-        Pelicula::create([
-            'titulo' => 'Película de Ejemplo',
-            'descripcion' => 'Descripción de la película de ejemplo.',
+        Movie::create([
+            'title' => 'Película de Ejemplo',
+            'description' => 'Descripción de la película de ejemplo.',
             'director' => 'Director de Ejemplo',
-            'duracion' => 120, // Duración en minutos
-            'genero' => 'Género de Ejemplo',
-            'ano_estreno' => 2022,
+            'length' => 120, // Duración en minutos
+            'type' => 'Género de Ejemplo',
+            'release_year' => 2022,
             'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
         ]);
 

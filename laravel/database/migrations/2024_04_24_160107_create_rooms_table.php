@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salas', function (Blueprint $table) {
-            $table->id('id_sala');
-            $table->string('nombre');
-            $table->integer('capacidad');
-            $table->integer('num_fila');
-            $table->integer('num_asiento');
-            $table->string('hora');
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('capacity');
+            $table->integer('num_line');
+            $table->integer('num_seat');
+            $table->string('hour');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salas');
+        Schema::dropIfExists('rooms');
     }
 };
