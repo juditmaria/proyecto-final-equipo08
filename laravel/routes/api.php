@@ -1,4 +1,4 @@
 <?php
-use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\Api\UsuarioController;
 
-Route::get('/usuarios', [UsuarioController::class, 'index']);
+Route::apiResource('usuarios', UsuarioController::class);

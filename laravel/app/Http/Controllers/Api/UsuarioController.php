@@ -16,6 +16,8 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::all();
 
+        dd($usuarios); // Agrega esta línea para depurar
+
         if ($usuarios->count() > 0) {
             return response()->json([
                 'success' => true,
