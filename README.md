@@ -20,6 +20,10 @@ Si no, instala las **dependencias de Composer** que *no se incluyen en el contro
 
     php .././composer install
 
+Instalar Laravel Sanctum para la API
+
+    php artisan install:api
+
 En caso de usar sqlite habrá que crear en */laravel/database* el archivo *database.sqlite*. Con los comandos de migrate de php podremos hacer y desacer las tablas del proyecto.
 
 Comandos de migrate:
