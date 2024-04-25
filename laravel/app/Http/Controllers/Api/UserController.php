@@ -34,8 +34,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string',
+            'rol_id' => 'nullable|boolean', // Permitir que rol_id sea opcional y booleano
+        ]);
+    
+        // Convertir rol_id a 1 si es true
+        $rol_id = $request->input('rol_id', false);
+        if ($rol_id === true) {
+            $rol_id = 1;
+        }
+    
+        // Si rol_id no se proporciona en la solicitud, establecerlo en false por defecto
+        $userData = array_merge($validatedData, ['rol_id' => $rol_id]);
+    
+        // Crear el usuario
+        $user = User::create($userData);
+    
+        // Devolver una respuesta exitosa
+        return response()->json($user, 201);
+    }    
 
     /**
      * Display the specified resource.
