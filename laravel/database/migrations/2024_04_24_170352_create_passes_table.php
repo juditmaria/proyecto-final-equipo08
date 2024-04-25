@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('room_id');
             $table->date('date');
             $table->string('start_time');
-            $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');
-            $table->foreign('room_id')->references('room_id')->on('rooms')->onDelete('cascade');
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         // Crea una sala de ejemplo
-        Room::factory()->create([
+        Room::create([
             'name' => 'Sala de Ejemplo',
             'capacity' => 100, // Capacidad de la sala
             'num_line' => 10, // Número de filas

@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\Promotor;
-
+use App\Models\Promoter;
+ 
 class PromoterSeeder extends Seeder
 {
     /**

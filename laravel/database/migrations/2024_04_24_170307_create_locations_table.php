@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('phone');
             $table->unsignedBigInteger('promoter_id');
             $table->unsignedBigInteger('pass_id');
-            $table->foreign('promoter_id')->references('promoter_id')->on('promoters')->onDelete('cascade');
-            $table->foreign('pass_id')->references('pass_id')->on('passes')->onDelete('cascade');
+            $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
+            $table->foreign('pass_id')->references('id')->on('passes')->onDelete('cascade');
             $table->timestamps();
         });
     }

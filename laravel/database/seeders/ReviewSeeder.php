@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use App\Models\Review;
 
 class ReviewSeeder extends Seeder
@@ -14,14 +12,15 @@ class ReviewSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crea un promotor de ejemplo
-        Promoter::create([
-            'name' => 'Promotor de Ejemplo',
-            // Puedes definir aquí el ID del usuario asociado si es necesario
-            'user_id' => 1,
+        // Crea una review de ejemplo
+        Review::create([
+            'stars' => 4, // Número de estrellas de la review
+            'comments' => '¡Una película increíble!', // Comentarios sobre la película
+            'user_id' => 1, // ID del usuario que hizo la review
+            'movie_id' => 1, // ID de la película asociada a la review
         ]);
 
-        // También puedes usar la factory para crear múltiples promotores de prueba
-        // Promotor::factory(5)->create();
+        // También puedes usar la factory para crear múltiples reviews de prueba
+        // Review::factory(10)->create();
     }
 }
