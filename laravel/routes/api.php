@@ -4,9 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\UserController;
-
-/* Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum'); */
+use App\Http\Controllers\Api\MovieController;
+use App\Http\Controllers\Api\RoomController;
+use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\PassController;
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('movies', MovieController::class);
+Route::apiResource('rooms', RoomController::class);
+Route::apiResource('locations', LocationController::class);
+Route::apiResource('passes', PassController::class);
