@@ -94,6 +94,26 @@ class MovieTest extends TestCase
         // Verificar respuesta OK
         $this->_test_ok($response);
     }
+
+    public function test_movie_delete()
+    {
+        // Crear una película de ejemplo
+        $movie = Movie::create([
+            'title' => 'Película de Ejemplo',
+            'description' => 'Descripción de la película de ejemplo.',
+            'director' => 'Director de Ejemplo',
+            'length' => 120, // Duración en minutos
+            'type' => 'Género de Ejemplo',
+            'release_year' => 2022,
+            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
+        ]);
+
+        // Eliminar la película
+        $response = $this->deleteJson("/api/movies/$movie->id");
+
+        // Verificar respuesta OK
+        $this->_test_ok($response);
+    }
     
     protected function _test_ok($response, $status = 200)
     {
@@ -103,9 +123,15 @@ class MovieTest extends TestCase
         $response->assertJson([
             "success" => true,
         ]);
-        // Check JSON dynamic values
-        $response->assertJsonPath("data",
-            fn ($data) => is_array($data)
-        );
+        // Check if the response data is an array (only for successful requests and if data exists)
+        if ($status === 200 || $status === 201) {
+            if ($response->getData()->data ?? false) {
+                // Check JSON dynamic values
+                $response->assertJsonPath("data",
+                    fn ($data) => is_array($data)
+                );
+            }
+        }
     }
+    
 }

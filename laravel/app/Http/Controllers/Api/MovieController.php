@@ -110,6 +110,20 @@ class MovieController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $movie = Movie::find($id);
+
+        if (!$movie) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Movie not found'
+            ], 404);
+        }
+
+        $movie->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Movie deleted successfully'
+        ], 200);
     }
 }
