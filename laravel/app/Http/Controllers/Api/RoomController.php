@@ -75,7 +75,29 @@ class RoomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $room = Room::find($id);
+
+        if (!$room) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'capacity' => 'required|integer',
+            'num_line' => 'required|integer',
+            'num_seat' => 'required|integer',
+            'hour' => 'required',
+        ]);
+
+        $room->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $room
+        ], 200);
     }
 
     /**
@@ -83,6 +105,20 @@ class RoomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $room = Room::find($id);
+
+        if (!$room) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room not found'
+            ], 404);
+        }
+
+        $room->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Room deleted successfully'
+        ], 200);
     }
 }

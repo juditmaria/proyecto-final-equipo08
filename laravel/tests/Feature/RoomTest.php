@@ -60,6 +60,58 @@ class RoomTest extends TestCase
         $this->_test_ok($response);
     }
  
+
+    public function test_room_update()
+    {
+        // Create an example room
+        $room = Room::create([
+            'name' => 'Cine 2',
+            'capacity' => 100,
+            'num_line' => 5,
+            'num_seat' => 10,
+            'hour' => '23:30',
+        ]);
+
+        // Update the room
+        $updatedData = [
+            'name' => 'Nuevo nombre',
+            'capacity' => 120,
+            'num_line' => 6,
+            'num_seat' => 12,
+            'hour' => '22:00',
+        ];
+
+        $response = $this->putJson("/api/rooms/$room->id", $updatedData);
+
+        // Check OK response
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => $updatedData
+            ]);
+        
+        // Check if the room is updated in the database
+        $this->assertDatabaseHas('rooms', $updatedData);
+    }
+    
+    public function test_room_delete()
+    {
+        // Create an example room
+        $room = Room::create([
+            'name' => 'Cine',
+            'capacity' => 100,
+            'num_line' => 5,
+            'num_seat' => 10,
+            'hour' => '23:30',
+        ]);
+
+        // Delete the room
+        $response = $this->deleteJson("/api/rooms/$room->id");
+
+        // Check OK response
+        $this->_test_ok($response);
+    }
+
     protected function _test_ok($response, $status = 200)
     {
         // Check JSON response
@@ -68,9 +120,14 @@ class RoomTest extends TestCase
         $response->assertJson([
             "success" => true,
         ]);
-        // Check JSON dynamic values
-        $response->assertJsonPath("data",
-            fn ($data) => is_array($data)
-        );
+        // Check if the response data is an array (only for successful requests and if data exists)
+        if ($status === 200 || $status === 201) {
+            if ($response->getData()->data ?? false) {
+                // Check JSON dynamic values
+                $response->assertJsonPath("data",
+                    fn ($data) => is_array($data)
+                );
+            }
+        }
     }
 }
