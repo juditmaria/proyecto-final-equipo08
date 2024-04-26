@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'email'     => config('admin.email'),
             'password'  => Hash::make(config('admin.password')), // Hashear la contraseña antes de guardarla
             'rol_id'    => 1, // Definir el rol del usuario según tus necesidades
+            'ticket_id' => null, // Asignar un valor inicial al ticket_id, si es necesario
         ]);
 
         $admin->save();

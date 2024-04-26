@@ -34,29 +34,34 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos de la solicitud
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string',
-            'rol_id' => 'nullable|boolean', // Permitir que rol_id sea opcional y booleano
-        ]);
-    
-        // Convertir rol_id a 1 si es true
-        $rol_id = $request->input('rol_id', false);
-        if ($rol_id === true) {
-            $rol_id = 1;
+        try {
+            // Validar los datos de la solicitud
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string',
+                'rol_id' => 'integer|nullable',
+                'ticket_id' => 'integer|nullable', // Asegúrate de validar el ticket_id si es necesario
+            ]);
+
+            // Si ticket_id no se proporciona en la solicitud, establecerlo en null por defecto
+            $userData = array_merge($validatedData, ['ticket_id' => $request->input('ticket_id', null)]);
+
+            // Crear el usuario
+            $user = User::create($userData);
+
+            // Devolver una respuesta exitosa con el usuario creado
+            return response()->json($user, 201);
+        } catch (\Exception $e) {
+            // Manejar errores y devolver una respuesta de error con un mensaje específico
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating user: ' . $e->getMessage(),
+            ], 500);
         }
-    
-        // Si rol_id no se proporciona en la solicitud, establecerlo en false por defecto
-        $userData = array_merge($validatedData, ['rol_id' => $rol_id]);
-    
-        // Crear el usuario
-        $user = User::create($userData);
-    
-        // Devolver una respuesta exitosa
-        return response()->json($user, 201);
-    }    
+    }
+
+
 
     /**
      * Display the specified resource.

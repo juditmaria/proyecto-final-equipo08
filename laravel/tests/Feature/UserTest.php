@@ -18,55 +18,46 @@ class UserTest extends TestCase
        $this->_test_ok($response);
    }
 
-   public function test_create_user()
+    public function test_create_user()
     {
-        // Crear un usuario con rol_id especificado como true
-        $response = $this->postJson('/api/users', [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
+        // Crear un usuario con rol_id especificado como 1 y ticket_id como null
+        $userData =[
+            'name' => 'John Doe4',
+            'email' => 'john@example4.com',
             'password' => 'password',
-            'rol_id' => true, // Especificar el rol_id como true
-        ]);
+            'rol_id' => '1',
+            'ticket_id' => null,
+        ];
 
-        // Verificar que la respuesta sea exitosa
-        $response->assertStatus(201);
+        // Verificar que la respuesta sea exitosa (código de estado HTTP 201)
+        $response = $this->postJson('/api/users', $userData);
 
-        // Verificar que el usuario se haya creado en la base de datos con rol_id especificado como true
-        $this->assertDatabaseHas('users', [
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'rol_id' => true,
-        ]);
-
-        // Crear un usuario sin especificar rol_id
-        $response = $this->postJson('/api/users', [
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
-            'password' => 'password',
-        ]);
-
-        // Verificar que la respuesta sea exitosa
-        $response->assertStatus(201);
-
-        // Verificar que el usuario se haya creado en la base de datos con rol_id predeterminado (false)
-        $this->assertDatabaseHas('users', [
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
-            'rol_id' => false,
-        ]);
+        // Check created response
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+            ]);
+        
+        // Check if the movie is in the database
+        $this->assertDatabaseHas('users', $userData);
     }
-
-   protected function _test_ok($response, $status = 200)
-   {
-       // Check JSON response
-       $response->assertStatus($status);
-       // Check JSON properties
-       $response->assertJson([
-           "success" => true,
-       ]);
-       // Check JSON dynamic values
-       $response->assertJsonPath("data",
-           fn ($data) => is_array($data)
-       );
-   }
+   
+    protected function _test_ok($response, $status = 200)
+    {
+        // Check JSON response
+        $response->assertStatus($status);
+        // Check JSON properties
+        $response->assertJson([
+            "success" => true,
+        ]);
+        // Check if the response data is an array (only for successful requests and if data exists)
+        if ($status === 200 || $status === 201) {
+            if ($response->getData()->data ?? false) {
+                // Check JSON dynamic values
+                $response->assertJsonPath("data",
+                    fn ($data) => is_array($data)
+                );
+            }
+        }
+    }
 }

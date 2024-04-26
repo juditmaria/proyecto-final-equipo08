@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            //Establece el valor por defecto en 0, pero permite que se especifique un valor diferente cuando sea necesario
-            $table->boolean('rol_id')->nullable()->default(false);
+            $table->integer('rol_id');
             $table->unsignedBigInteger('ticket_id')->nullable()->index();
             $table->rememberToken();
             $table->timestamps();
