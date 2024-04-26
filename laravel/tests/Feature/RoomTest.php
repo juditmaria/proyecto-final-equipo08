@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use App\Models\Room;
+
 class RoomTest extends TestCase
 {
     public function test_room_list()
@@ -16,7 +18,7 @@ class RoomTest extends TestCase
         $this->_test_ok($response);
     }
 
-    public function test_store_room()
+    public function test_room_store()
     {
         // Create room data
         $roomData = [
@@ -38,6 +40,24 @@ class RoomTest extends TestCase
         
         // Check if the room is in the database
         $this->assertDatabaseHas('rooms', $roomData);
+    }
+
+    public function test_room_show()
+    {
+        // Create an example room
+        $room = Room::create([
+            'name' => 'Cine',
+            'capacity' => 100,
+            'num_line' => 5,
+            'num_seat' => 10,
+            'hour' => '23:30',
+        ]);
+
+        // Get a room by its ID
+        $response = $this->getJson("/api/rooms/$room->id");
+
+        // Check OK response
+        $this->_test_ok($response);
     }
  
     protected function _test_ok($response, $status = 200)

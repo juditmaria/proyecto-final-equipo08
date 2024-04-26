@@ -55,7 +55,19 @@ class RoomController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $room = Room::find($id);
+
+        if (!$room) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $room
+        ], 200);
     }
 
     /**
