@@ -42,6 +42,20 @@ class MovieTest extends TestCase
         $this->assertDatabaseHas('movies', $movieData);
     }
     
+    public function test_show_movie()
+    {
+        $id = 1;
+
+        // Show the movie
+        $response = $this->getJson("/api/movies/$id");
+
+        // Check OK response
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+            ]);
+    }
+    
     protected function _test_ok($response, $status = 200)
     {
         // Check JSON response
