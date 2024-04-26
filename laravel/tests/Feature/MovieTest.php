@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use App\Models\Movie;
+
 class MovieTest extends TestCase
 {
     public function test_movie_list()
@@ -42,18 +44,55 @@ class MovieTest extends TestCase
         $this->assertDatabaseHas('movies', $movieData);
     }
     
-    public function test_show_movie()
+    public function test_movie_show()
     {
-        $id = 1;
+        // Crear una película de ejemplo
+        $movie = Movie::create([
+            'title' => 'Película de Ejemplo',
+            'description' => 'Descripción de la película de ejemplo.',
+            'director' => 'Director de Ejemplo',
+            'length' => 120, // Duración en minutos
+            'type' => 'Género de Ejemplo',
+            'release_year' => 2022,
+            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
+        ]);
 
-        // Show the movie
-        $response = $this->getJson("/api/movies/$id");
+        // Consultar una película por su ID
+        $response = $this->getJson("/api/movies/$movie->id");
 
-        // Check OK response
-        $response->assertStatus(200)
-            ->assertJson([
-                'success' => true,
-            ]);
+        // Verificar respuesta OK
+        $this->_test_ok($response);
+    }
+
+    public function test_movie_update()
+    {
+        // Crear una película de ejemplo
+        $movie = Movie::create([
+            'title' => 'Película de Ejemplo',
+            'description' => 'Descripción de la película de ejemplo.',
+            'director' => 'Director de Ejemplo',
+            'length' => 120, // Duración en minutos
+            'type' => 'Género de Ejemplo',
+            'release_year' => 2022,
+            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
+        ]);
+
+        // Datos actualizados de la película
+        $data = [
+            'title' => 'Película Actualizada',
+            'description' => 'Nueva descripción de la película.',
+            'director' => 'Nuevo Director',
+            'length' => 150,
+            'type' => 'Nuevo Género',
+            'release_year' => 2023,
+            'trailer' => 'https://www.youtube.com/embed/1234567890',
+        ];
+
+        // Actualizar la película
+        $response = $this->putJson("/api/movies/$movie->id", $data);
+
+        // Verificar respuesta OK
+        $this->_test_ok($response);
     }
     
     protected function _test_ok($response, $status = 200)

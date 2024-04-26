@@ -77,7 +77,32 @@ class MovieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $movie = Movie::find($id);
+
+        if (!$movie) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Movie not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'director' => 'required|string',
+            'length' => 'required|integer',
+            'type' => 'required|string',
+            'release_year' => 'required|integer',
+            'trailer' => 'nullable|string',
+        ]);
+
+        $movie->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Movie updated successfully',
+            'data' => $movie
+        ], 200);
     }
 
     /**
