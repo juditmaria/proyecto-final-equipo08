@@ -34,7 +34,20 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'capacity' => 'required|integer',
+            'num_line' => 'required|integer',
+            'num_seat' => 'required|integer',
+            'hour' => 'required',
+        ]);
+
+        $room = Room::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $room
+        ], 201);
     }
 
     /**
