@@ -34,8 +34,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'rol_id' => 'required|boolean',
+        ]);
+    
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'rol_id' => $request->input('rol_id') ? 1 : 0,
+        ]);
+    
+        $user->save();
+    
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 201);
     }
+    
+    
 
     /**
      * Display the specified resource.
