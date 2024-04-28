@@ -18,7 +18,7 @@ class UserTest extends TestCase
        $this->_test_ok($response);
    }
 
-    public function test_create_user()
+    /* public function test_create_user()
     {
         // Crear un usuario con rol_id especificado como 1 y ticket_id como null
         $userData =[
@@ -40,6 +40,23 @@ class UserTest extends TestCase
         
         // Check if the movie is in the database
         $this->assertDatabaseHas('users', $userData);
+    } */
+
+    public function test_create_user()
+    {
+        $userData = [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'rol_id' => 1,
+            'ticket_id' => null,
+        ];
+
+        $response = $this->postJson('/api/users', $userData);
+
+        $response->assertStatus(201)
+            ->assertJsonFragment($userData);
+
+        $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
     }
    
     protected function _test_ok($response, $status = 200)
