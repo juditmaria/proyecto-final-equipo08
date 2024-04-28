@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('promoters', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->decimal('price', 8, 2);
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('pass_id');
+            $table->unsignedBigInteger('movie_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('pass_id')->references('id')->on('passes')->onDelete('cascade');
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('promoters');
+        Schema::dropIfExists('tickets');
     }
 };

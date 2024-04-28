@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('passes', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->integer('stars');
+            $table->text('comments')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('movie_id');
-            $table->unsignedBigInteger('room_id');
-            $table->date('date');
-            $table->string('start_time');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
-            $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('passes');
+        Schema::dropIfExists('reviews');
     }
 };

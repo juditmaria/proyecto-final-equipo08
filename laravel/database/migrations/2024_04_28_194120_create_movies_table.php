@@ -32,3 +32,10 @@ return new class extends Migration
         Schema::dropIfExists('movies');
     }
 };
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
