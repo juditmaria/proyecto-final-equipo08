@@ -33,7 +33,17 @@ class PromoterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'user_id' => 'nullable|exists:users,id',
+        ]);
+
+        $promoter = Promoter::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $promoter
+        ], 201);
     }
 
     /**

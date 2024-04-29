@@ -19,6 +19,27 @@ class PromoterTest extends TestCase
         $this->_test_ok($response);
     }
  
+    public function test_store_promoter()
+    {
+        // Create promoter data
+        $promoterData = [
+            'name' => 'Nuevo Promotor',
+            'user_id' => 1, // Change it to an existing user ID if necessary
+        ];
+
+        // Store the promoter
+        $response = $this->postJson('/api/promoters', $promoterData);
+
+        // Check created response
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+            ]);
+        
+        // Check if the promoter is in the database
+        $this->assertDatabaseHas('promoters', $promoterData);
+    }
+    
     protected function _test_ok($response, $status = 200)
     {
         // Check JSON response
