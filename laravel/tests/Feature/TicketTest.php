@@ -19,6 +19,31 @@ class TicketTest extends TestCase
         $this->_test_ok($response);
     }
  
+
+    public function test_store_ticket()
+    {
+        // Create ticket data
+        $ticketData = [
+            'price' => 20.5,
+            'user_id' => 1, // Change it to an existing user ID if necessary
+            'pass_id' => 1, // Change it to an existing pass ID if necessary
+            'movie_id' => 1, // Change it to an existing movie ID if necessary
+        ];
+
+        // Store the ticket
+        $response = $this->postJson('/api/tickets', $ticketData);
+
+        // Check created response
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+            ]);
+        
+        // Check if the ticket is in the database
+        $this->assertDatabaseHas('tickets', $ticketData);
+    }
+
+    
     protected function _test_ok($response, $status = 200)
     {
         // Check JSON response
