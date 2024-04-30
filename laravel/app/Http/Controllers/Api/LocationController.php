@@ -34,30 +34,92 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'direction' => 'required|string',
+            'phone' => 'required|string',
+            'promoter_id' => 'required|exists:promoters,id',
+            'pass_id' => 'required|exists:passes,id',
+        ]);
+
+        $location = Location::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $location
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $location = Location::find($id);
+
+        if (!$location) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Location not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $location
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $location = Location::find($id);
+
+        if (!$location) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Location not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'required|string',
+            'direction' => 'required|string',
+            'phone' => 'required|string',
+            'promoter_id' => 'required|exists:promoters,id',
+            'pass_id' => 'required|exists:passes,id',
+        ]);
+
+        $location->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Location updated successfully',
+            'data' => $location
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $location = Location::find($id);
+
+        if (!$location) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Location not found'
+            ], 404);
+        }
+
+        $location->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Location deleted successfully'
+        ], 200);
     }
 }
