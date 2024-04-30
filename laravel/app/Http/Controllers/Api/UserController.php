@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
 
 class UserController extends Controller
@@ -34,7 +36,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ]);
+    
+        // Hashear la contraseña antes de guardarla
+        $hashedPassword = Hash::make($request->password);
+    
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $hashedPassword,
+        ]);
+    
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 201);
     }
 
     /**
@@ -42,7 +62,19 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 
     /**
@@ -50,14 +82,40 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'data' => $user
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ], 200);
     }
 }

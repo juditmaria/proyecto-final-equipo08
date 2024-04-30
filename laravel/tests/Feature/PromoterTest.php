@@ -42,7 +42,7 @@ class PromoterTest extends TestCase
         $this->assertDatabaseHas('promoters', $promoterData);
     }
     
-    public function test_promoter_show()
+    public function test_promoter_read()
     {
         // Create a sample promoter
         $promoter = Promoter::create([

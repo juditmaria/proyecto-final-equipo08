@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         $admin = new User([
             'name'      => config('admin.name'),
             'email'     => config('admin.email'),
-            'password'  => Hash::make(config('admin.password')), // Hashear la contraseña antes de guardarla
+            'password'  => Hash::make(config('admin.password')),// Hashear la contraseña antes de guardarla
         ]);
 
         $admin->save();
