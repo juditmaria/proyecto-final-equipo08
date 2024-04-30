@@ -24,7 +24,7 @@ class PromoterTest extends TestCase
         // Create promoter data
         $promoterData = [
             'name' => 'Nuevo Promotor',
-            'user_id' => 1, // Change it to an existing user ID if necessary
+            'user_id' => 2, // Change it to an existing user ID if necessary
         ];
 
         // Store the promoter
@@ -40,6 +40,57 @@ class PromoterTest extends TestCase
         $this->assertDatabaseHas('promoters', $promoterData);
     }
     
+    public function test_promoter_show()
+    {
+        // Create a sample promoter
+        $promoter = Promoter::create([
+            'name' => 'Promotor de Ejemplo',
+            'user_id' => 3, // Change it to an existing user ID if necessary
+        ]);
+
+        // Consultar un promotor por su ID
+        $response = $this->getJson("/api/promoters/$promoter->id");
+
+        // Verificar respuesta OK
+        $this->_test_ok($response);
+    }
+
+    public function test_promoter_update()
+    {
+        // Crear un promotor de ejemplo
+        $promoter = Promoter::create([
+            'name' => 'Promotor de Ejemplo',
+            'user_id' => 1, // Cambia a un ID de usuario existente si es necesario
+        ]);
+
+        // Datos actualizados del promotor
+        $updatedPromoterData = [
+            'name' => 'Promotor Actualizado',
+            'user_id' => 2, // Cambia a un ID de usuario existente si es necesario
+        ];
+
+        // Actualizar el promotor
+        $response = $this->putJson("/api/promoters/$promoter->id", $updatedPromoterData);
+
+        // Verificar respuesta OK
+        $this->_test_ok($response);
+    }
+
+    public function test_promoter_delete()
+    {
+        // Crear un promotor de ejemplo
+        $promoter = Promoter::create([
+            'name' => 'Promotor de Ejemplo',
+            'user_id' => 1, // Cambia a un ID de usuario existente si es necesario
+        ]);
+
+        // Eliminar el promotor
+        $response = $this->deleteJson("/api/promoters/$promoter->id");
+
+        // Verificar respuesta OK
+        $this->_test_ok($response);
+    }
+
     protected function _test_ok($response, $status = 200)
     {
         // Check JSON response
@@ -53,4 +104,5 @@ class PromoterTest extends TestCase
             fn ($data) => is_array($data)
         );
     }
+    
 }
