@@ -24,7 +24,23 @@ class UserSeeder extends Seeder
 
         $admin->save();
 
+        $ejemplo1 = new User([
+            'name'      => 'ejemplo1',
+            'email'     => 'ejemplo1@gmail.com',
+            'password'  => Hash::make('123456789'), // Hashear la contraseña antes de guardarla
+        ]);
+
+        $ejemplo1->save();
+
+        $ejemplo2 = new User([
+            'name'      => 'ejemplo2',
+            'email'     => 'ejemplo2@gmail.com',
+            'password'  => Hash::make('123456789'), // Hashear la contraseña antes de guardarla
+        ]);
+
+        $ejemplo2->save();
+
         // También puedes usar la factory para crear múltiples usuarios de prueba
-        // User::factory(10)->create();
+        // User::factory(2)->create();
     }
 }
