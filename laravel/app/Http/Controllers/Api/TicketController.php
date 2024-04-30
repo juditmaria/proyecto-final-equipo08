@@ -54,7 +54,19 @@ class TicketController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ticket not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $ticket
+        ], 200);
     }
 
     /**
@@ -62,7 +74,29 @@ class TicketController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ticket not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'price' => 'required|numeric',
+            'user_id' => 'required|exists:users,id',
+            'pass_id' => 'required|exists:passes,id',
+            'movie_id' => 'required|exists:movies,id',
+        ]);
+
+        $ticket->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Ticket updated successfully',
+            'data' => $ticket
+        ], 200);
     }
 
     /**
@@ -70,6 +104,20 @@ class TicketController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ticket not found'
+            ], 404);
+        }
+
+        $ticket->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Ticket deleted successfully'
+        ], 200);
     }
 }
