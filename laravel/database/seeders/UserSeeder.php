@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'name'      => config('admin.name'),
             'email'     => config('admin.email'),
             'password'  => Hash::make(config('admin.password')),// Hashear la contraseña antes de guardarla
+            'role'     => 1,
         ]);
 
         $admin->save();
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             'name'      => 'ejemplo1',
             'email'     => 'ejemplo1@gmail.com',
             'password'  => Hash::make('123456789'), // Hashear la contraseña antes de guardarla
+            'role'     => 0,
         ]);
 
         $ejemplo1->save();
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
             'name'      => 'ejemplo2',
             'email'     => 'ejemplo2@gmail.com',
             'password'  => Hash::make('123456789'), // Hashear la contraseña antes de guardarla
+            'role'     => 0,
         ]);
 
         $ejemplo2->save();
