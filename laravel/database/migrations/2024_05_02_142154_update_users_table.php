@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Add role column
             $table->unsignedBigInteger('role')
-                  ->nullable()
                   ->default(0);
         });
 
