@@ -7,26 +7,35 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use App\Models\Promoter;
+use App\Models\User;
 
 class PromoterTest extends TestCase
 {
+    use RefreshDatabase; // Añade la trait RefreshDatabase para restablecer la base de datos antes de cada prueba
+
     /**
      * A basic feature test example.
      */
     public function test_promoter_list()
     {
-        // List all users using API web service
+        // Crea registros de promotor y pase
+        Promoter::factory()->create();
+
+        // List all promoters using API web service
         $response = $this->getJson("/api/promoters");
         // Check OK response
         $this->_test_ok($response);
     }
  
-    public function test_store_promoter()
+    public function test_promoter_store()
     {
+        //User create
+        $user = User::factory()->create();
+
         // Create promoter data
         $promoterData = [
             'name' => 'Nuevo Promotor',
-            'user_id' => 2, // Change it to an existing user ID if necessary
+            'user_id' => $user->id, // Change it to an existing user ID if necessary
         ];
 
         // Store the promoter
@@ -44,11 +53,8 @@ class PromoterTest extends TestCase
     
     public function test_promoter_read()
     {
-        // Create a sample promoter
-        $promoter = Promoter::create([
-            'name' => 'Promotor de Ejemplo',
-            'user_id' => 3, // Change it to an existing user ID if necessary
-        ]);
+        // Create a sample promoter using factory
+        $promoter = Promoter::factory()->create();
 
         // Consultar un promotor por su ID
         $response = $this->getJson("/api/promoters/$promoter->id");
@@ -59,17 +65,11 @@ class PromoterTest extends TestCase
 
     public function test_promoter_update()
     {
-        // Crear un promotor de ejemplo
-        $promoter = Promoter::create([
-            'name' => 'Promotor de Ejemplo',
-            'user_id' => 1, // Cambia a un ID de usuario existente si es necesario
-        ]);
+        // Crear un promotor de ejemplo usando factory
+        $promoter = Promoter::factory()->create();
 
         // Datos actualizados del promotor
-        $updatedPromoterData = [
-            'name' => 'Promotor Actualizado',
-            'user_id' => 2, // Cambia a un ID de usuario existente si es necesario
-        ];
+        $updatedPromoterData = Promoter::factory()->make()->toArray();
 
         // Actualizar el promotor
         $response = $this->putJson("/api/promoters/$promoter->id", $updatedPromoterData);
@@ -80,11 +80,8 @@ class PromoterTest extends TestCase
 
     public function test_promoter_delete()
     {
-        // Crear un promotor de ejemplo
-        $promoter = Promoter::create([
-            'name' => 'Promotor de Ejemplo',
-            'user_id' => 1, // Cambia a un ID de usuario existente si es necesario
-        ]);
+        // Crear un promotor de ejemplo usando factory
+        $promoter = Promoter::factory()->create();
 
         // Eliminar el promotor
         $response = $this->deleteJson("/api/promoters/$promoter->id");

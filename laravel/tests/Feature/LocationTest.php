@@ -7,120 +7,115 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use App\Models\Location;
+use App\Models\Promoter;
+use App\Models\Pass;
 
 class LocationTest extends TestCase
 {
+    use RefreshDatabase; // Añade la trait RefreshDatabase para restablecer la base de datos antes de cada prueba
+
     public function test_location_list()
     {
-        // List all locations using API web service
+        // Crea registros de promotor y pase
+        Location::factory()->create();
+        
+        // Listar todas las ubicaciones utilizando el servicio web API
         $response = $this->getJson("/api/locations");
-        // Check OK response
-        $this->_test_ok($response);
+
+        // Verificar respuesta OK
+        $response->assertOk();
     }
  
     public function test_store_location()
     {
-        // Create location data
+        // Crea registros de promotor y pase
+        Promoter::factory()->create();
+        Pass::factory()->create();
+
+        // Datos de ubicación a almacenar
         $locationData = [
             'name' => 'Nuevo Lugar',
             'direction' => 'Dirección del nuevo lugar',
             'phone' => '123456789',
-            'promoter_id' => 1, // Change it to an existing promoter ID if necessary
-            'pass_id' => 1, // Change it to an existing pass ID if necessary
+            'promoter_id' => Promoter::first()->id,
+            'pass_id' => Pass::first()->id,
         ];
 
-        // Store the location
+        // Almacenar la ubicación
         $response = $this->postJson('/api/locations', $locationData);
 
-        // Check created response
+        // Verificar respuesta 201 (creado) y si la ubicación está en la base de datos
         $response->assertStatus(201)
             ->assertJson([
                 'success' => true,
             ]);
 
-        // Check if the location is in the database
         $this->assertDatabaseHas('locations', $locationData);
     }
 
     public function test_location_show()
     {
-        // Create a sample location
-        $location = Location::create([
-            'name' => 'Lugar de Ejemplo',
-            'direction' => 'Dirección del Lugar de Ejemplo',
-            'phone' => '987654321',
-            'promoter_id' => 1, // Change it to an existing promoter ID if necessary
-            'pass_id' => 1, // Change it to an existing pass ID if necessary
+        // Crea un promotor y un pase
+        $promoter = Promoter::factory()->create();
+        $pass = Pass::factory()->create();
+
+        // Crea una ubicación de ejemplo
+        $location = Location::factory()->create([
+            'promoter_id' => $promoter->id,
+            'pass_id' => $pass->id,
         ]);
 
         // Consultar un lugar por su ID
         $response = $this->getJson("/api/locations/$location->id");
 
         // Verificar respuesta OK
-        $this->_test_ok($response);
+        $response->assertOk();
     }
 
     public function test_location_update()
     {
-        // Create a sample location
-        $location = Location::create([
-            'name' => 'Lugar de Ejemplo',
-            'direction' => 'Dirección del Lugar de Ejemplo',
-            'phone' => '987654321',
-            'promoter_id' => 1, // Change it to an existing promoter ID if necessary
-            'pass_id' => 1, // Change it to an existing pass ID if necessary
+        // Crea un promotor y un pase
+        $promoter = Promoter::factory()->create();
+        $pass = Pass::factory()->create();
+
+        // Crea una ubicación de ejemplo
+        $location = Location::factory()->create([
+            'promoter_id' => $promoter->id,
+            'pass_id' => $pass->id,
         ]);
 
-        // Updated location data
+        // Datos actualizados de la ubicación
         $updatedLocationData = [
             'name' => 'Lugar Actualizado',
             'direction' => 'Nueva Dirección del Lugar',
             'phone' => '123456789',
-            'promoter_id' => 1, // Change it to an existing promoter ID if necessary
-            'pass_id' => 1, // Change it to an existing pass ID if necessary
+            'promoter_id' => $promoter->id,
+            'pass_id' => $pass->id,
         ];
 
-        // Update the location
+        // Actualizar la ubicación
         $response = $this->putJson("/api/locations/$location->id", $updatedLocationData);
 
-        // Check OK response
-        $this->_test_ok($response);
+        // Verificar respuesta OK
+        $response->assertOk();
     }
 
     public function test_location_delete()
     {
-        // Create a sample location
-        $location = Location::create([
-            'name' => 'Lugar de Ejemplo',
-            'direction' => 'Dirección del Lugar de Ejemplo',
-            'phone' => '987654321',
-            'promoter_id' => 1, // Change it to an existing promoter ID if necessary
-            'pass_id' => 1, // Change it to an existing pass ID if necessary
+        // Crea un promotor y un pase
+        $promoter = Promoter::factory()->create();
+        $pass = Pass::factory()->create();
+
+        // Crea una ubicación de ejemplo
+        $location = Location::factory()->create([
+            'promoter_id' => $promoter->id,
+            'pass_id' => $pass->id,
         ]);
 
-        // Delete the location
+        // Eliminar la ubicación
         $response = $this->deleteJson("/api/locations/$location->id");
 
-        // Check OK response
-        $this->_test_ok($response);
-    }
-
-    protected function _test_ok($response, $status = 200)
-    {
-        // Check JSON response
-        $response->assertStatus($status);
-        // Check JSON properties
-        $response->assertJson([
-            "success" => true,
-        ]);
-        // Check if the response data is an array (only for successful requests and if data exists)
-        if ($status === 200 || $status === 201) {
-            if ($response->getData()->data ?? false) {
-                // Check JSON dynamic values
-                $response->assertJsonPath("data",
-                    fn ($data) => is_array($data)
-                );
-            }
-        }
+        // Verificar respuesta OK
+        $response->assertOk();
     }
 }

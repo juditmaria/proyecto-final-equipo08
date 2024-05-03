@@ -14,6 +14,9 @@ class UserTest extends TestCase
 {
     public function test_user_list()
    {
+        // Crea registros de promotor y pase
+        User::factory()->create();
+
        // List all users using API web service
        $response = $this->getJson("/api/users");
        // Check OK response

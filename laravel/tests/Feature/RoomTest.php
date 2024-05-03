@@ -10,8 +10,13 @@ use App\Models\Room;
 
 class RoomTest extends TestCase
 {
+    use RefreshDatabase; // Añade la trait RefreshDatabase para restablecer la base de datos antes de cada prueba
+
     public function test_room_list()
     {
+        // Crea registros de promotor y pase
+        Room::factory()->create();
+
         // List all rooms using API web service
         $response = $this->getJson("/api/rooms");
         // Check OK response
@@ -37,21 +42,15 @@ class RoomTest extends TestCase
             ->assertJson([
                 'success' => true,
             ]);
-        
+
         // Check if the room is in the database
         $this->assertDatabaseHas('rooms', $roomData);
     }
 
     public function test_room_show()
     {
-        // Create an example room
-        $room = Room::create([
-            'name' => 'Cine',
-            'capacity' => 100,
-            'num_line' => 5,
-            'num_seat' => 10,
-            'hour' => '23:30',
-        ]);
+        // Create an example room using factory
+        $room = Room::factory()->create();
 
         // Get a room by its ID
         $response = $this->getJson("/api/rooms/$room->id");
@@ -59,27 +58,14 @@ class RoomTest extends TestCase
         // Check OK response
         $this->_test_ok($response);
     }
- 
 
     public function test_room_update()
     {
-        // Create an example room
-        $room = Room::create([
-            'name' => 'Cine 2',
-            'capacity' => 100,
-            'num_line' => 5,
-            'num_seat' => 10,
-            'hour' => '23:30',
-        ]);
+        // Create an example room using factory
+        $room = Room::factory()->create();
 
-        // Update the room
-        $updatedData = [
-            'name' => 'Nuevo nombre',
-            'capacity' => 120,
-            'num_line' => 6,
-            'num_seat' => 12,
-            'hour' => '22:00',
-        ];
+        // Update the room using factory
+        $updatedData = Room::factory()->make()->toArray();
 
         $response = $this->putJson("/api/rooms/$room->id", $updatedData);
 
@@ -89,21 +75,15 @@ class RoomTest extends TestCase
                 'success' => true,
                 'data' => $updatedData
             ]);
-        
+
         // Check if the room is updated in the database
         $this->assertDatabaseHas('rooms', $updatedData);
     }
-    
+
     public function test_room_delete()
     {
-        // Create an example room
-        $room = Room::create([
-            'name' => 'Cine',
-            'capacity' => 100,
-            'num_line' => 5,
-            'num_seat' => 10,
-            'hour' => '23:30',
-        ]);
+        // Create an example room using factory
+        $room = Room::factory()->create();
 
         // Delete the room
         $response = $this->deleteJson("/api/rooms/$room->id");
