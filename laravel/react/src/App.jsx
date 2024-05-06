@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LoginRegister } from './auth/LoginRegister';
+import Register from './auth/Register';
 // import { UserContext } from './userContext';
 /* import { Routes, Route } from 'react-router-dom'; */
 
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-     <LoginRegister />
+     <Register />
 {/*       <UserContext.Provider value={{ usuari, setUsuari, authToken, setAuthToken }}>
         {authToken !== "" ? (
           <>
