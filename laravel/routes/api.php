@@ -20,3 +20,7 @@ Route::apiResource('passes', PassController::class);
 Route::apiResource('promoters', PromoterController::class);
 Route::apiResource('tickets', TicketController::class);
 Route::apiResource('reviews', ReviewController::class);
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+ });
