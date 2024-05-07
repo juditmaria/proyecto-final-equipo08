@@ -26,7 +26,7 @@ class TokenController extends Controller
                 "created_at" => $user->created_at,
                 "updated_at" => $user->updated_at,
             ],
-            "roles"   => [$user->role->name],
+            
         ]);
     }
 

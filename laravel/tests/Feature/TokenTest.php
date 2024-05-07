@@ -177,7 +177,6 @@ class TokenTest extends TestCase
                $json->where("user.name", $user->name)
                    ->where("user.email", $user->email)
                    ->missing("user.password")
-                   ->where('roles', ['author'])
                    ->etc()
        );
    }
