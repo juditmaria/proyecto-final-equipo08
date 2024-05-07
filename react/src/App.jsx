@@ -3,15 +3,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import LoginRegister from './auth/LoginRegister'
+import Register from './auth/Register'
+
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { authToken } = useSelector (state => state.auth)
+  const dispatch = useDispatch()
   return (
     <>
-      <LoginRegister />
-    </>
-  )
+     {authToken !== "" ? (
+          <>
+            < Register />
+          </>
+        ) : <LoginRegister />}
+  </>
+  );
 }
 
 export default App
