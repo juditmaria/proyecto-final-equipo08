@@ -8,5 +8,8 @@
     "devDependencies": {
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0"
+    },
+    "dependencies": {
+        "sqlite3": "^5.1.7"
     }
 }

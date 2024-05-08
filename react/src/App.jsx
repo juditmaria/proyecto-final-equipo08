@@ -1,24 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import LoginRegister from './auth/LoginRegister'
-import Register from './auth/Register'
+import React, { useState, useEffect } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { Prueba } from './auth/Prueba';
+import { UserContext } from './userContext';
+import LoginRegister from './auth/LoginRegister';
 
 function App() {
-  const { authToken } = useSelector (state => state.auth)
-  const dispatch = useDispatch()
+  const [authToken, setAuthToken] = useState("");
+
+  useEffect(() => {
+    // Obtener el token de autenticación del almacenamiento local
+    const storedToken = localStorage.getItem('authToken');
+    if (storedToken) {
+      // Actualizar el token de autenticación en el estado local
+      setAuthToken(storedToken);
+    }
+  }, []);
+  console.log('authtoken', authToken)
   return (
-    <>
-     {authToken !== "" ? (
-          <>
-            < Register />
-          </>
-        ) : <LoginRegister />}
-  </>
+    <UserContext.Provider value={{ authToken }}>
+      {authToken !== "" ? (
+        <>
+          <Prueba />
+          
+        </>
+      ) : <LoginRegister />}
+    </UserContext.Provider>
   );
 }
 
-export default App
+export default App;

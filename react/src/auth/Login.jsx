@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { URL_API } from '../constants';
-import { useDispatch } from 'react-redux';
-import { setAuthToken } from '../slices/auth/authSlice'; 
+import { setAuthToken } from "../slices/auth/authSlice";
 
 export const Login = ({ setLogin }) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const [authToken, setAuthTokenLocal] = useState(""); // Variable para almacenar el authToken
 
   const handleLogin = async (data) => {
     const { email, password } = data;
@@ -31,7 +28,7 @@ export const Login = ({ setLogin }) => {
 
       // Guardar el authToken en el almacenamiento local del navegador
       localStorage.setItem('authToken', responseData.authToken);
-      dispatch(setAuthToken(responseData.authToken)); // Almacena el authToken en el estado de Redux
+      setAuthToken(responseData.authToken); // Guardar el authToken en el estado local
 
       console.log("Login exitoso:", responseData.authToken);
 
