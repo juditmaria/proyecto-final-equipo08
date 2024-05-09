@@ -1,18 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import { UserContext } from "./userContext";
 import LoginRegister from './auth/LoginRegister'
-import { Register } from './auth/Register'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [authToken, setAuthToken] = useState("");
+
+  useEffect(() => {
+    // Comprueba si hay un token en el almacenamiento local al cargar la página
+    const storedAuthToken = localStorage.getItem("authToken");
+    if (storedAuthToken) {
+      setAuthToken(storedAuthToken);
+    }
+  }, []);
+
+  const handleSetAuthToken = (token) => {
+    // Guarda el token en el almacenamiento local y en el estado
+    localStorage.setItem("authToken", token);
+    setAuthToken(token);
+  };
 
   return (
     <>
-      {/* <LoginRegister /> */}
-      <Register />
-      
+      <UserContext.Provider value={{ authToken, setAuthToken: handleSetAuthToken }}  >
+        {authToken !== "" ? (
+          <>
+            <h1>Inicio</h1>
+          </>
+        ) : <LoginRegister />}
+      </UserContext.Provider>
     </>
   )
 }

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import {URL_API} from '../constants';
+import React, { useState, useContext } from "react";
+import { URL_API } from '../constants';
+import { UserContext } from "../userContext";
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ export const Register = () => {
     password: "",
     password2: "",
   });
+  const { setAuthToken } = useContext(UserContext);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -16,6 +18,12 @@ export const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Verifica si las contraseñas coinciden
+    if (formData.password !== formData.password2) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
 
     try {
       const response = await fetch(URL_API+"register", {
@@ -31,8 +39,15 @@ export const Register = () => {
         throw new Error(errorData.message);
       }
 
+      const responseData = await response.json();
+
+      const saveAuthToken = responseData.authToken;
+      setAuthToken(saveAuthToken);
+
       // Maneja la respuesta como desees
-      console.log("Usuario registrado con éxito");
+      console.log("Usuario registrado con éxito", formData);
+      //console.log("Token de autenticación:", authToken);
+
     } catch (error) {
       setError(error.message);
     }
