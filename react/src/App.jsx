@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { UserContext } from "./userContext";
+import { Routes, Route } from 'react-router-dom';
+
 import LoginRegister from './components/auth/LoginRegister'
-import {Header} from './components/layout/Header';
+
+import Layout from './components/layout/Layout';
+import NotFound from './components/app/NotFound';
+import Home from './components/app/Home';
+import About from './components/app/About';
+
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -27,8 +34,13 @@ function App() {
         
         {authToken !== "" ? (
           <>
-            <Header />
-            <h1>Inicio</h1>
+            <Layout>
+              <Routes>
+                <Route path='*' element={<NotFound />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+              </Routes>
+            </Layout>          
           </>
         ) : <LoginRegister />}
       </UserContext.Provider>

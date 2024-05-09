@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import { UserContext } from "../../userContext";
 import { URL_API } from '../../constants';
 
-export const Header = () => {
+const Header = () => {
 
 const { authToken, setAuthToken } = useContext(UserContext);
 
@@ -36,3 +36,5 @@ const logout = async () => {
     </div>
   )
 }
+
+export default Header

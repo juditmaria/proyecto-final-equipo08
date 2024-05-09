@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { URL_API } from '../../constants';
 import { UserContext } from "../../userContext";
 
-export const Register = ({setLogin}) => {
+const Register = ({ setLogin }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,7 +26,7 @@ export const Register = ({setLogin}) => {
     }
 
     try {
-      const response = await fetch(URL_API+"register", {
+      const response = await fetch(URL_API + "register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,17 @@ export const Register = ({setLogin}) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message);
+        if (response.status === 409) {
+          // Error de correo electrónico duplicado
+          setError("El correo electrónico ya está registrado");
+        } else if (response.status === 422) {
+          // Error de contraseña no válida
+          setError("La contraseña debe tener al menos 6 caracteres");
+        } else {
+          // Otro error de red
+          setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde.");
+        }
+        return;
       }
 
       const responseData = await response.json();
@@ -49,7 +59,8 @@ export const Register = ({setLogin}) => {
       //console.log("Token de autenticación:", authToken);
 
     } catch (error) {
-      setError(error.message);
+      // Error de red
+      setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde.");
     }
   };
 
@@ -66,6 +77,7 @@ export const Register = ({setLogin}) => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Nombre"
+              required
               className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
           </div>
@@ -76,6 +88,7 @@ export const Register = ({setLogin}) => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
+              required
               className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
           </div>
@@ -86,6 +99,7 @@ export const Register = ({setLogin}) => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Contraseña"
+              required
               className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
           </div>
@@ -96,6 +110,7 @@ export const Register = ({setLogin}) => {
               value={formData.password2}
               onChange={handleChange}
               placeholder="Repetir Contraseña"
+              required
               className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
           </div>

@@ -4,7 +4,7 @@ import { URL_API } from '../../constants';
 // import { setAuthToken } from '../../slices/auth/authSlice';
 import { UserContext } from '../../userContext';
 
-export const Login = ({ setLogin }) => {
+const Login = ({ setLogin }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { setAuthToken } = useContext(UserContext);
   const [error, setError] = useState('');
@@ -105,3 +105,5 @@ export const Login = ({ setLogin }) => {
     </section>
   );
 };
+
+export default Login
