@@ -30,7 +30,7 @@ const logout = async () => {
         <nav>
             CinemasWEB     
             <div>
-                <a onClick={logout} href="#">logout</a>
+                <a onClick={logout}>logout</a>
             </div>
         </nav>
     </div>
