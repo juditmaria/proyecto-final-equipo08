@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { URL_API } from '../constants';
-import { setAuthToken } from '../slices/auth/authSlice';
+import { URL_API } from '../../constants';
+// import { setAuthToken } from '../../slices/auth/authSlice';
+import { UserContext } from '../../userContext';
 
 export const Login = ({ setLogin }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { setAuthToken } = useContext(UserContext);
   const [error, setError] = useState('');
 
   const handleLogin = async (data) => {
@@ -84,7 +86,7 @@ export const Login = ({ setLogin }) => {
 
       <footer>
         <div className="mt-8 text-sm text-gray-400">
-          By signing in to ********, you agree to our
+          By signing in to ****, you agree to our
           <a href="#" className="font-medium text-gray-500">
             Terms
           </a>{' '}

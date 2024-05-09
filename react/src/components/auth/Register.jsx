@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { URL_API } from '../constants';
-import { UserContext } from "../userContext";
+import { URL_API } from '../../constants';
+import { UserContext } from "../../userContext";
 
-export const Register = () => {
+export const Register = ({setLogin}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",

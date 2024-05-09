@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { UserContext } from "./userContext";
-import LoginRegister from './auth/LoginRegister'
+import LoginRegister from './components/auth/LoginRegister'
+import {Header} from './components/layout/Header';
 
 function App() {
   const [authToken, setAuthToken] = useState("");
@@ -23,8 +24,10 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ authToken, setAuthToken: handleSetAuthToken }}  >
+        
         {authToken !== "" ? (
           <>
+            <Header />
             <h1>Inicio</h1>
           </>
         ) : <LoginRegister />}
