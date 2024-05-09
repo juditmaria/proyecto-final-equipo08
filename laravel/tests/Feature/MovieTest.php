@@ -10,109 +10,75 @@ use App\Models\Movie;
 
 class MovieTest extends TestCase
 {
+    use RefreshDatabase; // Añade la trait RefreshDatabase para restablecer la base de datos antes de cada prueba
+
     public function test_movie_list()
     {
-        // List all movies using API web service
+        // Generar películas de ejemplo
+        Movie::factory()->count(3)->create();
+
+        // Listar todas las películas utilizando el servicio web API
         $response = $this->getJson("/api/movies");
-        // Check OK response
-        $this->_test_ok($response);
+
+        // Verificar respuesta OK
+        $response->assertOk();
     }
  
     public function test_store_movie()
     {
-        // Create movie data
-        $movieData = [
-            'title' => 'Nueva Película',
-            'description' => 'Descripción de la nueva película.',
-            'director' => 'Director de la Nueva Película',
-            'length' => 100,
-            'type' => 'Género de la Nueva Película',
-            'release_year' => 2023,
-            'trailer' => 'https://www.youtube.com/embed/NEWTRAILER',
-        ];
+        // Generar datos de película utilizando el factory
+        $movieData = Movie::factory()->make()->toArray();
 
-        // Store the movie
+        // Almacenar la película
         $response = $this->postJson('/api/movies', $movieData);
 
-        // Check created response
+        // Verificar respuesta 201 (creado)
         $response->assertStatus(201)
             ->assertJson([
                 'success' => true,
             ]);
         
-        // Check if the movie is in the database
+        // Verificar si la película está en la base de datos
         $this->assertDatabaseHas('movies', $movieData);
     }
     
     public function test_movie_show()
     {
-        // Crear una película de ejemplo
-        $movie = Movie::create([
-            'title' => 'Película de Ejemplo',
-            'description' => 'Descripción de la película de ejemplo.',
-            'director' => 'Director de Ejemplo',
-            'length' => 120, // Duración en minutos
-            'type' => 'Género de Ejemplo',
-            'release_year' => 2022,
-            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
-        ]);
+        // Generar una película de ejemplo
+        $movie = Movie::factory()->create();
 
         // Consultar una película por su ID
         $response = $this->getJson("/api/movies/$movie->id");
 
         // Verificar respuesta OK
-        $this->_test_ok($response);
+        $response->assertOk();
     }
 
     public function test_movie_update()
     {
-        // Crear una película de ejemplo
-        $movie = Movie::create([
-            'title' => 'Película de Ejemplo',
-            'description' => 'Descripción de la película de ejemplo.',
-            'director' => 'Director de Ejemplo',
-            'length' => 120, // Duración en minutos
-            'type' => 'Género de Ejemplo',
-            'release_year' => 2022,
-            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
-        ]);
+        // Generar una película de ejemplo
+        $movie = Movie::factory()->create();
 
-        // Datos actualizados de la película
-        $data = [
-            'title' => 'Película Actualizada',
-            'description' => 'Nueva descripción de la película.',
-            'director' => 'Nuevo Director',
-            'length' => 150,
-            'type' => 'Nuevo Género',
-            'release_year' => 2023,
-            'trailer' => 'https://www.youtube.com/embed/1234567890',
-        ];
+        // Generar datos actualizados de la película utilizando el factory
+        $updatedMovieData = Movie::factory()->make()->toArray();
 
         // Actualizar la película
-        $response = $this->putJson("/api/movies/$movie->id", $data);
+        $response = $this->putJson("/api/movies/$movie->id", $updatedMovieData);
 
         // Verificar respuesta OK
-        $this->_test_ok($response);
+        $response->assertOk();
     }
 
     public function test_movie_delete()
     {
-        // Crear una película de ejemplo
-        $movie = Movie::create([
-            'title' => 'Película de Ejemplo',
-            'description' => 'Descripción de la película de ejemplo.',
-            'director' => 'Director de Ejemplo',
-            'length' => 120, // Duración en minutos
-            'type' => 'Género de Ejemplo',
-            'release_year' => 2022,
-            'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
-        ]);
+        // Generar una película de ejemplo
+        $movie = Movie::factory()->create();
 
         // Eliminar la película
         $response = $this->deleteJson("/api/movies/$movie->id");
 
         // Verificar respuesta OK
-        $this->_test_ok($response);
+        $response->assertOk();
     }
     
     protected function _test_ok($response, $status = 200)
