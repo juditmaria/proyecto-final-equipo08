@@ -30,7 +30,7 @@ function App() {
         ) : <LoginRegister />}
       </UserContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
