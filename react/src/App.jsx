@@ -5,26 +5,34 @@ import { UserContext } from './userContext';
 import LoginRegister from './auth/LoginRegister';
 
 function App() {
-  const [authToken, setAuthToken] = useState("");
+  const [authToken, setAuthToken] = useState('');
 
   useEffect(() => {
-    // Obtener el token de autenticación del almacenamiento local
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      // Actualizar el token de autenticación en el estado local
-      setAuthToken(storedToken);
+    // Comprueba si hay un token en el almacenamiento local al cargar la página
+    const storedAuthToken = localStorage.getItem('authToken');
+    if (storedAuthToken) {
+      setAuthToken(storedAuthToken);
     }
   }, []);
-  console.log('authtoken', authToken)
+
+  const handleSetAuthToken = (token) => {
+    // Guarda el token en el almacenamiento local y en el estado
+    localStorage.setItem('authToken', token);
+    setAuthToken(token);
+  };
+
   return (
-    <UserContext.Provider value={{ authToken }}>
-      {authToken !== "" ? (
-        <>
-          <Prueba />
-          
-        </>
-      ) : <LoginRegister />}
-    </UserContext.Provider>
+    <>
+      <UserContext.Provider value={{ authToken, setAuthToken: handleSetAuthToken }}>
+        {authToken !== '' ? (
+          <>
+            <Prueba />
+          </>
+        ) : (
+          <LoginRegister />
+        )}
+      </UserContext.Provider>
+    </>
   );
 }
 
