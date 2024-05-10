@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setAuthToken, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
-// import { setAuthToken } from '../../slices/auth/authSlice';
-import { UserContext } from '../../userContext';
 
 const Login = ({ setLogin }) => {
+  const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { setAuthToken } = useContext(UserContext);
-  const [error, setError] = useState('');
+  const [error, setErrorMsg] = useState('');
 
   const handleLogin = async (data) => {
     const { email, password } = data;
@@ -32,12 +32,13 @@ const Login = ({ setLogin }) => {
 
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
-      setAuthToken(authToken);
+      dispatch(setAuthToken(authToken));
 
       console.log('Login exitoso:', authToken);
     } catch (error) {
       console.error('Error de login:', error);
-      setError(error.message || 'Usuario y/o contraseña incorrectos');
+      setErrorMsg(error.message || 'Usuario y/o contraseña incorrectos');
+      dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos'));
     }
   };
 
@@ -106,4 +107,4 @@ const Login = ({ setLogin }) => {
   );
 };
 
-export default Login
+export default Login;
