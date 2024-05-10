@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 use App\Models\Movie;
 
@@ -42,9 +45,24 @@ class MovieController extends Controller
             'type' => 'required|string',
             'release_year' => 'required|integer',
             'trailer' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $movie = Movie::create($request->all());
+        $movieData = $request->except('image');
+
+        // Si se carga una imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Crear una nueva instancia de Movie
+            $movie = new Movie($movieData);
+
+            // Guardar la imagen en el disco y obtener la ruta
+            $movie->diskSave($image);
+        } else {
+            // Si no se carga ninguna imagen, crear la película sin imagen
+            $movie = Movie::create($movieData);
+        }
 
         return response()->json([
             'success' => true,
@@ -52,9 +70,6 @@ class MovieController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $movie = Movie::find($id);
@@ -71,7 +86,6 @@ class MovieController extends Controller
             'data' => $movie
         ], 200);
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -94,9 +108,24 @@ class MovieController extends Controller
             'type' => 'required|string',
             'release_year' => 'required|integer',
             'trailer' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para la imagen
         ]);
 
-        $movie->update($request->all());
+        $movieData = $request->except('image');
+
+        // Si se carga una nueva imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Guardar la nueva imagen y eliminar la anterior
+            if ($movie->image) {
+                Storage::delete($movie->image);
+            }
+            
+            $movie->diskSave($image);
+        }
+
+        $movie->update($movieData);
 
         return response()->json([
             'success' => true,
@@ -117,6 +146,11 @@ class MovieController extends Controller
                 'success' => false,
                 'message' => 'Movie not found'
             ], 404);
+        }
+
+        // Eliminar la imagen si existe
+        if ($movie->image) {
+            Storage::delete($movie->image);
         }
 
         $movie->delete();

@@ -12,6 +12,7 @@ class Promoter extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'image', // Agregar el campo 'image' al array fillable
     ];
 
     // Relación con el usuario (opcional, dependiendo de tu lógica de negocio)

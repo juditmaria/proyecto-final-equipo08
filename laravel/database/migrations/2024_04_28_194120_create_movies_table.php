@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('release_year');
             $table->string('trailer')->nullable();
+            $table->string('image')->nullable(); // Nuevo campo para la ruta de la imagen
             $table->timestamps();
         });
     }
@@ -32,6 +33,7 @@ return new class extends Migration
         Schema::dropIfExists('movies');
     }
 };
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
