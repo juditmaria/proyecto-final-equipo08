@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthToken } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
-import { UserContext } from "../../userContext";
 
 const Register = ({ setLogin }) => {
   const [formData, setFormData] = useState({
@@ -9,8 +10,9 @@ const Register = ({ setLogin }) => {
     password: "",
     password2: "",
   });
-  const { setAuthToken } = useContext(UserContext);
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const authToken = useSelector(state => state.auth.authToken);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,7 +54,7 @@ const Register = ({ setLogin }) => {
       const responseData = await response.json();
 
       const saveAuthToken = responseData.authToken;
-      setAuthToken(saveAuthToken);
+      dispatch(setAuthToken(saveAuthToken));
 
       // Maneja la respuesta como desees
       console.log("Usuario registrado con éxito", formData);

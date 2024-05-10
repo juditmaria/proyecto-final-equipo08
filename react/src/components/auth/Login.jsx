@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { setAuthToken, setError } from '../../slices/auth/authSlice';
+import { setAuthToken } from '../../slices/auth/authSlice'; // Ruta a tu authSlice
 import { URL_API } from '../../constants';
 
 const Login = ({ setLogin }) => {
@@ -32,13 +32,12 @@ const Login = ({ setLogin }) => {
 
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
-      dispatch(setAuthToken(authToken));
+      dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
 
       console.log('Login exitoso:', authToken);
     } catch (error) {
       console.error('Error de login:', error);
       setErrorMsg(error.message || 'Usuario y/o contraseña incorrectos');
-      dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos'));
     }
   };
 

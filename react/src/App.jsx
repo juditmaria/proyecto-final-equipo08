@@ -1,48 +1,44 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import { UserContext } from "./userContext";
+// App.jsx
+
+import { useState, useEffect } from 'react';
+import './App.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
+import { UserContext } from './userContext';
+import { setAuthToken } from './slices/auth/authSlice';
 
-import LoginRegister from './components/auth/LoginRegister'
-
+import LoginRegister from './components/auth/LoginRegister';
 import Layout from './components/layout/Layout';
 import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
 import About from './components/app/About';
 
-
 function App() {
-  const [authToken, setAuthToken] = useState("");
+  const dispatch = useDispatch();
+  const authToken = useSelector((state) => state.auth.authToken);
 
   useEffect(() => {
     // Comprueba si hay un token en el almacenamiento local al cargar la página
-    const storedAuthToken = localStorage.getItem("authToken");
+    const storedAuthToken = localStorage.getItem('authToken');
     if (storedAuthToken) {
-      setAuthToken(storedAuthToken);
+      dispatch(setAuthToken(storedAuthToken));
     }
-  }, []);
-
-  const handleSetAuthToken = (token) => {
-    // Guarda el token en el almacenamiento local y en el estado
-    localStorage.setItem("authToken", token);
-    setAuthToken(token);
-  };
+  }, [dispatch]);
 
   return (
     <>
-      <UserContext.Provider value={{ authToken, setAuthToken: handleSetAuthToken }}  >
-        
-        {authToken !== "" ? (
-          <>
-            <Layout>
-              <Routes>
-                <Route path='*' element={<NotFound />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-              </Routes>
-            </Layout>          
-          </>
-        ) : <LoginRegister />}
+      <UserContext.Provider value={{ authToken, setAuthToken }}>
+        {authToken ? (
+          <Layout>
+            <Routes>
+              <Route path='*' element={<NotFound />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </Layout>          
+        ) : (
+          <LoginRegister />
+        )}
       </UserContext.Provider>
     </>
   );
