@@ -1,4 +1,4 @@
-import { setAuthToken, setUsuari } from "./authSlice";
+import { setAuthToken } from "./authSlice";
 import { URL_API } from "../../constants";
 
 export const doLogin = (dades) => {
@@ -18,7 +18,6 @@ export const doLogin = (dades) => {
                })
                const resposta = await data.json()
                if (resposta.success == true) {
-                   dispatch(setUsuari(email));
                    dispatch(setAuthToken(resposta.authToken));
                }
                else {
