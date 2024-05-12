@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken } from '../../slices/auth/authSlice';
+import { setAuthToken, setError, setFormData, clearFormData } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 
 const Register = ({ setLogin }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-  });
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const authToken = useSelector(state => state.auth.authToken);
+  const { formData, error } = useSelector(state => state.auth);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    dispatch(setFormData({ ...formData, [e.target.name]: e.target.value }));
   };
 
   const handleRegister = async (e) => {
@@ -23,7 +16,7 @@ const Register = ({ setLogin }) => {
 
     // Verifica si las contraseñas coinciden
     if (formData.password !== formData.password2) {
-      setError("Las contraseñas no coinciden");
+      dispatch(setError("Las contraseñas no coinciden"));
       return;
     }
 
@@ -40,13 +33,13 @@ const Register = ({ setLogin }) => {
         const errorData = await response.json();
         if (response.status === 409) {
           // Error de correo electrónico duplicado
-          setError("El correo electrónico ya está registrado");
+          dispatch(setError("El correo electrónico ya está registrado"));
         } else if (response.status === 422) {
           // Error de contraseña no válida
-          setError("La contraseña debe tener al menos 6 caracteres");
+          dispatch(setError("La contraseña debe tener al menos 6 caracteres"));
         } else {
           // Otro error de red
-          setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde.");
+          dispatch(setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde."));
         }
         return;
       }
@@ -56,13 +49,16 @@ const Register = ({ setLogin }) => {
       const saveAuthToken = responseData.authToken;
       dispatch(setAuthToken(saveAuthToken));
 
+      // Limpiar el formData después del registro exitoso
+      dispatch(clearFormData());
+
       // Maneja la respuesta como desees
       console.log("Usuario registrado con éxito", formData);
       //console.log("Token de autenticación:", authToken);
 
     } catch (error) {
       // Error de red
-      setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde.");
+      dispatch(setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde."));
     }
   };
 

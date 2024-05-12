@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { setAuthToken } from '../../slices/auth/authSlice'; // Ruta a tu authSlice
+import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
+import { setAuthToken, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 
 const Login = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [error, setErrorMsg] = useState('');
+
+  // Obtén el error del estado global utilizando useSelector
+  const error = useSelector((state) => state.auth.error);
 
   const handleLogin = async (data) => {
     const { email, password } = data;
@@ -37,7 +39,7 @@ const Login = ({ setLogin }) => {
       console.log('Login exitoso:', authToken);
     } catch (error) {
       console.error('Error de login:', error);
-      setErrorMsg(error.message || 'Usuario y/o contraseña incorrectos');
+      dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
     }
   };
 
@@ -82,7 +84,7 @@ const Login = ({ setLogin }) => {
         </form>
       </div>
 
-      {error && <p className="text-red-600 bg-yellow-200 p-2">{error}</p>}
+      {error && <p className="text-red-600 bg-yellow-200 p-2">{error}</p>} {/* Renderizamos el error desde el estado global */}
 
       <footer>
         <div className="mt-8 text-sm text-gray-400">
