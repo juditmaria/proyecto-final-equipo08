@@ -10,7 +10,8 @@ export const authSlice = createSlice({
             email: "",
             password: "",
             password2: "",
-        }
+        },
+        isLogin: true // Agregamos el estado isLogin con valor inicial true
     },
     reducers: {
         setAuthToken: (state, action) => {
@@ -32,9 +33,12 @@ export const authSlice = createSlice({
                 password: "",
                 password2: "",
             };
+        },
+        setIsLogin: (state, action) => {
+            state.isLogin = action.payload;
         }
     },
 });
 
-export const { setAuthToken, setError, clearError, setFormData, clearFormData } = authSlice.actions;
+export const { setAuthToken, setError, clearError, setFormData, clearFormData, setIsLogin } = authSlice.actions;
 export const authReducer = authSlice.reducer;

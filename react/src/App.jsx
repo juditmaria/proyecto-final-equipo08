@@ -1,6 +1,6 @@
 // App.jsx
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
