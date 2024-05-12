@@ -17,10 +17,10 @@ export const doLogin = (dades) => {
             if (resposta.success == true) {
                 dispatch(setAuthToken(resposta.authToken));
             } else {
-                dispatch(setError(resposta.message)); // Despachar la acción setError con el mensaje de error recibido
+                dispatch(setError(resposta.message));
             }
         } catch (err) {
-            dispatch(setError("Network error")); // Despachar la acción setError con el mensaje de error de red
+            dispatch(setError("Network error"));
         }
     }
 }
