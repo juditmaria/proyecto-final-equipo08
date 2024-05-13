@@ -4,30 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
-use App\Models\Movie;
+use App\Models\Profile;
 
-class MovieController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $movies = Movie::all();
+        $profiles = Profile::all();
 
-        if ($movies->count() > 0) {
+        if ($profiles->count() > 0) {
             return response()->json([
                 'success' => true,
-                'data'    => $movies
+                'data'    => $profiles
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Files not found'
+                'message' => 'Profiles not found'
             ], 500);
         }
     }
@@ -38,99 +37,91 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'director' => 'required|string',
-            'length' => 'required|integer',
-            'type' => 'required|string',
-            'release_year' => 'required|integer',
-            'trailer' => 'nullable|string',
+            'user_id' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $movieData = $request->except('image');
+        $profileData = $request->except('image');
 
         // Si se carga una imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
             $image = $request->file('image');
 
-            // Crear una nueva instancia de Movie
-            $movie = new Movie($movieData);
+            // Crear una nueva instancia de Profile
+            $profile = new Profile($profileData);
 
             // Guardar la imagen en el disco y obtener la ruta
-            $movie->diskSave($image);
+            $profile->diskSave($image);
         } else {
-            // Si no se carga ninguna imagen, crear la película sin imagen
-            $movie = Movie::create($movieData);
+            // Si no se carga ninguna imagen, crear el perfil sin imagen
+            $profile = Profile::create($profileData);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $movie
+            'data' => $profile
         ], 201);
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
-        $movie = Movie::find($id);
+        $profile = Profile::find($id);
 
-        if (!$movie) {
+        if (!$profile) {
             return response()->json([
                 'success' => false,
-                'message' => 'Movie not found'
+                'message' => 'Profile not found'
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $movie
+            'data' => $profile
         ], 200);
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        $movie = Movie::find($id);
+        $profile = Profile::find($id);
 
-        if (!$movie) {
+        if (!$profile) {
             return response()->json([
                 'success' => false,
-                'message' => 'Movie not found'
+                'message' => 'Profile not found'
             ], 404);
         }
 
         $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'director' => 'required|string',
-            'length' => 'required|integer',
-            'type' => 'required|string',
-            'release_year' => 'required|integer',
-            'trailer' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para la imagen
+            'user_id' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $movieData = $request->except('image');
+        $profileData = $request->except('image');
 
         // Si se carga una nueva imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
             $image = $request->file('image');
 
             // Guardar la nueva imagen y eliminar la anterior
-            if ($movie->image) {
-                Storage::delete($movie->image);
+            if ($profile->image) {
+                Storage::delete($profile->image);
             }
             
-            $movie->diskSave($image);
+            $profile->diskSave($image);
         }
 
-        $movie->update($movieData);
+        $profile->update($profileData);
 
         return response()->json([
             'success' => true,
-            'message' => 'Movie updated successfully',
-            'data' => $movie
+            'message' => 'Profile updated successfully',
+            'data' => $profile
         ], 200);
     }
 
@@ -139,25 +130,26 @@ class MovieController extends Controller
      */
     public function destroy(string $id)
     {
-        $movie = Movie::find($id);
+        $profile = Profile::find($id);
 
-        if (!$movie) {
+        if (!$profile) {
             return response()->json([
                 'success' => false,
-                'message' => 'Movie not found'
+                'message' => 'Profile not found'
             ], 404);
         }
 
         // Eliminar la imagen si existe
-        if ($movie->image) {
-            Storage::delete($movie->image);
+        if ($profile->image) {
+            Storage::delete($profile->image);
         }
 
-        $movie->delete();
+        $profile->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Movie deleted successfully'
+            'message' => 'Profile deleted successfully'
         ], 200);
     }
 }
+

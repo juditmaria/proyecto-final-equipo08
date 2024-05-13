@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PassController;
 use App\Http\Controllers\Api\PromoterController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\ProfileController; // Agregado el controlador de perfil
 
  /*
 |--------------------------------------------------------------------------
@@ -119,3 +120,14 @@ Route::get('/reviews/{review}', [ReviewController::class, 'show']);
 Route::put('/reviews/{review}', [ReviewController::class, 'update']);
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 Route::post('/reviews/{review}', [ReviewController::class, 'update_workaround']);
+
+
+// Profiles /////////////////////////////////////////////////////////////////
+Route::apiResource('profiles', ProfileController::class);
+
+Route::get('/profiles', [ProfileController::class, 'index']);
+Route::post('/profiles', [ProfileController::class, 'store']);
+Route::get('/profiles/{profile}', [ProfileController::class, 'show']);
+Route::put('/profiles/{profile}', [ProfileController::class, 'update']);
+Route::delete('/profiles/{profile}', [ProfileController::class, 'destroy']);
+Route::post('/profiles/{profile}', [ProfileController::class, 'update_workaround']);
