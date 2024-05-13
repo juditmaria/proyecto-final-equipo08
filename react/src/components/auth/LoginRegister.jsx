@@ -14,7 +14,6 @@ const LoginRegister = () => {
 
   return (
     <div>
-      <h1>Login / Register </h1>
       {isLogin ? <Login setLogin={handleToggleLogin} /> : <Register setLogin={handleToggleLogin} />}
     </div>
   )

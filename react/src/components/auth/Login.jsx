@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
 import { setAuthToken, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 
+//STYLE
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 const Login = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -44,6 +48,30 @@ const Login = ({ setLogin }) => {
   };
 
   return (
+    <>
+      <header>Login</header>
+      <Form className='p-15'>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Check me out" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    
+    
     <section className="absolute top-1/2 left-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center">
       <div className="space-y-4">
         <header className="mb-3 text-2xl font-bold">Log in</header>
@@ -105,6 +133,7 @@ const Login = ({ setLogin }) => {
         </div>
       </footer>
     </section>
+    </>
   );
 };
 
