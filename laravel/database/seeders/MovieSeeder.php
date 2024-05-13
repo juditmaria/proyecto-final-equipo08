@@ -23,6 +23,7 @@ class MovieSeeder extends Seeder
             'type' => 'Género de Ejemplo',
             'release_year' => 2022,
             'trailer' => 'https://www.youtube.com/embed/ABCDEFGHIJK', // URL del tráiler (opcional)
+            'image' => 'storage/ejemplo.jpg', // Ruta de la imagen de ejemplo
         ]);
 
         // También puedes usar la factory para crear múltiples películas de prueba
