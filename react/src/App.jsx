@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import './App.css';
+import './scss/App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
