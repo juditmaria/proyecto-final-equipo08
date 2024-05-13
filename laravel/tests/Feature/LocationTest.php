@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 use App\Models\Location;
@@ -39,6 +40,7 @@ class LocationTest extends TestCase
             'phone' => '123456789',
             'promoter_id' => Promoter::first()->id,
             'pass_id' => Pass::first()->id,
+            'image' => UploadedFile::fake()->image('test.jpg'), // Imagen de prueba
         ];
 
         // Almacenar la ubicación
@@ -50,6 +52,7 @@ class LocationTest extends TestCase
                 'success' => true,
             ]);
 
+        unset($locationData['image']); // La imagen no estará en la base de datos
         $this->assertDatabaseHas('locations', $locationData);
     }
 
@@ -91,6 +94,7 @@ class LocationTest extends TestCase
             'phone' => '123456789',
             'promoter_id' => $promoter->id,
             'pass_id' => $pass->id,
+            'image' => UploadedFile::fake()->image('updated_image.jpg'), // Imagen de prueba actualizada
         ];
 
         // Actualizar la ubicación

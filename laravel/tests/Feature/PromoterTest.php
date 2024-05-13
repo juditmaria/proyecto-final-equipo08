@@ -18,42 +18,43 @@ class PromoterTest extends TestCase
      */
     public function test_promoter_list()
     {
-        // Crea registros de promotor y pase
+        // Crea registros de promotor
         Promoter::factory()->create();
 
-        // List all promoters using API web service
+        // Listar todos los promotores usando el servicio web API
         $response = $this->getJson("/api/promoters");
-        // Check OK response
+        // Verificar respuesta OK
         $this->_test_ok($response);
     }
  
     public function test_promoter_store()
     {
-        //User create
+        // Crear un usuario
         $user = User::factory()->create();
 
-        // Create promoter data
+        // Crear datos del promotor
         $promoterData = [
             'name' => 'Nuevo Promotor',
-            'user_id' => $user->id, // Change it to an existing user ID if necessary
+            'user_id' => $user->id, // Cambiar a un ID de usuario existente si es necesario
+            'image' => null, // Ajusta según tus necesidades
         ];
 
-        // Store the promoter
+        // Almacenar el promotor
         $response = $this->postJson('/api/promoters', $promoterData);
 
-        // Check created response
+        // Verificar respuesta creada
         $response->assertStatus(201)
             ->assertJson([
                 'success' => true,
             ]);
         
-        // Check if the promoter is in the database
+        // Verificar si el promotor está en la base de datos
         $this->assertDatabaseHas('promoters', $promoterData);
     }
     
     public function test_promoter_read()
     {
-        // Create a sample promoter using factory
+        // Crear un promotor de ejemplo
         $promoter = Promoter::factory()->create();
 
         // Consultar un promotor por su ID
@@ -65,7 +66,7 @@ class PromoterTest extends TestCase
 
     public function test_promoter_update()
     {
-        // Crear un promotor de ejemplo usando factory
+        // Crear un promotor de ejemplo
         $promoter = Promoter::factory()->create();
 
         // Datos actualizados del promotor
@@ -80,7 +81,7 @@ class PromoterTest extends TestCase
 
     public function test_promoter_delete()
     {
-        // Crear un promotor de ejemplo usando factory
+        // Crear un promotor de ejemplo
         $promoter = Promoter::factory()->create();
 
         // Eliminar el promotor
@@ -92,16 +93,16 @@ class PromoterTest extends TestCase
 
     protected function _test_ok($response, $status = 200)
     {
-        // Check JSON response
+        // Verificar respuesta JSON
         $response->assertStatus($status);
-        // Check JSON properties
+        // Verificar propiedades JSON
         $response->assertJson([
             "success" => true,
         ]);
-        // Check if the response data is an array (only for successful requests and if data exists)
+        // Verificar si los datos de respuesta son un array (solo para solicitudes exitosas y si existen datos)
         if ($status === 200 || $status === 201) {
             if ($response->getData()->data ?? false) {
-                // Check JSON dynamic values
+                // Verificar valores dinámicos JSON
                 $response->assertJsonPath("data",
                     fn ($data) => is_array($data)
                 );
