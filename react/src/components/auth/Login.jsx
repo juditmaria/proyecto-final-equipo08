@@ -7,6 +7,7 @@ import { URL_API } from '../../constants';
 //STYLE
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const Login = ({ setLogin }) => {
   const dispatch = useDispatch();
@@ -49,28 +50,46 @@ const Login = ({ setLogin }) => {
 
   return (
     <>
-      <header>Inicio de sessión</header>
-      <Form className='p-3'>
+      <header>Inicio de sesión</header>
+      <Form onSubmit={handleSubmit(handleLogin)} className='p-3'>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control required type="email" placeholder="Correo electrónico" />
-          <Form.Text className="text-muted">
-            Mínimo 8 cáracteres
-          </Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control required type="password" placeholder="Contraseña" />
-        </Form.Group>
-       {/*  <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-        <Form.Text>
+          <Form.Text>
             Mínimo 8 cáracteres
           </Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox"
+            label={
+              <span>
+                Al iniciar sesión aceptas nuestros {' '}
+                <a href='#' target="_blank" rel="noopener noreferrer">
+                  Términos
+                </a>
+                {' '}
+                y
+                {' '}
+                <a href='#' target="_blank" rel="noopener noreferrer">
+                  Política de Privacidad
+                </a>
+              </span>
+            }
+          />
+        </Form.Group>
+
+        <Button variant="dark" type="submit">
+          Iniciar sesión
+        </Button>
       </Form>
+
+      <Card border="info">
+        <Card.Body>
+          <Card.Text>¿No tienes cuenta? <Card.Link href="#">Registrate</Card.Link></Card.Text></Card.Body>
+      </Card>
     
     
     <section className="absolute top-1/2 left-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center">
