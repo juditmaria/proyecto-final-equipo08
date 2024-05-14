@@ -12,7 +12,11 @@ import Layout from './components/layout/Layout';
 import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
 import About from './components/app/About';
-import Movie from './components/app/Movie';
+import MovieList from './components/app/MovieList';
+import Location from './components/app/Location';
+import MovieShow from './components/app/MovieShow';
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -33,9 +37,10 @@ function App() {
           <Layout>
             <Routes>
               <Route path='*' element={<NotFound />} />
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Location />} />
               <Route path="/about" element={<About />} />
-              <Route path="/movie" element={<Movie />} />
+              <Route path="/movies" element={<MovieList />} />
+              <Route path="/movies/:id" element={<MovieShow />} />
             </Routes>
           </Layout>          
         ) : (
