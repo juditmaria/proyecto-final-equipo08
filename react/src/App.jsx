@@ -13,6 +13,7 @@ import Layout from './components/layout/Layout';
 import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
 import About from './components/app/About';
+import Terms from './components/app/Terms';
 
 function App() {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function App() {
               <Route path='*' element={<NotFound />} />
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/terms" element={<Terms />} />
             </Routes>
           </Layout>          
         ) : (
