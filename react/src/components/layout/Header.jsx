@@ -31,7 +31,7 @@ const Header = () => {
       <nav>
         CinemasWEB
         <ul style={{ listStyleType: 'none', padding: 0 }}>
-          <li><a href="/movie">Movie</a></li>
+          <li><a href="/movies">Movie</a></li>
           <li><a href="/">Home</a></li>
         </ul>
         <div>

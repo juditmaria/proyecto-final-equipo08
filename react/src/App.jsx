@@ -16,8 +16,7 @@ import About from './components/app/About';
 import MovieList from './components/app/MovieList';
 import Location from './components/app/Location';
 import MovieShow from './components/app/MovieShow';
-
-
+import Terms from './components/app/Terms';
 
 function App() {
   const dispatch = useDispatch();
