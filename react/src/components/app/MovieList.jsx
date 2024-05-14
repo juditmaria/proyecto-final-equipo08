@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Importar Link desde react-router-dom
+import { Link } from 'react-router-dom';
 import { URL_API, URL } from '../../constants';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
@@ -26,19 +27,20 @@ const MovieList = () => {
   return (
     <div>
       <h1>Películas</h1>
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {movies.map(movie => (
-          <li key={movie.id}>
-            <a href={`/movies/${movie.id}`}> link</a>{/* Enlace a la página de detalles de la película */}
-              <img 
-                src={`${URL}${movie.image}`} // Aquí modificamos la ruta de la imagen
-                alt={movie.title} 
-                style={{ width: '200px', height: 'auto' }} // Cambia el tamaño de la imagen
-              />
-            
-          </li>
-        ))}
-      </ul>
+      <Container>
+        <Row>
+          {movies.map((movie, index) => (
+            <Col key={index} xs={12} sm={6} md={3}>
+              <Link to={`/movies/${movie.id}`}>
+                <img
+                  src={`${URL}${movie.image}`}
+                  style={{ width: '100%', height: 'auto', marginBottom: '15px' }}
+                />
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </div>
   );
 };

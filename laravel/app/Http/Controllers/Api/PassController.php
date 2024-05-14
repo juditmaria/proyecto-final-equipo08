@@ -45,6 +45,7 @@ class PassController extends Controller
             'room_id' => 'required|exists:rooms,id',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|string',
+            'location_id' => 'required|exists:locations,id', // Agregamos la validación para location_id
         ]);
 
         $pass = Pass::create($request->all());
@@ -83,6 +84,7 @@ class PassController extends Controller
             'room_id' => 'required|exists:rooms,id',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|string',
+            'location_id' => 'required|exists:locations,id', // Agregamos la validación para location_id
         ]);
 
         $pass->update($request->all());

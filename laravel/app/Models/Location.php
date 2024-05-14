@@ -14,8 +14,7 @@ class Location extends Model
         'name',
         'direction',
         'phone',
-        'promoter_id',
-        'pass_id',
+        'promoter_id', 
         'image', // Añadimos el campo de la imagen
     ];
 
@@ -23,12 +22,6 @@ class Location extends Model
     public function promoter()
     {
         return $this->belongsTo(Promoter::class);
-    }
-
-    // Relación con el pase
-    public function pass()
-    {
-        return $this->belongsTo(Pass::class);
     }
 
     /**

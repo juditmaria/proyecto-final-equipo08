@@ -17,10 +17,8 @@ return new class extends Migration
             $table->string('direction');
             $table->string('phone');
             $table->unsignedBigInteger('promoter_id');
-            $table->unsignedBigInteger('pass_id');
             $table->string('image')->nullable(); // Nuevo campo para la ruta de la imagen
             $table->foreign('promoter_id')->references('id')->on('promoters')->onDelete('cascade');
-            $table->foreign('pass_id')->references('id')->on('passes')->onDelete('cascade');
             $table->timestamps();
         });
     }

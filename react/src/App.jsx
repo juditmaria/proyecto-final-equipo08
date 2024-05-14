@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import './App.css';
-import './scss/App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
@@ -14,9 +13,10 @@ import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
 import About from './components/app/About';
 import MovieList from './components/app/MovieList';
-import Location from './components/app/Location';
+import Location from './components/app/LocationList';
 import MovieShow from './components/app/MovieShow';
-import Terms from './components/app/Terms';
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -39,8 +39,10 @@ function App() {
               <Route path='*' element={<NotFound />} />
               <Route path="/" element={<Location />} />
               <Route path="/about" element={<About />} />
-              <Route path="/movies" element={<MovieList />} />
+              {/* <Route path="/movies" element={<MovieList />} /> */}
               <Route path="/movies/:id" element={<MovieShow />} />
+              <Route path="/:id" element={<MovieList />} />
+
             </Routes>
           </Layout>          
         ) : (

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Pass;
 use App\Models\Movie;
 use App\Models\Room;
+use App\Models\Location;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pass>
@@ -25,8 +26,10 @@ class PassFactory extends Factory
         return [
             'movie_id' => Movie::factory()->create()->id,
             'room_id' => Room::factory()->create()->id,
+            'location_id' => Location::factory(),
             'date' => $this->faker->date(),
             'start_time' => $this->faker->time(),
+            'location_id' => Location::factory()->create()->id,
         ];
     }
 }

@@ -14,6 +14,7 @@ class Pass extends Model
         'room_id',
         'date',
         'start_time',
+        'location_id',
     ];
 
     public function movie()
@@ -24,5 +25,10 @@ class Pass extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { URL_API, URL } from '../../constants';
+import { Link } from 'react-router-dom';
 
 const Location = () => {
   const [locations, setLocations] = useState([]);
@@ -56,7 +57,7 @@ const Location = () => {
           const promoter = promoters.find(promoter => promoter.id === location.promoter_id);
           return (
             <li key={location.id}>
-              <h2>{location.name}</h2>
+              <Link to={`/${location.pass_id}`}><h2>{location.name}</h2></Link>
               <p>Dirección: {location.direction}</p>
               <p>Teléfono: {location.phone}</p>
               {promoter && (

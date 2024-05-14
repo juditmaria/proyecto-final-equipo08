@@ -25,7 +25,7 @@ class LocationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Files not found'
+                'message' => 'Locations not found'
             ], 500);
         }
     }
@@ -40,7 +40,6 @@ class LocationController extends Controller
             'direction' => 'required|string',
             'phone' => 'required|string',
             'promoter_id' => 'required|exists:promoters,id',
-            'pass_id' => 'required|exists:passes,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
@@ -67,7 +66,7 @@ class LocationController extends Controller
      */
     public function show($id)
     {
-        $location = Location::find($id);
+        $location = Location::with('passes')->find($id);
 
         if (!$location) {
             return response()->json([
@@ -101,7 +100,6 @@ class LocationController extends Controller
             'direction' => 'required|string',
             'phone' => 'required|string',
             'promoter_id' => 'required|exists:promoters,id',
-            'pass_id' => 'required|exists:passes,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
