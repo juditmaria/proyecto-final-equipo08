@@ -30,6 +30,7 @@ const Header = () => {
     <div>
       <nav>
         CinemasWEB
+        <a href="/user">User</a>
         <div>
           <a onClick={logout}>logout</a>
         </div>

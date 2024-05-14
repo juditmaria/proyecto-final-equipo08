@@ -9,6 +9,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+import { Link } from 'react-router-dom';
+
 const Login = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -84,9 +86,7 @@ const Login = ({ setLogin }) => {
             label={
               <span>
                 Al iniciar sesión aceptas nuestros {' '}
-                <a href='#' target="_blank" rel="noopener noreferrer">
-                  Términos
-                </a>
+                <Link to="/terms">Términos</Link>
                 {' '}
                 y
                 {' '}
