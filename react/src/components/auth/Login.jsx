@@ -5,6 +5,7 @@ import { setAuthToken, setUserName, setUserMail, setError } from '../../slices/a
 import { URL_API } from '../../constants';
 
 //STYLE
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -57,63 +58,67 @@ const Login = ({ setLogin }) => {
 
   return (
     <>
-      <header>Iniciar sesión</header>
-      <Form onSubmit={handleSubmit(handleLogin)} className='p-3'>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control
-            {...register('email', {
-              required: 'Por favor, introduce tu correo electrónico',
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Por favor, introduce un correo electrónico válido',
-              },
-            })}
-            type="email"
-            placeholder="Correo electrónico"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Container>
+        <header>Iniciar sesión</header>
+        <Form onSubmit={handleSubmit(handleLogin)} className='p-3'>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
-            {...register('password', { 
-              required: 'Por favor, introduce la contraseña'
-            })}
-            type="password"
-            placeholder="Contraseña"
-          />
-          <Form.Text>
-            Mínimo 8 caracteres
-          </Form.Text>
-        </Form.Group>
+              {...register('email', {
+                required: 'Por favor, introduce tu correo electrónico',
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'Por favor, introduce un correo electrónico válido',
+                },
+              })}
+              type="email"
+              placeholder="Correo electrónico"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Control
+              {...register('password', { 
+                required: 'Por favor, introduce la contraseña'
+              })}
+              type="password"
+              placeholder="Contraseña"
+            />
+            {/* <Form.Text>
+              Mínimo 8 caracteres
+            </Form.Text> */}
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox"
-            label={
-              <span>
-                Al iniciar sesión aceptas nuestros {' '}
-                <a href='#' target="_blank" rel="noopener noreferrer">
-                  Términos
-                </a>
-                {' '}
-                y
-                {' '}
-                <a href='#' target="_blank" rel="noopener noreferrer">
-                  Política de Privacidad
-                </a>
-              </span>
-            }
-          />
-        </Form.Group>
+          {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox"
+              label={
+                <span>
+                  Al iniciar sesión aceptas nuestros {' '}
+                  <a href='#' target="_blank" rel="noopener noreferrer">
+                    Términos
+                  </a>
+                  {' '}
+                  y
+                  {' '}
+                  <a href='#' target="_blank" rel="noopener noreferrer">
+                    Política de Privacidad
+                  </a>
+                </span>
+              }
+            />
+          </Form.Group> */}
 
-        <Button variant="dark" type="submit">
-          Iniciar sesión
-        </Button>
-      </Form>
+          <Button variant="dark" type="submit">
+            Iniciar sesión
+          </Button>
+        </Form>
 
-      <Card border="info">
-        <Card.Body>
-          <Card.Text>¿No tienes cuenta? <Card.Link onClick={() => setLogin(false)}>Regístrate</Card.Link></Card.Text>
-        </Card.Body>
-      </Card>
+        <hr className='p-2'/>
+
+        <Card border="info" className='p-1'>
+          <Card.Body>
+            <Card.Text>¿No tienes cuenta? <Card.Link onClick={() => setLogin(false)}>Regístrate</Card.Link></Card.Text>
+          </Card.Body>
+        </Card>
+      </Container>
     </>
   );
 };

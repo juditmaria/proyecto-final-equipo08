@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 
 const Header = () => {
@@ -17,7 +17,11 @@ const Header = () => {
       });
       if (response.ok) {
         dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
+        dispatch(setUserName(''));
+        dispatch(setUserMail(''));
         localStorage.removeItem('authToken'); // Limpiar el token en el almacenamiento local
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userMail');
       } else {
         console.error('Error al cerrar sesión:', response.statusText);
       }

@@ -49,6 +49,11 @@ const Register = ({ setLogin }) => {
       const authToken = responseData.authToken;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
+      // Guardar el authToken en el almacenamiento local del navegador y en el estado
+      localStorage.setItem('authToken', authToken);
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userMail', userMail);
+      // Actualizar el estado en el slice de autenticación  
       dispatch(setAuthToken(authToken));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));

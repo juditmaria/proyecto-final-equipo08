@@ -1,7 +1,7 @@
 // App.jsx
 
 import { useEffect } from 'react';
-import './App.css';
+import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
