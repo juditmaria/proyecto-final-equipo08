@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
-import { setAuthToken, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
+import { setAuthToken, setUserName, setUserMail, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -30,18 +30,25 @@ const Login = ({ setLogin }) => {
       });
 
       const responseData = await response.json();
+      console.log(responseData);
 
       if (!response.ok) {
         throw new Error(responseData.message || 'Usuario y/o contraseña incorrectos');
       }
 
       const authToken = responseData.authToken;
+      const userName = responseData.userName;
+      const userMail = responseData.userMail;
 
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userMail', userMail);
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
-
-      console.log('Login exitoso:', authToken);
+      dispatch(setUserName(userName));
+      dispatch(setUserMail(userMail));
+      
+      console.log('Login exitoso:', authToken, userName, userMail);
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error

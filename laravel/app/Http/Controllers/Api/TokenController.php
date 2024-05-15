@@ -56,6 +56,8 @@ class TokenController extends Controller
         return response()->json([
             'success' => true,
             'authToken' => $token,
+            "userName"  => $user->name,
+            "userMail"  => $user->email,
             'tokenType' => 'Bearer',
         ]);
     }
@@ -79,6 +81,8 @@ class TokenController extends Controller
            return response()->json([
                "success"   => true,
                "authToken" => $token,
+               "userName"  => $user->name,
+               "userMail"  => $user->email,
                "tokenType" => "Bearer"
            ], 200);
        } else {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setError, setFormData, clearFormData } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setFormData, clearFormData, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 
 const Register = ({ setLogin }) => {
@@ -46,14 +46,18 @@ const Register = ({ setLogin }) => {
 
       const responseData = await response.json();
 
-      const saveAuthToken = responseData.authToken;
-      dispatch(setAuthToken(saveAuthToken));
+      const authToken = responseData.authToken;
+      const userName = responseData.userName;
+      const userMail = responseData.userMail;
+      dispatch(setAuthToken(authToken));
+      dispatch(setUserName(userName));
+      dispatch(setUserMail(userMail));
 
       // Limpiar el formData después del registro exitoso
       dispatch(clearFormData());
 
       // Maneja la respuesta como desees
-      console.log("Usuario registrado con éxito", formData);
+      console.log("Usuario registrado con éxito", formData, authToken, userName, userMail);
       //console.log("Token de autenticación:", authToken);
 
     } catch (error) {

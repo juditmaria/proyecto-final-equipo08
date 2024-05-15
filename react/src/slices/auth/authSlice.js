@@ -3,25 +3,24 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        authToken: "",
-        error: null,
+        isLogin: true,
+        authToken: "",  
         formData: {
             name: "",
             email: "",
             password: "",
             password2: "",
         },
-        isLogin: true // Agregamos el estado isLogin con valor inicial true
+        userName: "",
+        userMail: "",
+        error: null
     },
     reducers: {
+        setIsLogin: (state, action) => {
+            state.isLogin = action.payload;
+        },
         setAuthToken: (state, action) => {
             state.authToken = action.payload;
-        },
-        setError: (state, action) => {
-            state.error = action.payload;
-        },
-        clearError: (state) => {
-            state.error = null;
         },
         setFormData: (state, action) => {
             state.formData = action.payload;
@@ -34,11 +33,20 @@ export const authSlice = createSlice({
                 password2: "",
             };
         },
-        setIsLogin: (state, action) => {
-            state.isLogin = action.payload;
-        }
+        setUserName: (state, action) => {
+            state.userName = action.payload;
+        },
+        setUserMail: (state, action) => {
+            state.userMail = action.payload;
+        },
+        setError: (state, action) => {
+            state.error = action.payload;
+        },
+        clearError: (state) => {
+            state.error = null;
+        }        
     },
 });
 
-export const { setAuthToken, setError, clearError, setFormData, clearFormData, setIsLogin } = authSlice.actions;
+export const { setIsLogin, setAuthToken, setFormData, clearFormData, setUserName, setUserMail, setError, clearError } = authSlice.actions;
 export const authReducer = authSlice.reducer;

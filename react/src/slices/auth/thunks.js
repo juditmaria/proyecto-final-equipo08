@@ -14,7 +14,7 @@ export const doLogin = (dades) => {
                 body: JSON.stringify({ email: email, password: password })
             });
             const resposta = await data.json();
-            if (resposta.success == true) {
+            if (resposta.success === true) {
                 dispatch(setAuthToken(resposta.authToken));
             } else {
                 dispatch(setError(resposta.message));
