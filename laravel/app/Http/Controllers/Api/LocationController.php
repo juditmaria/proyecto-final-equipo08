@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // Agregar la importación de Storage
-
+use Illuminate\Support\Facades\Storage; 
 use App\Models\Location;
 
 class LocationController extends Controller
@@ -26,7 +25,7 @@ class LocationController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Locations not found'
-            ], 500);
+            ], 404);
         }
     }
 
@@ -66,7 +65,7 @@ class LocationController extends Controller
      */
     public function show($id)
     {
-        $location = Location::with('passes')->find($id);
+        $location = Location::find($id);
 
         if (!$location) {
             return response()->json([
@@ -107,6 +106,11 @@ class LocationController extends Controller
 
         // Si se carga una nueva imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
+            // Eliminar la imagen anterior si existe
+            if ($location->image) {
+                Storage::delete($location->image);
+            }
+
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->storeAs('public/uploads', $imageName);

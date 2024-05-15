@@ -65,7 +65,6 @@ const Login = ({ setLogin }) => {
             placeholder="Correo electrónico"
           />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control
             {...register('password', { 
