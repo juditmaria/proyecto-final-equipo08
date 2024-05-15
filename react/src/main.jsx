@@ -12,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter >
       <App />      
     </BrowserRouter>
   </Provider>
