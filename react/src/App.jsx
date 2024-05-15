@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
 import { setAuthToken } from './slices/auth/authSlice';
+import './App.css';
 import './App.scss';
 import LoginRegister from './components/auth/LoginRegister';
 
