@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
-
 use App\Models\Profile;
 
 class ProfileController extends Controller
@@ -46,16 +44,12 @@ class ProfileController extends Controller
         // Si se carga una imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-
-            // Crear una nueva instancia de Profile
-            $profile = new Profile($profileData);
-
-            // Guardar la imagen en el disco y obtener la ruta
-            $profile->diskSave($image);
-        } else {
-            // Si no se carga ninguna imagen, crear el perfil sin imagen
-            $profile = Profile::create($profileData);
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $profileData['image'] = 'storage/uploads/' . $imageName;
         }
+
+        $profile = Profile::create($profileData);
 
         return response()->json([
             'success' => true,
@@ -106,14 +100,15 @@ class ProfileController extends Controller
 
         // Si se carga una nueva imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-
-            // Guardar la nueva imagen y eliminar la anterior
+            // Eliminar la imagen anterior si existe
             if ($profile->image) {
-                Storage::delete($profile->image);
+                Storage::delete('public/uploads/' . $profile->image);
             }
-            
-            $profile->diskSave($image);
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $profileData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $profile->update($profileData);
@@ -141,7 +136,7 @@ class ProfileController extends Controller
 
         // Eliminar la imagen si existe
         if ($profile->image) {
-            Storage::delete($profile->image);
+            Storage::delete('public/uploads/' . $profile->image);
         }
 
         $profile->delete();
@@ -152,4 +147,3 @@ class ProfileController extends Controller
         ], 200);
     }
 }
-

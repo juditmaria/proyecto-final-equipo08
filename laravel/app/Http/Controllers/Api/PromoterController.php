@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // Agregar la importación de Storage
+use Illuminate\Support\Facades\Storage;
 use App\Models\Promoter;
 
 class PromoterController extends Controller
@@ -45,9 +45,9 @@ class PromoterController extends Controller
         // Si se carga una imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-
-            // Guardar la imagen en el disco y obtener la ruta
-            $promoterData['image'] = $this->diskSave($image);
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $promoterData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $promoter = Promoter::create($promoterData);
@@ -102,14 +102,15 @@ class PromoterController extends Controller
 
         // Si se carga una nueva imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-
-            // Guardar la nueva imagen y eliminar la anterior
+            // Eliminar la imagen anterior si existe
             if ($promoter->image) {
-                Storage::delete($promoter->image);
+                Storage::delete('public/uploads/' . $promoter->image);
             }
-            
-            $promoterData['image'] = $this->diskSave($image);
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $promoterData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $promoter->update($promoterData);
@@ -137,7 +138,7 @@ class PromoterController extends Controller
 
         // Eliminar la imagen si existe
         if ($promoter->image) {
-            Storage::delete($promoter->image);
+            Storage::delete('public/uploads/' . $promoter->image);
         }
 
         $promoter->delete();
@@ -146,22 +147,5 @@ class PromoterController extends Controller
             'success' => true,
             'message' => 'Promoter deleted successfully'
         ], 200);
-    }
-
-    /**
-     * Save the image to disk and return the path.
-     */
-    private function diskSave($image)
-    {
-        $fileName = $image->getClientOriginalName();
-        
-        // Store file at disk
-        $uploadName = time() . '_' . $fileName;
-        $filePath = $image->storeAs(
-            'public/uploads', // Path
-            $uploadName       // Filename
-        );
-        
-        return $filePath;
     }
 }

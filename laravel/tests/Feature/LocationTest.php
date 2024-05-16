@@ -57,7 +57,7 @@ class LocationTest extends TestCase
                          'direction' => 'Dirección del nuevo lugar',
                          'phone' => '123456789',
                          'promoter_id' => $promoter->id,
-                         'image' => 'public/uploads/' . time() . '_' . $locationData['image']->getClientOriginalName(),
+                         'image' => 'storage/uploads/' . time() . '_' . $locationData['image']->getClientOriginalName(),
                      ]
                  ]);
 
@@ -118,7 +118,7 @@ class LocationTest extends TestCase
                          'direction' => 'Nueva Dirección del Lugar',
                          'phone' => '987654321',
                          'promoter_id' => $promoter->id,
-                         'image' => 'public/uploads/' . time() . '_' . $updatedLocationData['image']->getClientOriginalName(),
+                         'image' => 'storage/uploads/' . time() . '_' . $updatedLocationData['image']->getClientOriginalName(),
                      ]
                  ]);
 

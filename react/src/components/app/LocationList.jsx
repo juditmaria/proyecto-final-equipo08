@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { URL_API, URL } from '../../constants';
 import { Link } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 
-const Location = () => {
+const LocationList = () => {
   const [locations, setLocations] = useState([]);
   const [promoters, setPromoters] = useState([]);
 
@@ -42,45 +43,40 @@ const Location = () => {
     fetchPromoter();
   }, []);
 
-
-
-
-
-
-  
-
+  console.log('location', locations)
   return (
-    <div>
-      <h1>Ubicaciones</h1>
-      <ul>
-        {locations.map(location => {
-          const promoter = promoters.find(promoter => promoter.id === location.promoter_id);
-          return (
-            <li key={location.id}>
-              <Link to={`/${location.pass_id}`}><h2>{location.name}</h2></Link>
-              <p>Dirección: {location.direction}</p>
-              <p>Teléfono: {location.phone}</p>
-              {promoter && (
-                <div>
-                  <p>Promotor: {promoter.name}</p>
-                  <img 
-                    src={`${URL}/storage/${promoter.image}`} // Ruta de la imagen del promotor
-                    alt={promoter.name}
-                    style={{ width: '100px', height: 'auto' }} // Tamaño de la imagen
-                  />
-                </div>
-              )}
-              <img 
-                src={`${URL}/storage/${location.image}`} // Ruta de la imagen de la ubicación
-                alt={location.name}
-                style={{ width: '200px', height: 'auto' }} // Tamaño de la imagen
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <Container>
+      <h1 className="mt-4">Ubicaciones</h1>
+      {locations.map(location => {
+        const promoter = promoters.find(promoter => promoter.id === location.promoter_id);
+        return (
+          <Link key={location.id} to={`/${location.id}`} className="text-decoration-none">
+            <Row className="mt-4 location-item location-link">
+              <Col xs={12} md={6}>
+                <img
+                  src={URL + location.image} // Ruta de la imagen de la ubicación
+                  style={{ width: '100%', height: 'auto' }} // Tamaño de la imagen
+                />
+              </Col>
+              <Col xs={12} md={6} className='text-left'>
+                <h2>{location.name}</h2>
+                <p>Dirección: {location.direction}</p>
+                <p>Teléfono: {location.phone}</p>
+                {promoter && (
+                  <div className="location-promoter">
+                    <img
+                      src={URL + promoter.image} // Ruta de la imagen del promotor
+                    />
+                    <p>{promoter.name}</p>
+                  </div>
+                )}
+              </Col>
+            </Row>
+          </Link>
+        );
+      })}
+    </Container>
   );
 };
 
-export default Location;
+export default LocationList;

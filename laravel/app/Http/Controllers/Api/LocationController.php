@@ -49,7 +49,7 @@ class LocationController extends Controller
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->storeAs('public/uploads', $imageName);
-            $locationData['image'] = 'public/uploads/' . $imageName;
+            $locationData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $location = Location::create($locationData);
@@ -114,7 +114,7 @@ class LocationController extends Controller
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->storeAs('public/uploads', $imageName);
-            $locationData['image'] = 'public/uploads/' . $imageName;
+            $locationData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $location->update($locationData);

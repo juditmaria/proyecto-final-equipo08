@@ -33,7 +33,7 @@ const MovieList = () => {
             <Col key={index} xs={12} sm={6} md={3}>
               <Link to={`/movies/${movie.id}`}>
                 <img
-                  src={`${URL}${movie.image}`}
+                  src={URL + movie.image}
                   style={{ width: '100%', height: 'auto', marginBottom: '15px' }}
                 />
               </Link>

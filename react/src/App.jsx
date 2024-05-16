@@ -14,8 +14,11 @@ import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
 import About from './components/app/About';
 import MovieList from './components/app/MovieList';
-import Location from './components/app/LocationList';
+import LocationList from './components/app/LocationList';
+import LocationShow from './components/app/LocationShow';
+import PassesList from './components/app/PassesList';
 import MovieShow from './components/app/MovieShow';
+import PassesShow from './components/app/PassesShow';
 
 import { URL_API } from './constants';
 
@@ -76,11 +79,13 @@ function App() {
           <Layout>
             <Routes>
               <Route path='*' element={<NotFound />} />
-              <Route path="/" element={<Location />} />
+              <Route path="/" element={<LocationList />} />
               <Route path="/about" element={<About />} />
               {/* <Route path="/movies" element={<MovieList />} /> */}
               <Route path="/movies/:id" element={<MovieShow />} />
-              <Route path="/:id" element={<MovieList />} />
+              <Route path="/:id" element={<PassesList />} />
+              <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+
 
             </Routes>
           </Layout>          

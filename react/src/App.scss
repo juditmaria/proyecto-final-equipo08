@@ -13,6 +13,55 @@
     min-width: 320px;
     min-height: 100vh;
 }
-$body-bg: rgb(81, 255, 0);
+
+// LocationList.scss
+
+.location-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); // Sombra
+}
+.location-link:hover {
+  background-color: rgba(255, 255, 255, 0.256); /* Cambia el color de fondo al pasar el ratón por encima */
+  transition: background-color 0.3s ease; /* Añade una transición suave */
+}
+
+.text-left{
+  text-align: start;
+}
+
+.location-promoter {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+  }
+}
+
+.movie-image {
+  height: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .page-link {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+}
+
+$body-bg: rgb(0, 0, 0);
+$body-color: white;
+$link-color: white;
+$link-decoration: none;
+
 /* import bootstrap to set changes */
 @import '../node_modules/bootstrap/scss/bootstrap.scss';

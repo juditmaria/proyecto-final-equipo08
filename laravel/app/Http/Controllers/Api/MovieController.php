@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
@@ -53,16 +52,12 @@ class MovieController extends Controller
         // Si se carga una imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-
-            // Crear una nueva instancia de Movie
-            $movie = new Movie($movieData);
-
-            // Guardar la imagen en el disco y obtener la ruta
-            $movie->diskSave($image);
-        } else {
-            // Si no se carga ninguna imagen, crear la película sin imagen
-            $movie = Movie::create($movieData);
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $movieData['image'] = 'storage/uploads/' . $imageName;
         }
+
+        $movie = Movie::create($movieData);
 
         return response()->json([
             'success' => true,
@@ -115,14 +110,15 @@ class MovieController extends Controller
 
         // Si se carga una nueva imagen, guardarla en el almacenamiento
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-
-            // Guardar la nueva imagen y eliminar la anterior
+            // Eliminar la imagen anterior si existe
             if ($movie->image) {
-                Storage::delete($movie->image);
+                Storage::delete('public/uploads/' . $movie->image);
             }
-            
-            $movie->diskSave($image);
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $movieData['image'] = 'storage/uploads/' . $imageName;
         }
 
         $movie->update($movieData);
@@ -150,7 +146,7 @@ class MovieController extends Controller
 
         // Eliminar la imagen si existe
         if ($movie->image) {
-            Storage::delete($movie->image);
+            Storage::delete('public/uploads/' . $movie->image);
         }
 
         $movie->delete();
