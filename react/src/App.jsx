@@ -1,6 +1,4 @@
-// App.jsx
-
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -10,45 +8,48 @@ import { setAuthToken, setUserName, setUserMail, setRememberMe } from './slices/
 import LoginRegister from './components/auth/LoginRegister';
 import Layout from './components/layout/Layout';
 import NotFound from './components/app/NotFound';
-import Home from './components/app/Home';
 import About from './components/app/About';
 import MovieList from './components/app/MovieList';
 import Location from './components/app/LocationList';
 import MovieShow from './components/app/MovieShow';
 
 import { URL_API } from './constants';
-
-
+import { Modal, Button } from 'react-bootstrap';
 
 function App() {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.auth.authToken);
-  const userName = useSelector((state) => state.auth.userName);
-  const userMail = useSelector((state) => state.auth.userMail);
-  const rememberMe = useSelector((state) => state.auth.rememberMe);
+  const error = useSelector((state) => state.auth.error);
+
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    // Comprueba si hay un token en el almacenamiento local al cargar la página
     const storedAuthToken = localStorage.getItem('authToken');
+    const storedUserName = localStorage.getItem('userName');
+    const storedUserMail = localStorage.getItem('userMail');
+    const storedRememberMe = localStorage.getItem('rememberMe');
+
     if (storedAuthToken) {
-      // Hacer la solicitud para verificar la validez del token
       fetch(URL_API + "user", {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${authToken}`
+          'Authorization': `Bearer ${storedAuthToken}`
         }
       })
       .then(response => {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error('Usuario no autenticado o token inválido.');
+          throw new Error('Sesión de usuario expirada o no válida. Prueba de nuevo.');
         }
       })
       .then(data => {
         if (data.is_token_valid) {
-          // Si el token es válido, establecer el token en el estado
           dispatch(setAuthToken(storedAuthToken));
+          dispatch(setUserName(storedUserName));
+          dispatch(setUserMail(storedUserMail));
+          dispatch(setRememberMe(storedRememberMe));
         } else {
           throw new Error('Usuario no autenticado o token inválido.');
         }
@@ -56,21 +57,26 @@ function App() {
       .catch(error => {
         console.error('Error al verificar el token:', error.message);
 
-        // Si el token no es válido, borrarlo del almacenamiento local
+        setErrorMessage(error.message);
+        setShowError(true);
+
         localStorage.removeItem('authToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('rememberMe');
-  
-        dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
+
+        dispatch(setAuthToken(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRememberMe('N'));
-        
-        // Manejar el error, por ejemplo, redirigir a la página de inicio de sesión
       });
     }
   }, [dispatch]);
+
+  const handleCloseError = () => {
+    setShowError(false);
+    setErrorMessage('');
+  };
 
   return (
     <>
@@ -81,16 +87,26 @@ function App() {
               <Route path='*' element={<NotFound />} />
               <Route path="/" element={<Location />} />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/movies" element={<MovieList />} /> */}
               <Route path="/movies/:id" element={<MovieShow />} />
               <Route path="/:id" element={<MovieList />} />
-
             </Routes>
-          </Layout>          
+          </Layout>
         ) : (
           <LoginRegister />
         )}
       </UserContext.Provider>
+
+      <Modal show={showError} onHide={handleCloseError}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseError}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

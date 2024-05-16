@@ -44,7 +44,6 @@ const Login = ({ setLogin }) => {
       const userName = responseData.userName;
       const userMail = responseData.userMail;
      
-
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('userName', userName);
@@ -67,7 +66,7 @@ const Login = ({ setLogin }) => {
       <Container>
         <header>Iniciar sesión</header>
         <Form onSubmit={handleSubmit(handleLogin)} className='p-3'>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group className="mb-3" controlId="formEmail">
           <Form.Control
               {...register('email', {
                 required: 'Por favor, introduce tu correo electrónico',
@@ -80,7 +79,7 @@ const Login = ({ setLogin }) => {
               placeholder="Correo electrónico"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formPassword">
             <Form.Control
               {...register('password', { 
                 required: 'Por favor, introduce la contraseña'
@@ -93,7 +92,7 @@ const Login = ({ setLogin }) => {
             </Form.Text> */}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="mb-3" controlId="formCheckRememberMe">
           <Form.Check
             type="checkbox"
             label={
@@ -125,7 +124,7 @@ const Login = ({ setLogin }) => {
           </Form.Group> */}
 
           <Button variant="dark" type="submit">
-            Iniciar sesión
+            Inicia sesión
           </Button>
         </Form>
 

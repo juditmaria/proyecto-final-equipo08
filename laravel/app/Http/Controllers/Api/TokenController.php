@@ -73,7 +73,15 @@ class TokenController extends Controller
     
         // Crear un token para el usuario recién registrado
         $token = $user->createToken('authToken')->plainTextToken;
-        $expiresAt = $user->createToken('expiresAt')->expiresAt;
+        
+        // Expiration logic
+        $expiresAt = Carbon::now()->addSeconds(5); // Default expiration time
+        if ($request->rememberMe === 'Y') {
+            $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
+        }
+
+         // Establecer la fecha de vencimiento del token
+         $user->tokens()->where('name', 'authToken')->update(['expires_at' => $expiresAt]);
         
         // Devolver la respuesta JSON con el token generado y el estado de éxito
         return response()->json([
@@ -104,7 +112,7 @@ class TokenController extends Controller
             $token = $user->createToken('authToken', ['api'])->plainTextToken;
            
             // Expiration logic
-            $expiresAt = Carbon::now()->addMinutes(5); // Default expiration time
+            $expiresAt = Carbon::now()->addSeconds(5); // Default expiration time
             if ($request->rememberMe === 'Y') {
                 $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
             }

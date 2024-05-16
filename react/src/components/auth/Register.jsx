@@ -1,11 +1,23 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserName, setUserMail, setFormData, clearFormData, setError } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
+
+//STYLE
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const Register = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { formData, error } = useSelector(state => state.auth);
+  const rememberMe = useSelector((state) => state.auth.rememberMe);
+
+  const handleCheckboxChange = () => {
+    dispatch(setRememberMe('Y')); 
+  };
+
 
   const handleChange = (e) => {
     dispatch(setFormData({ ...formData, [e.target.name]: e.target.value }));
@@ -26,7 +38,7 @@ const Register = ({ setLogin }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, rememberMe }),
       });
 
       if (!response.ok) {
@@ -53,16 +65,18 @@ const Register = ({ setLogin }) => {
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
+      localStorage.setItem('rememberMe', rememberMe);
       // Actualizar el estado en el slice de autenticación  
       dispatch(setAuthToken(authToken));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
+      dispatch(setRememberMe(rememberMe));
 
       // Limpiar el formData después del registro exitoso
       dispatch(clearFormData());
 
       // Maneja la respuesta como desees
-      console.log("Usuario registrado con éxito", formData, authToken, userName, userMail);
+      console.log("Usuario registrado con éxito", formData, authToken, userName, userMail, rememberMe);
       //console.log("Token de autenticación:", authToken);
 
     } catch (error) {
@@ -72,72 +86,78 @@ const Register = ({ setLogin }) => {
   };
 
   return (
-    <section className="absolute top-1/2 left-1/2 mx-auto max-w-sm -translate-x-1/2 -translate-y-1/2 transform space-y-4 text-center">
-      <div className="space-y-4">
-        <header className="mb-3 text-2xl font-bold">Crea Usuario</header>
+    <>
+      <Container>
+        <header>Crear cuenta</header>
+        <Form onSubmit={handleRegister} className='p-3'>
 
-        <form onSubmit={handleRegister}>
-          <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Nombre"
-              required
-              className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
-            />
-          </div>
-          <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-            <input
-              type="text"
+        <Form.Group className="mb-3" controlId="formName">
+          <Form.Control
+            type="text"
+            name="name"
+            placeholder="Nombre"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />       
+        </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Control
+              type="email"
               name="email"
+              placeholder="Correo electrónico"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Email"
-              required
-              className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
-          </div>
-          <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-            <input
+          </Form.Group>
+          
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Control
               type="password"
               name="password"
+              placeholder="Contraseña"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Contraseña"
-              required
-              className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
-          </div>
-          <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-            <input
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formRepeatPassword">
+            <Form.Control
               type="password"
               name="password2"
+              placeholder="Repite la contraseña"
               value={formData.password2}
               onChange={handleChange}
-              placeholder="Repetir Contraseña"
-              required
-              className="my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-2xl border-b-4 border-b-blue-600 bg-blue-500 py-3 font-bold text-white hover:bg-blue-400 active:translate-y-[0.125rem] active:border-b-blue-400"
-          >
-            CREA CUENTA
-          </button>
-        </form>
+          </Form.Group>
 
-        {error && <p className="text-red-600 bg-yellow-200 p-2">{error}</p>}
+          <Form.Group className="mb-3" controlId="formCheckRememberMe">
+          <Form.Check
+            type="checkbox"
+            label={
+              <span>
+                Recuerda la sesión de mi cuenta por 30 días
+              </span>
+            }
+            onChange={handleCheckboxChange}
+          />
+          </Form.Group>
 
-        <div className="mt-8 text-sm text-gray-400">
-          <button onClick={() => setLogin(true)} className="underline">
-            ¿Ya registrado?
-          </button>
-        </div>
-      </div>
-    </section>
+          <Button variant="dark" type="submit">
+            Crea la cuenta
+          </Button>
+        </Form>
+
+        <hr className='p-2'/>
+
+        <Card border="info" className='p-1'>
+          <Card.Body>
+            <Card.Text>¿Ya tienes cuenta? <Card.Link onClick={() => setLogin(true)}>Inicia sesión</Card.Link></Card.Text>
+          </Card.Body>
+        </Card>
+      </Container>
+    </>
   );
 };
 
