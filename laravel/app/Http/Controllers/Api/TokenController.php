@@ -61,63 +61,73 @@ class TokenController extends Controller
             'password' => 'required|string|min:8',
         ]);
     
-        // Crear el usuario
-        $user = User::create([
+        // Crear el usuario de prueba
+        $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password), // Asegúrate de encriptar la contraseña
         ]);
+        
+        // Guardar el usuario en la base de datos
+        $user->save();
     
         // Crear un token para el usuario recién registrado
-        $token = $user->createToken('authToken', ['server:profile'])->plainTextToken;
-    
-        // Calcular la fecha de vencimiento del token (por ejemplo, 30 días a partir de ahora)
-        $expiresAt = Carbon::now()->addDays(30);
-    
-        // Establecer la fecha de vencimiento del token
-        $user->tokens()->where('name', 'authToken')->update(['expires_at' => $expiresAt]);
-    
+        $token = $user->createToken('authToken')->plainTextToken;
+        $expiresAt = $user->createToken('expiresAt')->expiresAt;
+        
         // Devolver la respuesta JSON con el token generado y el estado de éxito
         return response()->json([
             'success' => true,
             'authToken' => $token,
-            'expires' => $expiresAt->toDateTimeString(), // Convertir la fecha de vencimiento a una cadena de fecha y hora
+            'expiresAt' => $expiresAt,
             "userName"  => $user->name,
             "userMail"  => $user->email,
             'tokenType' => 'Bearer',
         ]);
     }
     
-   public function login(Request $request)
-   {
-       $credentials = $request->validate([
-           'email'     => 'required|email',
-           'password'  => 'required',
-       ]);
-       if (Auth::attempt($credentials)) {
-           // Get user
-           $user = User::where([
-               ["email", "=", $credentials["email"]]
-           ])->firstOrFail();
-           // Revoke all old tokens
-           $user->tokens()->delete();
-           // Generate new token
-           $token = $user->createToken("authToken")->plainTextToken;
-           // Token response
-           return response()->json([
-               "success"   => true,
-               "authToken" => $token,
-               "userName"  => $user->name,
-               "userMail"  => $user->email,
-               "tokenType" => "Bearer"
-           ], 200);
-       } else {
-           return response()->json([
-               "success" => false,
-               "message" => "Invalid login credentials"
-           ], 401);
-       }
-   }
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'     => 'required|email',
+            'password'  => 'required',
+        ]);
+    
+        if (Auth::attempt($credentials)) {
+            // Get user
+            $user = User::where('email', $credentials['email'])->firstOrFail();
+    
+            // Revoke all old tokens
+            $user->tokens()->delete();
+    
+            // Generate new token
+            $token = $user->createToken('authToken', ['api'])->plainTextToken;
+           
+            // Expiration logic
+            $expiresAt = Carbon::now()->addMinutes(5); // Default expiration time
+            if ($request->rememberMe === 'Y') {
+                $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
+            }
+
+             // Establecer la fecha de vencimiento del token
+             $user->tokens()->where('name', 'authToken')->update(['expires_at' => $expiresAt]);
+    
+            // Token response
+            return response()->json([
+                'success'   => true,
+                'authToken' => $token,
+                'userName'  => $user->name,
+                'userMail'  => $user->email,
+                'expiresAt'   => $expiresAt, // Include expiration in the response
+                'tokenType' => 'Bearer'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid login credentials'
+            ], 401);
+        }
+    }
 
    public function logout(Request $request)
    {

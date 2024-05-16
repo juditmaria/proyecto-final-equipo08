@@ -13,6 +13,7 @@ export const authSlice = createSlice({
         },
         userName: "",
         userMail: "",
+        rememberMe: "N",
         error: null
     },
     reducers: {
@@ -39,14 +40,17 @@ export const authSlice = createSlice({
         setUserMail: (state, action) => {
             state.userMail = action.payload;
         },
+        setRememberMe: (state, action) => {
+            state.rememberMe = action.payload;
+        },
         setError: (state, action) => {
             state.error = action.payload;
         },
         clearError: (state) => {
             state.error = null;
-        }        
+        }   
     },
 });
 
-export const { setIsLogin, setAuthToken, setFormData, clearFormData, setUserName, setUserMail, setError, clearError } = authSlice.actions;
+export const { setIsLogin, setAuthToken, setFormData, clearFormData, setUserName, setUserMail, setRememberMe, setError, clearError } = authSlice.actions;
 export const authReducer = authSlice.reducer;

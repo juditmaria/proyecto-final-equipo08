@@ -5,7 +5,7 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail } from './slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setRememberMe } from './slices/auth/authSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 import Layout from './components/layout/Layout';
@@ -25,6 +25,7 @@ function App() {
   const authToken = useSelector((state) => state.auth.authToken);
   const userName = useSelector((state) => state.auth.userName);
   const userMail = useSelector((state) => state.auth.userMail);
+  const rememberMe = useSelector((state) => state.auth.rememberMe);
 
   useEffect(() => {
     // Comprueba si hay un token en el almacenamiento local al cargar la página
@@ -59,9 +60,12 @@ function App() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
+        localStorage.removeItem('rememberMe');
+  
         dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
+        dispatch(setRememberMe('N'));
         
         // Manejar el error, por ejemplo, redirigir a la página de inicio de sesión
       });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
-import { setAuthToken, setUserName, setUserMail, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
+import { setAuthToken, setUserName, setUserMail, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -14,8 +14,12 @@ const Login = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // Obtén el error del estado global utilizando useSelector
+  const rememberMe = useSelector((state) => state.auth.rememberMe);
   const error = useSelector((state) => state.auth.error);
+
+  const handleCheckboxChange = () => {
+    dispatch(setRememberMe('Y')); 
+  };
 
   const handleLogin = async (data) => {
     const { email, password } = data;
@@ -27,7 +31,7 @@ const Login = ({ setLogin }) => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, rememberMe }),
       });
 
       const responseData = await response.json();
@@ -39,16 +43,19 @@ const Login = ({ setLogin }) => {
       const authToken = responseData.authToken;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
+     
 
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
+      localStorage.setItem('rememberMe', rememberMe);
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
+      dispatch(setRememberMe(rememberMe));
       
-      console.log('Login exitoso:', authToken, userName, userMail);
+      console.log('Login exitoso:', authToken, userName, userMail, rememberMe);
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
@@ -84,6 +91,18 @@ const Login = ({ setLogin }) => {
             {/* <Form.Text>
               Mínimo 8 caracteres
             </Form.Text> */}
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check
+            type="checkbox"
+            label={
+              <span>
+                Recuerda la sesión de mi cuenta por 30 días
+              </span>
+            }
+            onChange={handleCheckboxChange}
+          />
           </Form.Group>
 
           {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
