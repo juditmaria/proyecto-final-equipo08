@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Api\TokenTest;
 
+use Carbon\Carbon;
+
 class TokenController extends Controller
 {
     public function user(Request $request)
@@ -59,23 +61,27 @@ class TokenController extends Controller
             'password' => 'required|string|min:8',
         ]);
     
-        // Crear el usuario de prueba
-        $user = new User([
+        // Crear el usuario
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password), // Asegúrate de encriptar la contraseña
         ]);
-        
-        // Guardar el usuario en la base de datos
-        $user->save();
     
         // Crear un token para el usuario recién registrado
-        $token = $user->createToken('authToken')->plainTextToken;
+        $token = $user->createToken('authToken', ['server:profile'])->plainTextToken;
+    
+        // Calcular la fecha de vencimiento del token (por ejemplo, 30 días a partir de ahora)
+        $expiresAt = Carbon::now()->addDays(30);
+    
+        // Establecer la fecha de vencimiento del token
+        $user->tokens()->where('name', 'authToken')->update(['expires_at' => $expiresAt]);
     
         // Devolver la respuesta JSON con el token generado y el estado de éxito
         return response()->json([
             'success' => true,
             'authToken' => $token,
+            'expires' => $expiresAt->toDateTimeString(), // Convertir la fecha de vencimiento a una cadena de fecha y hora
             "userName"  => $user->name,
             "userMail"  => $user->email,
             'tokenType' => 'Bearer',
