@@ -163,33 +163,16 @@ Cualquier ambigüedad en la interpretación de los presentes Términos del servi
         Los presentes Términos del servicio y cualquier acuerdo por separado por el cual le proporcionemos Servicios se regirán e interpretarán de acuerdo con las leyes de C/ Neruda 12, Vilanova i la Geltrú, B, 08800, España.
         </Card.Text>
 
-        <Card.Title></Card.Title>
+        <Card.Title>SECCIÓN 19: CAMBIOS EN LOS TÉRMINOS DEL SERVICIO</Card.Title>
         <Card.Text>
-            
+        Puede revisar la versión más reciente de los Términos del servicio en cualquier momento en esta página.
+
+Nos reservamos el derecho, a nuestra entera discreción, de actualizar, cambiar o sustituir cualquier parte de los presentes Términos del servicio mediante la publicación de actualizaciones y cambios en nuestro sitio web. Es su responsabilidad consultar nuestro sitio web periódicamente para ver los cambios. El uso que haga de nuestra página web o del Servicio o su acceso a cualquiera de estos de forma continua después de la publicación de cualquier cambio en los presentes Términos del servicio, constituye la aceptación de dichos cambios.
         </Card.Text>
 
-        <Card.Title></Card.Title>
+        <Card.Title>SECTION 20: INFORMACIÓN DE CONTACTO</Card.Title>
         <Card.Text>
-            
-        </Card.Text>
-
-        <Card.Title></Card.Title>
-        <Card.Text>
-            
-        </Card.Text>
-
-        <Card.Title></Card.Title>
-        <Card.Text>
-            
-        </Card.Text>
-        <Card.Title></Card.Title>
-        <Card.Text>
-            
-        </Card.Text>
-
-        <Card.Title></Card.Title>
-        <Card.Text>
-            
+        Las preguntas sobre los Términos del servicio se deben enviar a soporte@cinemasweb.com.
         </Card.Text>
     </Card.Body>
     </Card>

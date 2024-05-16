@@ -8,6 +8,7 @@ import { UserContext } from './userContext';
 import { setAuthToken, setUserName, setUserMail } from './slices/auth/authSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
+
 import Layout from './components/layout/Layout';
 import NotFound from './components/app/NotFound';
 import Home from './components/app/Home';
@@ -84,7 +85,13 @@ function App() {
             </Routes>
           </Layout>          
         ) : (
-          <LoginRegister />
+          <>
+            <LoginRegister />
+            {/* <Routes>
+              <Route path="/terms" element={<Terms />} />
+            </Routes> */}
+          </>
+          
         )}
       </UserContext.Provider>
     </>

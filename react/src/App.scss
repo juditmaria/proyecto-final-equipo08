@@ -5,5 +5,14 @@
   text-align: center;
 }
 
+/* make the customizations */
+.mid {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+$body-bg: rgb(81, 255, 0);
 /* import bootstrap to set changes */
-@import 'node_modules/bootstrap/scss/bootstrap';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
