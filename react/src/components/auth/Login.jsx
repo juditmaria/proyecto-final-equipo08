@@ -31,7 +31,6 @@ const Login = ({ setLogin }) => {
       });
 
       const responseData = await response.json();
-      console.log(responseData);
 
       if (!response.ok) {
         throw new Error(responseData.message || 'Usuario y/o contraseña incorrectos');

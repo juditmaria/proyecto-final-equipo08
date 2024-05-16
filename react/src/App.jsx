@@ -5,7 +5,7 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken } from './slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail } from './slices/auth/authSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 import Layout from './components/layout/Layout';
@@ -16,17 +16,55 @@ import MovieList from './components/app/MovieList';
 import Location from './components/app/LocationList';
 import MovieShow from './components/app/MovieShow';
 
+import { URL_API } from './constants';
+
 
 
 function App() {
   const dispatch = useDispatch();
   const authToken = useSelector((state) => state.auth.authToken);
+  const userName = useSelector((state) => state.auth.userName);
+  const userMail = useSelector((state) => state.auth.userMail);
 
   useEffect(() => {
     // Comprueba si hay un token en el almacenamiento local al cargar la página
     const storedAuthToken = localStorage.getItem('authToken');
     if (storedAuthToken) {
-      dispatch(setAuthToken(storedAuthToken));
+      // Hacer la solicitud para verificar la validez del token
+      fetch(URL_API + "user", {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Usuario no autenticado o token inválido.');
+        }
+      })
+      .then(data => {
+        if (data.is_token_valid) {
+          // Si el token es válido, establecer el token en el estado
+          dispatch(setAuthToken(storedAuthToken));
+        } else {
+          throw new Error('Usuario no autenticado o token inválido.');
+        }
+      })
+      .catch(error => {
+        console.error('Error al verificar el token:', error.message);
+
+        // Si el token no es válido, borrarlo del almacenamiento local
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userMail');
+        dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
+        dispatch(setUserName(''));
+        dispatch(setUserMail(''));
+        
+        // Manejar el error, por ejemplo, redirigir a la página de inicio de sesión
+      });
     }
   }, [dispatch]);
 

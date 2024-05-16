@@ -15,19 +15,39 @@ class TokenController extends Controller
 {
     public function user(Request $request)
     {
-        $user = User::where('email', $request->user()->email)->first();
-        
+        // Obtener el usuario autenticado
+        $user = $request->user();
+
+        // Verificar si el usuario está autenticado
+        if ($user) {
+            // Obtener el token del usuario
+            $token = $user->currentAccessToken();
+
+            // Verificar si el token existe y es válido
+            if ($token && $user->tokenCan('api')) {
+                // Verificar la fecha de expiración del token
+                $isTokenValid = $token->expires_at > now();
+
+                // Devolver la respuesta
+                return response()->json([
+                    'success' => true,
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'created_at' => $user->created_at,
+                        'updated_at' => $user->updated_at,
+                    ],
+                    'is_token_valid' => $isTokenValid
+                ]);
+            }
+        }
+
+        // En caso de que el usuario no esté autenticado o el token no sea válido
         return response()->json([
-            "success" => true,
-            "user"    => [
-                "id"         => $user->id,
-                "name"       => $user->name,
-                "email"      => $user->email,
-                "created_at" => $user->created_at,
-                "updated_at" => $user->updated_at,
-            ],
-            
-        ]);
+            'success' => false,
+            'message' => 'Usuario no autenticado o token inválido.'
+        ], 401);
     }
 
     public function register(Request $request)
