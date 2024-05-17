@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
 import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 //STYLE
 import Container from 'react-bootstrap/Container';
@@ -67,6 +68,7 @@ const Login = ({ setLogin }) => {
     }
   };
 
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -129,7 +131,7 @@ const Login = ({ setLogin }) => {
             />
           </Form.Group> */}
 
-          <Button variant="dark" type="submit">
+          <Button onClick={() => navigate('/')} variant="dark" type="submit">
             Inicia sesión
           </Button>
         </Form>

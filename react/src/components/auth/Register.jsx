@@ -144,7 +144,7 @@ const Register = ({ setLogin }) => {
           />
           </Form.Group>
 
-          <Button variant="dark" type="submit">
+          <Button onClick={() => navigate('/')} variant="dark" type="submit">
             Crea la cuenta
           </Button>
         </Form>
