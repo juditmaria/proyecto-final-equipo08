@@ -63,5 +63,10 @@ $body-color: white;
 $link-color: white;
 $link-decoration: none;
 
+.not-found-image {
+  width: 25%; /* Ajusta el tamaño de la imagen según sea necesario */
+  filter: invert(1); /* Aplica el filtro de color blanco */
+}
+
 /* import bootstrap to set changes */
 @import '../node_modules/bootstrap/scss/bootstrap.scss';

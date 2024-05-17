@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
 import { setAuthToken, setUserName, setUserMail, setRememberMe } from './slices/auth/authSlice';
 
@@ -16,6 +16,9 @@ import LocationShow from './components/app/LocationShow';
 import PassesList from './components/app/PassesList';
 import MovieShow from './components/app/MovieShow';
 import PassesShow from './components/app/PassesShow';
+import Terms from './components/app/Terms';
+import RoutesGuest from './routes/RoutesGuest';
+
 
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
@@ -85,28 +88,30 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ authToken, setAuthToken }}>
-        {authToken ? (
-          <Layout>
-            <Routes>
-              <Route path='*' element={<NotFound />} />
+        <Routes>
+          {authToken ? (
+            <>
+              <Route path="/" element={<Layout><LocationList /></Layout>} />
+              <Route path="/about" element={<Layout><About /></Layout>} />
+              <Route path="/movies/:id" element={<Layout><MovieShow /></Layout>} />
+              <Route path="/:id" element={<Layout><PassesList /></Layout>} />
+              <Route path="/:id/passes/:movieid" element={<Layout><PassesShow /></Layout>} />
+              <Route path="*" element={<NotFound />} />
+            </>
+          ) : (
+            <>
               <Route path="/" element={<LocationList />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="/about" element={<About />} />
               <Route path="/movies/:id" element={<MovieShow />} />
               <Route path="/:id" element={<PassesList />} />
               <Route path="/:id/passes/:movieid" element={<PassesShow />} />
-            </Routes>
-          </Layout>
-        ) : (
-          <>
-            <LoginRegister />
-            {/* <Routes>
-              <Route path="/terms" element={<Terms />} />
-            </Routes> */}
-          </>
-          
-        )}
+              <Route path="*" element={<NotFound />} />
+            </>
+          )}
+        </Routes>
       </UserContext.Provider>
-
+ 
       <Modal show={showError} onHide={handleCloseError}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
