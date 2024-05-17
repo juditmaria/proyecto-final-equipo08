@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const profileSlice = createSlice({
   name: 'profile',
-  initialState: { 
+  initialState: {
+    profileId: "", 
     profileImg: "", 
   }, 
   reducers: {
+    setProfileId: (state, action) => {
+        state.profileImg = action.payload;
+    },
     setProfileImg: (state, action) => {
         state.profileImg = action.payload;
     },
@@ -13,6 +17,6 @@ export const profileSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setProfileImg } = profileSlice.actions
+export const { setProfileId, setProfileImg } = profileSlice.actions
 
 export const profileReducer = profileSlice.reducer
