@@ -75,7 +75,7 @@ class TokenController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
         
         // Expiration logic
-        $expiresAt = Carbon::now()->addSeconds(5); // Default expiration time
+        $expiresAt = Carbon::now()->addMinutes(50); // Default expiration time
         if ($request->rememberMe === 'Y') {
             $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
         }
@@ -112,7 +112,7 @@ class TokenController extends Controller
             $token = $user->createToken('authToken', ['api'])->plainTextToken;
            
             // Expiration logic
-            $expiresAt = Carbon::now()->addSeconds(5); // Default expiration time
+            $expiresAt = Carbon::now()->addMinutes(50); // Default expiration time
             if ($request->rememberMe === 'Y') {
                 $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
             }
@@ -125,6 +125,9 @@ class TokenController extends Controller
                 'success'   => true,
                 'authToken' => $token,
                 'userName'  => $user->name,
+                'userMail'  => $user->email,
+                'userMail'  => $user->email,
+                'userMail'  => $user->email,
                 'userMail'  => $user->email,
                 'expiresAt'   => $expiresAt, // Include expiration in the response
                 'tokenType' => 'Bearer'

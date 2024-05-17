@@ -63,6 +63,17 @@ $body-color: white;
 $link-color: white;
 $link-decoration: none;
 
+//Profile
+.profileImgMenu {
+  width: 30px;
+  margin-left: 1%;
+}
+.profileImg {
+  width: 250px;
+  margin-left: 1%;
+}
+
+//NotFound
 .not-found-image {
   width: 25%; /* Ajusta el tamaño de la imagen según sea necesario */
   filter: invert(1); /* Aplica el filtro de color blanco */

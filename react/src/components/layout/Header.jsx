@@ -2,17 +2,28 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserName, setUserMail, setRememberMe } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
+
+//STYLE
+import '../../App.scss';
 import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
+
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import '../../App.scss';
+
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+
+
+import Image from 'react-bootstrap/Image';
+import ProfileDefaultImage from '../../assets/profileDefault.jpg';
  
 const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
+  const userName = useSelector((state) => state.auth.userName);
+
   const dispatch = useDispatch();
 
   const logout = async () => {
@@ -70,10 +81,28 @@ return (
             <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
           </NavDropdown>
         </Nav>
+
         <Nav className="ms-auto">
-          <Link to="/" className="nav-link">
-            USER
-          </Link>
+
+
+          <Dropdown as={ButtonGroup}>
+            <Button variant="secondary" className="d-flex align-items-center">
+              <Link to="/" className="d-flex align-items-center text-decoration-none text-white">
+                <span className="me-2">{userName}</span>
+                <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
+              </Link>
+            </Button>
+
+            <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
+
+            <Dropdown.Menu>
+            <Dropdown.Item href="#/action-3">Configuración</Dropdown.Item>
+              <Dropdown.Item href="#/action-1">Tickets</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Promotor</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Administración</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
           <Link onClick={logout} className="nav-link">
             LOGOUT
           </Link>

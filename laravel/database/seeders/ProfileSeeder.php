@@ -20,7 +20,7 @@ class ProfileSeeder extends Seeder
         foreach ($users as $user) {
             Profile::create([
                 'user_id' => $user->id,
-                'image' => 'default_profile_image.jpg', // Aquí debes poner el nombre de tu imagen por defecto
+                'image' => '', // Aquí debes poner el nombre de tu imagen por defecto
             ]);
         }
     }

@@ -3,7 +3,7 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail, setRememberMe } from './slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setPromoterId, setRole, setRememberMe } from './slices/auth/authSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 
@@ -22,6 +22,7 @@ import RoutesGuest from './routes/RoutesGuest';
 
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
+import Profile from './components/app/User/Profile';
 
 function App() {
   const dispatch = useDispatch();
@@ -35,6 +36,8 @@ function App() {
     const storedAuthToken = localStorage.getItem('authToken');
     const storedUserName = localStorage.getItem('userName');
     const storedUserMail = localStorage.getItem('userMail');
+    const storedRole = localStorage.getItem('role');
+    const storedPromoterId = localStorage.getItem('promoterId');
     const storedRememberMe = localStorage.getItem('rememberMe');
 
     if (storedAuthToken) {
@@ -56,6 +59,8 @@ function App() {
           dispatch(setAuthToken(storedAuthToken));
           dispatch(setUserName(storedUserName));
           dispatch(setUserMail(storedUserMail));
+          dispatch(setRole(storedRole));
+          dispatch(setPromoterId(storedPromoterId));
           dispatch(setRememberMe(storedRememberMe));
         } else {
           throw new Error('Usuario no autenticado o token inválido.');
@@ -70,11 +75,15 @@ function App() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
+        localStorage.removeItem('role');
+        localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
 
         dispatch(setAuthToken(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
+        dispatch(setRole(''));
+        dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
       });
     }
@@ -88,28 +97,36 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ authToken, setAuthToken }}>
-        <Routes>
           {authToken ? (
             <>
-              <Route path="/" element={<Layout><LocationList /></Layout>} />
-              <Route path="/about" element={<Layout><About /></Layout>} />
-              <Route path="/movies/:id" element={<Layout><MovieShow /></Layout>} />
-              <Route path="/:id" element={<Layout><PassesList /></Layout>} />
-              <Route path="/:id/passes/:movieid" element={<Layout><PassesShow /></Layout>} />
-              <Route path="*" element={<NotFound />} />
+              <Layout>
+                <Routes>
+                    <Route path="/" element={<LocationList />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/movies/:id" element={<MovieShow />} />
+                    <Route path="/:id" element={<PassesList />} />
+                    <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Routes>
+              </Layout>
             </>
           ) : (
             <>
-              <Route path="/" element={<LocationList />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/movies/:id" element={<MovieShow />} />
-              <Route path="/:id" element={<PassesList />} />
-              <Route path="/:id/passes/:movieid" element={<PassesShow />} />
-              <Route path="*" element={<NotFound />} />
+              <Layout>
+                <Routes>
+                    <Route path="/" element={<LocationList />} />
+                    <Route path="/login" element={<LoginRegister />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/movies/:id" element={<MovieShow />} />
+                    <Route path="/:id" element={<PassesList />} />
+                    <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+                  </Routes>
+              </Layout>
             </>
           )}
-        </Routes>
+
       </UserContext.Provider>
  
       <Modal show={showError} onHide={handleCloseError}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
-import { setAuthToken, setUserName, setUserMail, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
+import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -43,18 +43,24 @@ const Login = ({ setLogin }) => {
       const authToken = responseData.authToken;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
+      const role = responseData.role;
+      const promoterId = responseData.promoterId;
      
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
+      localStorage.setItem('role', role);
+      localStorage.setItem('promoterId', promoterId);
       localStorage.setItem('rememberMe', rememberMe);
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
+      dispatch(setRole(role));
+      dispatch(setPromoterId(promoterId));
       dispatch(setRememberMe(rememberMe));
       
-      console.log('Login exitoso:', authToken, userName, userMail, rememberMe);
+      console.log('Login exitoso:', authToken, userName, userMail, role, promoterId, rememberMe);
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
