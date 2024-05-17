@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail, setRememberMe } from './slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setPromoterId, setRole, setRememberMe } from './slices/auth/authSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 
@@ -16,9 +16,13 @@ import LocationShow from './components/app/LocationShow';
 import PassesList from './components/app/PassesList';
 import MovieShow from './components/app/MovieShow';
 import PassesShow from './components/app/PassesShow';
+import Terms from './components/app/Terms';
+import RoutesGuest from './routes/RoutesGuest';
+
 import TicketCreate from './components/app/TicketCreate';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
+import Profile from './components/app/User/Profile';
 import TicketShow from './components/app/TicketShow';
 
 function App() {
@@ -33,6 +37,8 @@ function App() {
     const storedAuthToken = localStorage.getItem('authToken');
     const storedUserName = localStorage.getItem('userName');
     const storedUserMail = localStorage.getItem('userMail');
+    const storedRole = localStorage.getItem('role');
+    const storedPromoterId = localStorage.getItem('promoterId');
     const storedRememberMe = localStorage.getItem('rememberMe');
 
     if (storedAuthToken) {
@@ -54,6 +60,8 @@ function App() {
           dispatch(setAuthToken(storedAuthToken));
           dispatch(setUserName(storedUserName));
           dispatch(setUserMail(storedUserMail));
+          dispatch(setRole(storedRole));
+          dispatch(setPromoterId(storedPromoterId));
           dispatch(setRememberMe(storedRememberMe));
         } else {
           throw new Error('Usuario no autenticado o token inválido.');
@@ -68,11 +76,15 @@ function App() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
+        localStorage.removeItem('role');
+        localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
 
         dispatch(setAuthToken(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
+        dispatch(setRole(''));
+        dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
       });
     }
@@ -86,32 +98,42 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ authToken, setAuthToken }}>
-        {authToken ? (
-          <Layout>
-            <Routes>
-              <Route path='*' element={<NotFound />} />
-              <Route path="/" element={<LocationList />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/movies/:id" element={<MovieShow />} />
-              <Route path="/:id" element={<PassesList />} />
-              <Route path="/:id/passes/:movieid" element={<PassesShow />} />
-              <Route path="/select-tickets" element={<TicketCreate />} />
+          {authToken ? (
+            <>
+              <Layout>
+                <Routes>
+                    <Route path="/" element={<LocationList />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/movies/:id" element={<MovieShow />} />
+                    <Route path="/:id" element={<PassesList />} />
+                    <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Routes>
+              </Layout>
+            </>
+          ) : (
+            <>
+              <Layout>
+                <Routes>
+                    <Route path="/" element={<LocationList />} />
+                    <Route path="/login" element={<LoginRegister />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/movies/:id" element={<MovieShow />} />
+                    <Route path="/:id" element={<PassesList />} />
+                    <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+                    <Route path="/select-tickets" element={<TicketCreate />} />
 
 
 
             </Routes>
-          </Layout>
-        ) : (
-          <>
-            <LoginRegister />
-            {/* <Routes>
-              <Route path="/terms" element={<Terms />} />
-            </Routes> */}
-          </>
-          
-        )}
-      </UserContext.Provider>
+              </Layout>
+            </>
+          )}
 
+      </UserContext.Provider>
+ 
       <Modal show={showError} onHide={handleCloseError}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
