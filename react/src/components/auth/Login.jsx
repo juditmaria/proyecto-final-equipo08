@@ -18,6 +18,8 @@ const Login = ({ setLogin }) => {
   const rememberMe = useSelector((state) => state.auth.rememberMe);
   const error = useSelector((state) => state.auth.error);
 
+  const navigate = useNavigate();
+
   const handleCheckboxChange = () => {
     dispatch(setRememberMe('Y')); 
   };
@@ -62,13 +64,13 @@ const Login = ({ setLogin }) => {
       dispatch(setRememberMe(rememberMe));
       
       console.log('Login exitoso:', authToken, userName, userMail, role, promoterId, rememberMe);
+      navigate('/');
+
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
     }
   };
-
-  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -131,7 +133,7 @@ const Login = ({ setLogin }) => {
             />
           </Form.Group> */}
 
-          <Button onClick={() => navigate('/')} variant="dark" type="submit">
+          <Button variant="dark" type="submit">
             Inicia sesión
           </Button>
         </Form>

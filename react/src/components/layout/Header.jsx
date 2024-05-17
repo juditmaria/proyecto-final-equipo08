@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserName, setUserMail, setRememberMe } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 
 //STYLE
 import '../../App.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 
 import Nav from 'react-bootstrap/Nav';
@@ -26,6 +26,8 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const logout = async () => {
     try {
       const response = await fetch(URL_API + 'logout', {
@@ -38,10 +40,14 @@ const Header = () => {
         dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
+        dispatch(setRole(''));
+        dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
         localStorage.removeItem('authToken'); // Limpiar el token en el almacenamiento local
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
+        localStorage.removeItem('role');
+        localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
       } else {
         console.error('Error al cerrar sesión:', response.statusText);
@@ -83,29 +89,28 @@ return (
         </Nav>
 
         <Nav className="ms-auto">
+          {authToken ? (
+            <Dropdown as={ButtonGroup}>
+              <Button variant="secondary" className="d-flex align-items-center">
+                <Link to="/" className="d-flex align-items-center text-decoration-none text-white">
+                  <span className="me-2">{userName}</span>
+                  <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
+                </Link>
+              </Button>
 
+              <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
 
-          <Dropdown as={ButtonGroup}>
-            <Button variant="secondary" className="d-flex align-items-center">
-              <Link to="/" className="d-flex align-items-center text-decoration-none text-white">
-                <span className="me-2">{userName}</span>
-                <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
-              </Link>
-            </Button>
-
-            <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
-
-            <Dropdown.Menu>
-            <Dropdown.Item href="#/action-3">Configuración</Dropdown.Item>
-              <Dropdown.Item href="#/action-1">Tickets</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Promotor</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Administración</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <Link onClick={logout} className="nav-link">
-            LOGOUT
-          </Link>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-3">Configuración</Dropdown.Item>
+                <Dropdown.Item href="#/action-1">Tickets</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Promotor</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Administración</Dropdown.Item>
+                <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <Button onClick={() => navigate('/login')} variant="outline-primary">Inicia Sesión</Button>
+          )}
         </Nav>
       </Navbar.Collapse>
     </Container>
