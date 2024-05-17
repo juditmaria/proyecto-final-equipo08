@@ -81,7 +81,8 @@ const PassesList = () => {
               <img
                 src={URL + movie.image}
                 alt={movie.title}
-                className="w-100 movie-image"
+                fluid
+                className="w-100"
               />
             </Link>
           </Col>

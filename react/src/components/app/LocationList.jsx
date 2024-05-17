@@ -65,7 +65,8 @@ const LocationList = () => {
                 {promoter && (
                   <div className="location-promoter">
                     <img
-                      src={URL + promoter.image} // Ruta de la imagen del promotor
+                      src={URL + promoter.image}
+                      className='profile-photo' // Ruta de la imagen del promotor
                     />
                     <p>{promoter.name}</p>
                   </div>

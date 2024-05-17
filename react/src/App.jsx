@@ -16,9 +16,10 @@ import LocationShow from './components/app/LocationShow';
 import PassesList from './components/app/PassesList';
 import MovieShow from './components/app/MovieShow';
 import PassesShow from './components/app/PassesShow';
-
+import TicketCreate from './components/app/TicketCreate';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
+import TicketShow from './components/app/TicketShow';
 
 function App() {
   const dispatch = useDispatch();
@@ -94,6 +95,10 @@ function App() {
               <Route path="/movies/:id" element={<MovieShow />} />
               <Route path="/:id" element={<PassesList />} />
               <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+              <Route path="/select-tickets" element={<TicketCreate />} />
+
+
+
             </Routes>
           </Layout>
         ) : (
