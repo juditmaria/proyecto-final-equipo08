@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe, setError } from '../../slices/auth/authSlice';
-import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
 import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
@@ -29,8 +29,10 @@ const Login = ({ setLogin }) => {
   const handleLogin = async (data) => {
     const { email, password } = data;
 
+    const storedAuthToken = localStorage.getItem('authToken');
+
     try {
-      const response = await fetch(URL_API + 'login', {
+      const responseLogin = await fetch(URL_API + 'login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -39,18 +41,17 @@ const Login = ({ setLogin }) => {
         body: JSON.stringify({ email, password, rememberMe }),
       });
 
-      const responseData = await response.json();
+      const responseLoginData = await responseLogin.json();
 
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Usuario y/o contraseña incorrectos');
+      if (!responseLogin.ok) {
+        throw new Error(responseLoginData.message || 'Usuario y/o contraseña incorrectos');
       }
 
-      const authToken = responseData.authToken;
-      const userId = responseData.userId;
-      const userName = responseData.userName;
-      const userMail = responseData.userMail;
-      const role = responseData.role;
-      const promoterId = responseData.promoterId;
+      const authToken = responseLoginData.authToken;
+      const userId = responseLoginData.userId;
+      const userName = responseLoginData.userName;
+      const userMail = responseLoginData.userMail;
+      const role = responseLoginData.role;
      
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
@@ -58,24 +59,57 @@ const Login = ({ setLogin }) => {
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
       localStorage.setItem('role', role);
-      localStorage.setItem('promoterId', promoterId);
       localStorage.setItem('rememberMe', rememberMe);
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
       dispatch(setUserId(userId));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
       dispatch(setRole(role));
-      dispatch(setPromoterId(promoterId));
       dispatch(setRememberMe(rememberMe));
       
-      console.log('Login exitoso:', authToken, userId, userName, userMail, role, promoterId, rememberMe);
-      console.log("Role loging:", role);
-      navigate('/');
+      console.log('Login exitoso:', authToken, userId, userName, userMail, role, rememberMe);
+      // console.log("Role loging:", role);
 
+      const responseProfiles = await fetch(URL_API + 'profiles', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedAuthToken}`
+        }
+      });
+
+      const responseProfilesData = await responseProfiles.json();
+
+      if (!responseProfiles.ok) {
+        throw new Error(responseData.message || 'Usuario y/o contraseña incorrectos');
+      }  
+/*       console.log("responseProfilesData", responseProfilesData.data);
+ */
+       // Acceder a la propiedad 'data' que contiene el array de perfiles
+       const profilesArray = responseProfilesData.data;
+
+      // Encontrar el perfil correspondiente al userId
+      const userProfile = profilesArray.find(profile => profile.user_id === userId);
+      
+      /* console.log("userProfile", userProfile);
+      console.log("userProfile id: ", userProfile.id); */ 
+
+      //Guarda en una variable el codigo que extrae el valor
+      const profileId = userProfile.id;
+      const profileImg = userProfile.image;
+
+      // Guardar en el almacenamiento local del navegador y en el estado
+      localStorage.setItem('profileId', profileId);
+      localStorage.setItem('profileImg', profileImg);
+      // Actualizamos el estado en el slice
+      dispatch(setProfileId(profileId));
+      dispatch(setProfileId(profileImg));
+
+      navigate('/');
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
     }
+
   };
   return (
     <>

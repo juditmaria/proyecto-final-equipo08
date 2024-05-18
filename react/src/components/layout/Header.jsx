@@ -64,7 +64,7 @@ const Header = () => {
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
-    console.log("Role logout:", role);
+    // console.log("Role logout:", role);
     navigate('/');
   };
 
