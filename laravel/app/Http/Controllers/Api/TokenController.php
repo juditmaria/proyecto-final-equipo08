@@ -124,6 +124,7 @@ class TokenController extends Controller
             return response()->json([
                 'success'   => true,
                 'authToken' => $token,
+                'userId'  => $user->id,
                 'userName'  => $user->name,
                 'userMail'  => $user->email,
                 'role'  => $user->role,

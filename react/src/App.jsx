@@ -23,6 +23,7 @@ import RoutesGuest from './routes/RoutesGuest';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
+import Promoter from './components/app/User/Promoter/PromoterProfile';
 
 function App() {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ function App() {
                     <Route path="/:id" element={<PassesList />} />
                     <Route path="/:id/passes/:movieid" element={<PassesShow />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/promoter" element={<Promoter />} />
                     <Route path="/notfound" element={<NotFound />} />
                     <Route path="*" element={<Navigate to="/notfound" />} />
                   </Routes>

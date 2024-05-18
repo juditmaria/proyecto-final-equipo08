@@ -21,6 +21,6 @@ export const promoterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { promoterId, promoterName, promoterImg } = promoterSlice.actions
+export const { setPromoterId, setPromoterName, setPromoterImg } = promoterSlice.actions
 
 export const promoterReducer = promoterSlice.reducer
