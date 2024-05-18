@@ -15,7 +15,6 @@ export const authSlice = createSlice({
         userName: "",
         userMail: "",
         role: "",
-        promoterId: "",
         rememberMe: "N",
         error: null
     },
@@ -49,9 +48,6 @@ export const authSlice = createSlice({
         setRole: (state, action) => {
             state.role = action.payload;
         },
-        setPromoterId: (state, action) => {
-            state.promoterId = action.payload;
-        },
         setRememberMe: (state, action) => {
             state.rememberMe = action.payload;
         },
@@ -64,5 +60,5 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setIsLogin, setAuthToken, setFormData, clearFormData, setUserId, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError, clearError } = authSlice.actions;
+export const { setIsLogin, setAuthToken, setFormData, clearFormData, setUserId, setUserName, setUserMail, setRole, setRememberMe, setError, clearError } = authSlice.actions;
 export const authReducer = authSlice.reducer;

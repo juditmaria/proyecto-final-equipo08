@@ -1,7 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
-import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe, setError } from '../../slices/auth/authSlice';
+import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 

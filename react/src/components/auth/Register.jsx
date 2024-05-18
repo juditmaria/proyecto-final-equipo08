@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
+import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 

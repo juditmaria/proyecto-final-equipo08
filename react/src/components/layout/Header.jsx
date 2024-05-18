@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setRememberMe } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from '../../slices/auth/authSlice';
+import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -23,9 +25,9 @@ import ProfileDefaultImage from '../../assets/profileDefault.jpg';
 const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
   const role = useSelector((state) => state.auth.role);
-  const promoterId = useSelector((state) => state.auth.promoterId);
   const userName = useSelector((state) => state.auth.userName);
   const profileImg = useSelector((state) => state.auth.profileImg);
+  const promoterId = useSelector((state) => state.auth.promoterId);
 
   const dispatch = useDispatch();
 
@@ -45,6 +47,7 @@ const Header = () => {
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
+        dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
         localStorage.removeItem('authToken'); // Limpiar el token en el almacenamiento local
@@ -52,6 +55,7 @@ const Header = () => {
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
+        localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
       } else {
@@ -76,15 +80,6 @@ const Header = () => {
 //     </div>
 //   );
 // };
-
-const renderItemAdmin = () => {
-  if (role === "1") {
-    return (
-      <Dropdown.Item href="/admin">Administración</Dropdown.Item>
-    );
-  }
-  return null;
-};
 
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
@@ -113,7 +108,7 @@ return (
                 <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
                   <span className="me-2">{userName}</span>
 
-                  {profileImg === "" ? (
+                  {profileImg == "" ? (
                     <Image src={profileImg} roundedCircle className="profileImgMenu" />
                   ) : (
                     <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
