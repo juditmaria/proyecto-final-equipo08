@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
@@ -22,7 +22,10 @@ import ProfileDefaultImage from '../../assets/profileDefault.jpg';
  
 const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
+  const role = useSelector((state) => state.auth.role);
+  const promoterId = useSelector((state) => state.auth.promoterId);
   const userName = useSelector((state) => state.auth.userName);
+  const profileImg = useSelector((state) => state.auth.profileImg);
 
   const dispatch = useDispatch();
 
@@ -70,15 +73,24 @@ const Header = () => {
 //   );
 // };
 
+// UseEffect para asegurarse de que el rol se haya actualizado antes de renderizar el menú
+useEffect(() => {
+  // Aquí puedes realizar cualquier acción que necesite ocurrir después de que el rol se actualice
+  // Por ejemplo, aquí puedes hacer cualquier solicitud adicional que necesite el nuevo rol
+  console.log("El rol se ha actualizado:", role);
+}, [role]);
 
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
     <Container>
-      <Navbar.Brand href="#">CINEVERSE</Navbar.Brand>
+      <Navbar.Brand>
+        <Link to="/" className="text-decoration-none text-dark">
+          CINEVERSE
+        </Link>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
         <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-          <Link to="/" className="nav-link">HOME</Link>
           <Link to="/link2" className="nav-link">Link</Link>
           <NavDropdown title="Link" id="navbarScrollingDropdown">
             <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -92,19 +104,24 @@ return (
           {authToken ? (
             <Dropdown as={ButtonGroup}>
               <Button variant="secondary" className="d-flex align-items-center">
-                <Link to="/" className="d-flex align-items-center text-decoration-none text-white">
+                <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
                   <span className="me-2">{userName}</span>
-                  <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
+
+                  {profileImg === "" ? (
+                    <Image src={profileImg} roundedCircle className="profileImgMenu" />
+                  ) : (
+                    <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
+                  )}
                 </Link>
               </Button>
 
               <Dropdown.Toggle split variant="secondary" id="dropdown-split-basic" />
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-3">Configuración</Dropdown.Item>
-                <Dropdown.Item href="#/action-1">Tickets</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Promotor</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Administración</Dropdown.Item>
+                <Dropdown.Item href="/profile">Configuración</Dropdown.Item>
+                <Dropdown.Item href="/tickets">Tickets</Dropdown.Item>
+{/*                 {promoterId === undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}
+ */}                {role != 0 && role != undefined && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}
                 <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

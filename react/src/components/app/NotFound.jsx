@@ -8,12 +8,10 @@ import NotFoundImage from '../../assets/notfound.png';
 const NotFound = () => {
   return (
     <div>
-      <Layout>
       <Container className="d-flex flex-column justify-content-center align-items-center" style={{ height: '75vh' }}>
         <Image src={NotFoundImage} fluid className="not-found-image" />
         <p className="mt-3">Página no encontrada</p>
       </Container>
-    </Layout>
     </div>
   )
 }

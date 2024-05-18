@@ -81,6 +81,7 @@ const Register = ({ setLogin }) => {
       console.log("Usuario registrado con éxito", formData, authToken, userName, userMail, rememberMe);
       //console.log("Token de autenticación:", authToken);
 
+      setLogin(true);
       navigate('/');
     } catch (error) {
       // Error de red

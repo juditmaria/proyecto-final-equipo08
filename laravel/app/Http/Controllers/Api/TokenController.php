@@ -126,9 +126,7 @@ class TokenController extends Controller
                 'authToken' => $token,
                 'userName'  => $user->name,
                 'userMail'  => $user->email,
-                'userMail'  => $user->email,
-                'userMail'  => $user->email,
-                'userMail'  => $user->email,
+                'role'  => $user->role,
                 'expiresAt'   => $expiresAt, // Include expiration in the response
                 'tokenType' => 'Bearer'
             ], 200);

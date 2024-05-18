@@ -108,6 +108,8 @@ function App() {
                     <Route path="/:id" element={<PassesList />} />
                     <Route path="/:id/passes/:movieid" element={<PassesShow />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/notfound" element={<NotFound />} />
+                    <Route path="*" element={<Navigate to="/notfound" />} />
                   </Routes>
               </Layout>
             </>

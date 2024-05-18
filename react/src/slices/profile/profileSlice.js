@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+/* import ProfileDefaultImage from '../../assets/profileDefault.jpg'; */
+
 export const profileSlice = createSlice({
   name: 'profile',
   initialState: {
@@ -8,7 +10,7 @@ export const profileSlice = createSlice({
   }, 
   reducers: {
     setProfileId: (state, action) => {
-        state.profileImg = action.payload;
+        state.profileId = action.payload;
     },
     setProfileImg: (state, action) => {
         state.profileImg = action.payload;
