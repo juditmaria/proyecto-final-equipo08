@@ -23,7 +23,11 @@ import TicketCreate from './components/app/TicketCreate';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
+<<<<<<< HEAD
 import TicketShow from './components/app/TicketShow';
+=======
+import Promoter from './components/app/User/Promoter/PromoterProfile';
+>>>>>>> b0.1.1-judit
 
 function App() {
   const dispatch = useDispatch();
@@ -111,6 +115,7 @@ function App() {
                     <Route path="/select-tickets" element={<TicketCreate />} />
                     <Route path="/tickets" element={<TicketShow />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/promoter" element={<Promoter />} />
                     <Route path="/notfound" element={<NotFound />} />
                     <Route path="*" element={<Navigate to="/notfound" />} />
                   </Routes>

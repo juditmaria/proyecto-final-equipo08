@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserName, setUserMail, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,17 +61,26 @@ const Register = ({ setLogin }) => {
       const responseData = await response.json();
 
       const authToken = responseData.authToken;
+      const userId = responseData.userId;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
+      const role = responseData.role;
+      const promoterId = responseData.promoterId;
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
+      localStorage.setItem('userId', userId);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
+      localStorage.setItem('role', role);
+      localStorage.setItem('promoterId', promoterId);
       localStorage.setItem('rememberMe', rememberMe);
-      // Actualizar el estado en el slice de autenticación  
-      dispatch(setAuthToken(authToken));
+      // Actualizar el estado en el slice de autenticación 
+      dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
+      dispatch(setUserId(userId));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
+      dispatch(setRole(role));
+      dispatch(setPromoterId(promoterId));
       dispatch(setRememberMe(rememberMe));
 
       // Limpiar el formData después del registro exitoso

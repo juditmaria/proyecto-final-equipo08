@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
-import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,6 +44,7 @@ const Login = ({ setLogin }) => {
       }
 
       const authToken = responseData.authToken;
+      const userId = responseData.userId;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
       const role = responseData.role;
@@ -51,19 +52,22 @@ const Login = ({ setLogin }) => {
      
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
+      localStorage.setItem('userId', userId);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
       localStorage.setItem('role', role);
       localStorage.setItem('promoterId', promoterId);
       localStorage.setItem('rememberMe', rememberMe);
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
+      dispatch(setUserId(userId));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
       dispatch(setRole(role));
       dispatch(setPromoterId(promoterId));
       dispatch(setRememberMe(rememberMe));
       
-      console.log('Login exitoso:', authToken, userName, userMail, role, promoterId, rememberMe);
+      console.log('Login exitoso:', authToken, userId, userName, userMail, role, promoterId, rememberMe);
+      console.log("Role loging:", role);
       navigate('/');
 
     } catch (error) {

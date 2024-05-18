@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe } from '../../slices/auth/authSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setPromoterId, setRememberMe } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -40,12 +40,14 @@ const Header = () => {
       });
       if (response.ok) {
         dispatch(setAuthToken('')); // Limpiar el token en el estado del slice de autenticación
+        dispatch(setUserId(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
         dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
         localStorage.removeItem('authToken'); // Limpiar el token en el almacenamiento local
+        localStorage.removeItem('userId');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
@@ -57,6 +59,8 @@ const Header = () => {
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
+    console.log("Role logout:", role);
+    navigate('/');
   };
 
 //   return (
@@ -113,8 +117,8 @@ return (
               <Dropdown.Menu>
                 <Dropdown.Item href="/profile">Configuración</Dropdown.Item>
                 <Dropdown.Item href="/tickets">Tickets</Dropdown.Item>
-{/*                 {promoterId === undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}
- */}                {role != 0 && role != undefined && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}
+{/*             {promoterId == undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}*/}
+                {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}  
                 <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
