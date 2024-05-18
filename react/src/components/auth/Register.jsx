@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserName, setUserMail, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 //STYLE
 import Container from 'react-bootstrap/Container';
@@ -13,6 +14,7 @@ const Register = ({ setLogin }) => {
   const dispatch = useDispatch();
   const { formData, error } = useSelector(state => state.auth);
   const rememberMe = useSelector((state) => state.auth.rememberMe);
+  const navigate = useNavigate();
 
   const handleCheckboxChange = () => {
     dispatch(setRememberMe('Y')); 
@@ -79,6 +81,8 @@ const Register = ({ setLogin }) => {
       console.log("Usuario registrado con éxito", formData, authToken, userName, userMail, rememberMe);
       //console.log("Token de autenticación:", authToken);
 
+      setLogin(true);
+      navigate('/');
     } catch (error) {
       // Error de red
       dispatch(setError("Ha ocurrido un error en la red. Inténtalo de nuevo más tarde."));

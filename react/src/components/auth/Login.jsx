@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Importa useSelector
 import { setAuthToken, setUserName, setUserMail, setRole, setPromoterId, setRememberMe, setError } from '../../slices/auth/authSlice'; // Importa setError del slice de autenticación
 import { URL_API } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 //STYLE
 import Container from 'react-bootstrap/Container';
@@ -16,6 +17,8 @@ const Login = ({ setLogin }) => {
 
   const rememberMe = useSelector((state) => state.auth.rememberMe);
   const error = useSelector((state) => state.auth.error);
+
+  const navigate = useNavigate();
 
   const handleCheckboxChange = () => {
     dispatch(setRememberMe('Y')); 
@@ -61,12 +64,13 @@ const Login = ({ setLogin }) => {
       dispatch(setRememberMe(rememberMe));
       
       console.log('Login exitoso:', authToken, userName, userMail, role, promoterId, rememberMe);
+      navigate('/');
+
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
     }
   };
-
   return (
     <>
       <Container>

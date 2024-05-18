@@ -108,7 +108,11 @@ function App() {
                     <Route path="/movies/:id" element={<MovieShow />} />
                     <Route path="/:id" element={<PassesList />} />
                     <Route path="/:id/passes/:movieid" element={<PassesShow />} />
+                    <Route path="/select-tickets" element={<TicketCreate />} />
+                    <Route path="/tickets" element={<TicketShow />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/notfound" element={<NotFound />} />
+                    <Route path="*" element={<Navigate to="/notfound" />} />
                   </Routes>
               </Layout>
             </>
