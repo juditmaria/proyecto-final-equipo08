@@ -18,6 +18,8 @@ export const TicketCreate = () => {
   const ticketPrice = 8; // Precio por entrada
   const totalPrice = ticketCount * ticketPrice; // Precio total
 
+  console.log('Mail', userMail)
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -45,7 +47,7 @@ export const TicketCreate = () => {
   // useEffect(() => {
   //   const fetchUserId = async () => {
   //     try {
-  //       const response = await fetch(`${URL_API}user`);
+  //       const response = await fetch(${URL_API}user);
   //       if (response.ok) {
   //         const data = await response.json();
   //         // Filtrar el usuario por correo electrónico para obtener el user_id

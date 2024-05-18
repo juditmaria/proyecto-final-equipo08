@@ -5,6 +5,8 @@ const TicketShow = () => {
   const location = useLocation();
   const { movie } = location.state || {};
 
+  
+
   return (
     <div>
       <h2>Ticket Details</h2>
