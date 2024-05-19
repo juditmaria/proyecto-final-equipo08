@@ -10,6 +10,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+// import Alert from 'react-bootstrap/Alert';
 
 const Profile = () => {
     const userName = useSelector((state) => state.auth.userName);
@@ -50,13 +51,13 @@ const Profile = () => {
                     {userType && <small className="text-muted">{userType}</small>}
 
                     {/* <small className="text-muted">
-                            <Alert variant="danger" dismissible>
-                                <i className="bi bi-shield-fill-exclamation admin inline-block"></i> 
-                                {' '} Administrador
-                                <br />
-                                "Un gran poder conlleva una gran responsabilidad".
-                            </Alert>
-                        </small> */}
+                        <Alert variant="danger" dismissible>
+                            <i className="bi bi-shield-fill-exclamation admin inline-block"></i> 
+                            {' '} Administrador
+                            <br />
+                            "Un gran poder conlleva una gran responsabilidad".
+                        </Alert>
+                    </small> */}
                       
                     <div className="d-flex justify-content-center mt-3">
                         <Image src={ProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
