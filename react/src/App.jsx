@@ -3,7 +3,8 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail, setPromoterId, setRole, setRememberMe } from './slices/auth/authSlice';
+import { setAuthToken, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
+import { setPromoterId } from './slices/promoter/promoterSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 
@@ -23,11 +24,9 @@ import TicketCreate from './components/app/TicketCreate';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
-<<<<<<< HEAD
-import TicketShow from './components/app/TicketShow';
-=======
 import Promoter from './components/app/User/Promoter/PromoterProfile';
->>>>>>> b0.1.1-judit
+
+import TicketShow from './components/app/TicketShow';
 
 function App() {
   const dispatch = useDispatch();

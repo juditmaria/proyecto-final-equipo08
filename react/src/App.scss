@@ -131,6 +131,34 @@
   }
 }
 
+.ticket-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.ticket-card {
+  background-color: #181818;  // Color de fondo claro
+  border: 1px solid #dee2e6;  // Borde sutil
+  border-radius: 8px;         // Esquinas redondeadas
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  // Sombra sutil
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;           // Ancho máximo para las tarjetas
+}
+
+.ticket-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.ticket-card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
 
 
 $body-bg: rgb(0, 0, 0);
