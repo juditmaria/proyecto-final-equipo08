@@ -178,7 +178,7 @@ $navbar-hover-color: #ccc;
   margin-left: 1%;
 }
 .profileImg {
-  width: 250px;
+  width: 200px;
   margin-left: 1%;
 }
 
@@ -190,3 +190,4 @@ $navbar-hover-color: #ccc;
 
 /* import bootstrap to set changes */
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-icons/font/bootstrap-icons.css';

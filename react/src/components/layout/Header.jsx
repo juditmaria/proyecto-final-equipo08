@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from '../../slices/auth/authSlice';
-import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
 import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 
@@ -24,13 +24,17 @@ import ProfileDefaultImage from '../../assets/profileDefault.jpg';
  
 const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
-  const role = useSelector((state) => state.auth.role);
   const userName = useSelector((state) => state.auth.userName);
-  const profileImg = useSelector((state) => state.auth.profileImg);
-  const navigate = useNavigate();
-  const promoterId = useSelector((state) => state.auth.promoterId);
+  const profileImg = useSelector((state) => state.profile.profileImg);
+  
+  const role = localStorage.getItem('role');
+    const promoterId = localStorage.getItem('promoterId');
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+/*   console.log("profileImg", profileImg);
+  console.log("role", role); */
 
   const logout = async () => {
     try {
@@ -46,6 +50,7 @@ const Header = () => {
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
+        dispatch(setProfileId(''));
         dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
@@ -54,6 +59,7 @@ const Header = () => {
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
+        localStorage.removeItem('profileId');
         localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
@@ -63,22 +69,29 @@ const Header = () => {
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
-    console.log("Role logout:", role);
+    // console.log("Role logout:", role);
     navigate('/');
   };
 
-//   return (
-//     <div>
-//       <nav>
-//         CinemasWEB
-//         <a href="/user">User</a>
-//         <div>
-//           <a onClick={logout}>logout</a>
-//         </div>
-//       </nav>
-//     </div>
-//   );
-// };
+  // Determinar el borde del Card
+  let buttonBorder = 'info';
+  let itemPromoter = null;
+  let itemAdmin = null;
+
+  if (role === '1') {
+      buttonBorder = 'danger';
+      itemAdmin = (
+        <Dropdown.Item href="/admin">Administración</Dropdown.Item>
+      );
+  } else if (promoterId && promoterId !== '' && role !== '1') {
+      buttonBorder = 'primary';
+  } 
+  
+  if (promoterId && promoterId !== '') {
+    itemPromoter = (
+      <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>
+    );
+  }
 
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
@@ -102,13 +115,13 @@ return (
 
         <Nav className="ms-auto">
           {authToken ? (
-            <Dropdown as={ButtonGroup}>
+            <Dropdown as={ButtonGroup} style={{ border: `3px solid var(--bs-${buttonBorder})`, borderRadius: '10px' }}>
               <Button variant="secondary" className="d-flex align-items-center">
-                <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
+                <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white w-100">
                   <span className="me-2">{userName}</span>
 
-                  {profileImg == "" ? (
-                    <Image src={profileImg} roundedCircle className="profileImgMenu" />
+                  {profileImg != "" ? (
+                    <Image src="https://i.imgur.com/YcP0tik.jpeg" roundedCircle className="profileImgMenu" />
                   ) : (
                     <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
                   )}
@@ -121,7 +134,9 @@ return (
                 <Dropdown.Item href="/profile">Configuración</Dropdown.Item>
                 <Dropdown.Item href="/tickets">Tickets</Dropdown.Item>
 {/*             {promoterId == undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}*/}
-                {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}  
+                {/* {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}   */}
+                {itemPromoter}
+                {itemAdmin}
                 <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
