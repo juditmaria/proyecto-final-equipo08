@@ -75,10 +75,22 @@ const Header = () => {
 
   // Determinar el borde del Card
   let buttonBorder = 'info';
+  let itemPromoter = null;
+  let itemAdmin = null;
+
   if (role === '1') {
       buttonBorder = 'danger';
+      itemAdmin = (
+        <Dropdown.Item href="/admin">Administración</Dropdown.Item>
+      );
   } else if (promoterId && promoterId !== '' && role !== '1') {
       buttonBorder = 'primary';
+  } 
+  
+  if (promoterId && promoterId !== '') {
+    itemPromoter = (
+      <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>
+    );
   }
 
 return (
@@ -105,7 +117,7 @@ return (
           {authToken ? (
             <Dropdown as={ButtonGroup} style={{ border: `3px solid var(--bs-${buttonBorder})`, borderRadius: '10px' }}>
               <Button variant="secondary" className="d-flex align-items-center">
-                <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
+                <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white w-100">
                   <span className="me-2">{userName}</span>
 
                   {profileImg != "" ? (
@@ -122,7 +134,9 @@ return (
                 <Dropdown.Item href="/profile">Configuración</Dropdown.Item>
                 <Dropdown.Item href="/tickets">Tickets</Dropdown.Item>
 {/*             {promoterId == undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}*/}
-                {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}  
+                {/* {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}   */}
+                {itemPromoter}
+                {itemAdmin}
                 <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
