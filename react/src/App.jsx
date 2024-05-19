@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
 import { setAuthToken, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
-import { setProfileImg } from './slices/profile/profileSlice';
 import { setPromoterId } from './slices/promoter/promoterSlice';
 
 import LoginRegister from './components/auth/LoginRegister';

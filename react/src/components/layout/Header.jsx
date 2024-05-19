@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from '../../slices/auth/authSlice';
-import { setProfileImg } from '../../slices/profile/profileSlice';
+import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
 import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 
@@ -26,12 +26,14 @@ const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
   const role = useSelector((state) => state.auth.role);
   const userName = useSelector((state) => state.auth.userName);
-  const profileImg = useSelector((state) => state.auth.profileImg);
-  const promoterId = useSelector((state) => state.auth.promoterId);
+  const profileImg = useSelector((state) => state.profile.profileImg);
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  console.log("profileImg", profileImg);
+  console.log("role", role);
+
 
   const logout = async () => {
     try {
@@ -47,6 +49,7 @@ const Header = () => {
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
+        dispatch(setProfileId(''));
         dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
         dispatch(setRememberMe('N'));
@@ -55,6 +58,7 @@ const Header = () => {
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
+        localStorage.removeItem('profileId');
         localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
         localStorage.removeItem('rememberMe');
@@ -67,19 +71,6 @@ const Header = () => {
     // console.log("Role logout:", role);
     navigate('/');
   };
-
-//   return (
-//     <div>
-//       <nav>
-//         CinemasWEB
-//         <a href="/user">User</a>
-//         <div>
-//           <a onClick={logout}>logout</a>
-//         </div>
-//       </nav>
-//     </div>
-//   );
-// };
 
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
@@ -108,8 +99,8 @@ return (
                 <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
                   <span className="me-2">{userName}</span>
 
-                  {profileImg == "" ? (
-                    <Image src={profileImg} roundedCircle className="profileImgMenu" />
+                  {profileImg != "" ? (
+                    <Image src="https://i.imgur.com/YcP0tik.jpeg" roundedCircle className="profileImgMenu" />
                   ) : (
                     <Image src={ProfileDefaultImage} roundedCircle className="profileImgMenu" />
                   )}

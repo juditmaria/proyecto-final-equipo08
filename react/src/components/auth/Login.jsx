@@ -102,7 +102,7 @@ const Login = ({ setLogin }) => {
       localStorage.setItem('profileImg', profileImg);
       // Actualizamos el estado en el slice
       dispatch(setProfileId(profileId));
-      dispatch(setProfileId(profileImg));
+      dispatch(setProfileImg(profileImg));
 
       navigate('/');
     } catch (error) {
