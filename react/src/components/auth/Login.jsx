@@ -80,7 +80,7 @@ const Login = ({ setLogin }) => {
       const responseProfilesData = await responseProfiles.json();
 
       if (!responseProfiles.ok) {
-        throw new Error(responseData.message || 'Usuario y/o contraseña incorrectos');
+        throw new Error(responseProfilesData.message || 'Usuario y/o contraseña incorrectos');
       }  
 /*       console.log("responseProfilesData", responseProfilesData.data);
  */
@@ -103,6 +103,38 @@ const Login = ({ setLogin }) => {
       // Actualizamos el estado en el slice
       dispatch(setProfileId(profileId));
       dispatch(setProfileImg(profileImg));
+
+      //Promoter
+      const responsePromoters = await fetch(URL_API + 'promoters', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedAuthToken}`
+        }
+      });
+
+      const responsePromotersData = await responsePromoters.json();
+
+      if (!responsePromoters.ok) {
+        throw new Error(responsePromotersData.message || 'Usuario y/o contraseña incorrectos');
+      }  
+/*       console.log("responseProfilesData", responseProfilesData.data);
+ */
+       // Acceder a la propiedad 'data' que contiene el array de perfiles
+       const promotersArray = responsePromotersData.data;
+
+      // Encontrar el perfil correspondiente al userId
+      const userPromoter = promotersArray.find(promoter => promoter.user_id === userId);
+      
+      console.log("userPromoter", userPromoter);
+      /* console.log("userProfile", userProfile);
+      console.log("userProfile id: ", userProfile.id); */ 
+
+      //Guarda en una variable el codigo que extrae el valor
+      const promoterId = userPromoter.id;
+      // Guardar en el almacenamiento local del navegador y en el estado
+      localStorage.setItem('promoterId', promoterId);
+      // Actualizamos el estado en el slice
+      dispatch(setPromoterId(promoterId));
 
       navigate('/');
     } catch (error) {

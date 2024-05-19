@@ -24,16 +24,17 @@ import ProfileDefaultImage from '../../assets/profileDefault.jpg';
  
 const Header = () => {
   const authToken = useSelector(state => state.auth.authToken);
-  const role = useSelector((state) => state.auth.role);
   const userName = useSelector((state) => state.auth.userName);
   const profileImg = useSelector((state) => state.profile.profileImg);
+  
+  const role = localStorage.getItem('role');
+    const promoterId = localStorage.getItem('promoterId');
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  console.log("profileImg", profileImg);
-  console.log("role", role);
-
+/*   console.log("profileImg", profileImg);
+  console.log("role", role); */
 
   const logout = async () => {
     try {
@@ -72,6 +73,14 @@ const Header = () => {
     navigate('/');
   };
 
+  // Determinar el borde del Card
+  let buttonBorder = 'info';
+  if (role === '1') {
+      buttonBorder = 'danger';
+  } else if (promoterId && promoterId !== '' && role !== '1') {
+      buttonBorder = 'primary';
+  }
+
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
     <Container>
@@ -94,7 +103,7 @@ return (
 
         <Nav className="ms-auto">
           {authToken ? (
-            <Dropdown as={ButtonGroup}>
+            <Dropdown as={ButtonGroup} style={{ border: `3px solid var(--bs-${buttonBorder})`, borderRadius: '10px' }}>
               <Button variant="secondary" className="d-flex align-items-center">
                 <Link to="/profile" className="d-flex align-items-center text-decoration-none text-white">
                   <span className="me-2">{userName}</span>

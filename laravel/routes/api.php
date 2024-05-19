@@ -92,12 +92,12 @@ Route::post('/passes/{pass}', [PassController::class, 'update_workaround']);
 // PROMOTERS /////////////////////////////////////////////////////////////////
 Route::apiResource('promoters', PromoterController::class);
 
-Route::get('/promotes', [PromoterController::class, 'index']);
-Route::post('/promotes', [PromoterController::class, 'store']);
-Route::get('/promotes/{promoter}', [PromoterController::class, 'show']);
-Route::put('/promotes/{promoter}', [PromoterController::class, 'update']);
-Route::delete('/promotes/{promoter}', [PromoterController::class, 'destroy']);
-Route::post('/promotes/{promoter}', [PromoterController::class, 'update_workaround']);
+Route::get('/promoters', [PromoterController::class, 'index']);
+Route::post('/promoters', [PromoterController::class, 'store']);
+Route::get('/promoters/{promoter}', [PromoterController::class, 'show']);
+Route::put('/promoters/{promoter}', [PromoterController::class, 'update']);
+Route::delete('/promoters/{promoter}', [PromoterController::class, 'destroy']);
+Route::post('/promoters/{promoter}', [PromoterController::class, 'update_workaround']);
 
 
 // TICKETS ///////////////////////////////////////////////////////////
