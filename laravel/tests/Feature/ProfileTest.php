@@ -1,0 +1,205 @@
+<?php
+
+namespace Tests\Feature;
+
+<<<<<<< HEAD
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ProfileTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_profile_page_is_displayed(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/profile');
+
+        $response->assertOk();
+    }
+
+    public function test_profile_information_can_be_updated(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $user->refresh();
+
+        $this->assertSame('Test User', $user->name);
+        $this->assertSame('test@example.com', $user->email);
+        $this->assertNull($user->email_verified_at);
+    }
+
+    public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile', [
+                'name' => 'Test User',
+                'email' => $user->email,
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $this->assertNotNull($user->refresh()->email_verified_at);
+    }
+
+    public function test_user_can_delete_their_account(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->delete('/profile', [
+                'password' => 'password',
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/');
+
+        $this->assertGuest();
+        $this->assertNull($user->fresh());
+    }
+
+    public function test_correct_password_must_be_provided_to_delete_account(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from('/profile')
+            ->delete('/profile', [
+                'password' => 'wrong-password',
+            ]);
+
+        $response
+            ->assertSessionHasErrorsIn('userDeletion', 'password')
+            ->assertRedirect('/profile');
+
+        $this->assertNotNull($user->fresh());
+    }
+}
+=======
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use Illuminate\Http\UploadedFile; // Agregar esta línea
+
+use App\Models\Profile;
+
+class ProfileTest extends TestCase
+{
+    use RefreshDatabase; // Añade la trait RefreshDatabase para restablecer la base de datos antes de cada prueba
+
+    public function test_profile_list()
+    {
+        // Generar perfiles de ejemplo
+        Profile::factory()->count(3)->create();
+
+        // Listar todos los perfiles utilizando el servicio web API
+        $response = $this->getJson("/api/profiles");
+
+        // Verificar respuesta OK
+        $response->assertOk();
+    }
+ 
+    public function test_store_profile()
+    {
+        // Generar datos de perfil utilizando el factory
+        $profileData = Profile::factory()->make()->toArray();
+        $profileData['image'] = UploadedFile::fake()->image('test.jpg');
+    
+        // Almacenar el perfil
+        $response = $this->postJson('/api/profiles', $profileData);
+    
+        // Verificar respuesta 201 (creado)
+        $response->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+            ]);
+        
+        // Verificar si el perfil está en la base de datos
+        unset($profileData['image']); // La imagen no estará en la base de datos
+        $this->assertDatabaseHas('profiles', $profileData);
+    }
+    
+    
+    public function test_profile_show()
+    {
+        $profile = Profile::factory()->create();
+
+        $response = $this->getJson("/api/profiles/{$profile->id}");
+
+        $response->assertOk();
+    }
+    
+
+    public function test_profile_update()
+    {
+        // Generar un perfil de ejemplo
+        $profile = Profile::factory()->create();
+    
+        // Generar datos actualizados del perfil utilizando el factory
+        $updatedProfileData = Profile::factory()->make()->toArray();
+        $updatedProfileData['image'] = UploadedFile::fake()->image('updated_image.jpg');
+    
+        // Actualizar el perfil
+        $response = $this->putJson("/api/profiles/{$profile->id}", $updatedProfileData);
+    
+        // Verificar respuesta OK
+        $response->assertOk();
+    }
+    
+
+    public function test_profile_delete()
+    {
+        // Generar un perfil de ejemplo
+        $profile = Profile::factory()->create();
+
+        // Eliminar el perfil
+        $response = $this->deleteJson("/api/profiles/$profile->id");
+
+        // Verificar respuesta OK
+        $response->assertOk();
+    }
+    
+    protected function _test_ok($response, $status = 200)
+    {
+        // Check JSON response
+        $response->assertStatus($status);
+        // Check JSON properties
+        $response->assertJson([
+            "success" => true,
+        ]);
+        // Check if the response data is an array (only for successful requests and if data exists)
+        if ($status === 200 || $status === 201) {
+            if ($response->getData()->data ?? false) {
+                // Check JSON dynamic values
+                $response->assertJsonPath("data",
+                    fn ($data) => is_array($data)
+                );
+            }
+        }
+    }
+}
+
+>>>>>>> hotfix-react
