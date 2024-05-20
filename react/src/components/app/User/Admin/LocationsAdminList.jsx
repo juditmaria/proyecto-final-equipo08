@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocations, setSelectedLocation } from '../../../../slices/location/locationSlice';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const LocationAdminList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const locations = useSelector(state => state.location.locations);
-    console.log('locations', locations)
+    
     useEffect(() => {
         const fetchLocations = async () => {
             try {
@@ -32,12 +34,11 @@ const LocationAdminList = () => {
         fetchLocations();
     }, [dispatch]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) return <div className="text-center my-5">Loading...</div>;
+    if (error) return <div className="text-center my-5">Error: {error}</div>;
 
     const handleClick = (location) => {
         dispatch(setSelectedLocation(location));
-        console.log('dispatch', location);
     };
     
     const handleDelete = async (locationId) => {
@@ -48,8 +49,6 @@ const LocationAdminList = () => {
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                    console.log('Location deleted:', locationId);
-                    // Actualizar el estado local eliminando la ubicación de la lista
                     dispatch(setLocations(locations.filter(location => location.id !== locationId)));
                 } else {
                     console.error('Error deleting location:', response.statusText);
@@ -61,22 +60,37 @@ const LocationAdminList = () => {
     };
 
     return (
-        <div>
-            <h1>Locations</h1>
-            <ul>
+        <Container className="my-5">
+            <h1 className="mb-4 text-center">Locations</h1>
+            <ul className="list-unstyled">
                 {locations.map(location => (
-                    <li key={location.id}>
-                        {location.name} - {location.address} 
-                        <Link onClick={() => handleClick(location)} to={`/locations-admin/${location.id}`}>
-                            <i className="bi bi-eye"></i>
-                        </Link>
-                        <button onClick={() => handleDelete(location.id)}>
-                            <i className="bi bi-trash"></i>
-                        </button>
+                    <li key={location.id} className="mb-3 p-3 border rounded d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{location.name}</strong><br />
+                            {location.address}
+                        </div>
+                        <div>
+                            <Link
+                                onClick={() => handleClick(location)}
+                                to={`/locations-admin/${location.id}`}
+                                className="btn btn-primary btn-sm me-2"
+                                title="View"
+                            >
+                                <i className="bi bi-eye"></i>
+                            </Link>
+                            <Button
+                                onClick={() => handleDelete(location.id)}
+                                variant="danger"
+                                size="sm"
+                                title="Delete"
+                            >
+                                <i className="bi bi-trash"></i>
+                            </Button>
+                        </div>
                     </li>
                 ))}
             </ul>
-        </div>
+        </Container>
     );
 };
 

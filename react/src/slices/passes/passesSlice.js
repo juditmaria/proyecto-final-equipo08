@@ -4,6 +4,7 @@ const initialState = {
     passes: [],
     loading: false,
     error: null,
+    selectedPassId: null // Estado para almacenar el ID del pase seleccionado
 };
 
 const passesSlice = createSlice({
@@ -19,9 +20,12 @@ const passesSlice = createSlice({
         setError(state, action) {
             state.error = action.payload;
         },
+        setSelectedPassId(state, action) { // Reducer para almacenar el ID del pase seleccionado
+            state.selectedPassId = action.payload;
+        }
     },
 });
 
-export const { setPasses, setLoading, setError } = passesSlice.actions;
+export const { setPasses, setLoading, setError, setSelectedPassId } = passesSlice.actions;
 
 export const passesReducer = passesSlice.reducer;

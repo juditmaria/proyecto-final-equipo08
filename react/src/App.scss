@@ -15,6 +15,21 @@
     min-height: 100vh;
 }
 
+.menu-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+.blue{
+  color: #24C8FF;
+}
+
+.red{
+  color: #F0142D;
+}
+
 /* Estilos base para el fondo */
 // body {
 //   background-image: url('../src/assets/background.jpg');

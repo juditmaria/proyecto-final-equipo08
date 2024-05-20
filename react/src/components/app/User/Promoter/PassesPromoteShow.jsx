@@ -5,17 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPasses } from '../../../../slices/passes/passesSlice';
 
 const PassesPromoterShow = () => {
+    const { id } = useParams(); // Obtiene el ID del pase de los parámetros de la URL
     const dispatch = useDispatch();
-    const passes = useSelector(state => state.passes.passes.id);
+    const passes = useSelector(state => state.passes.passes);
     
     const [pass, setPass] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    console.log('passesid', passes)
+
     useEffect(() => {
         const fetchPass = async () => {
             try {
-                const response = await fetch(`${URL_API}passes/${passes}`);
+                const response = await fetch(`${URL_API}passes/${id}`); // Utiliza el ID del pase en la URL
                 if (response.ok) {
                     const data = await response.json();
                     setPass(data.data);
@@ -30,7 +31,7 @@ const PassesPromoterShow = () => {
         };
 
         fetchPass();
-    }, [id]);
+    }, [id]); // Asegúrate de incluir el ID en las dependencias del efecto
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm('Are you sure you want to delete this pass?');

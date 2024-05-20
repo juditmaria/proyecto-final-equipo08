@@ -47,6 +47,7 @@ const TicketShow = () => {
           const data = await response.json();
           const filteredTickets = data.data.filter(ticket => ticket.user_id === userId);
           setTickets(filteredTickets);
+
         } else {
           console.error('Error al obtener los tickets:', response.statusText);
           setError('Error al obtener los tickets');

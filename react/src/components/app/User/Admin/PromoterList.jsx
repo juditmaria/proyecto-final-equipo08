@@ -1,9 +1,10 @@
-// PromoterList.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 import { setPromoterId, setPromoterName, setPromoterImg } from '../../../../slices/promoter/promoterSlice';
 import { useDispatch } from 'react-redux';
+import { Container, Button } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const PromoterList = () => {
   const [promoters, setPromoters] = useState([]);
@@ -33,14 +34,13 @@ const PromoterList = () => {
     fetchPromoters();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="text-center my-5">Loading...</div>;
+  if (error) return <div className="text-center my-5">Error: {error}</div>;
 
   const handleClick = (promoter) => {
     dispatch(setPromoterId(promoter.id));
     dispatch(setPromoterName(promoter.name));
     dispatch(setPromoterImg(promoter.image));
-    console.log('dispatch', promoter);
   };
   
   const handleDelete = async (promoterId) => {
@@ -51,37 +51,58 @@ const PromoterList = () => {
           method: 'DELETE'
         });
         if (response.ok) {
-          console.log('Promoter deleted:', promoterId);
-          // Actualizar el estado local eliminando el promotor de la lista
           setPromoters(promoters.filter(promoter => promoter.id !== promoterId));
         } else {
           console.error('Error deleting promoter:', response.statusText);
-          // Manejo de errores si la eliminación no fue exitosa
         }
       } catch (error) {
         console.error('Error deleting promoter:', error);
-        // Manejo de errores si ocurre algún problema con la solicitud HTTP
       }
     }
   };
   
   return (
-    <div>
-      <h1>Promoters</h1>
-      <ul>
+    <Container className="my-5">
+      <h1 className="mb-4 text-center">Promoters</h1>
+      <ul className="list-unstyled">
         {promoters.map(promoter => (
-          <li key={promoter.id}>
-            {promoter.name} - {promoter.image} 
-            <Link onClick={() => handleClick(promoter)} to={`/promoters/${promoter.id}`} >
-              <i className="bi bi-eye"></i>
-            </Link>
-            <button onClick={() => handleDelete(promoter.id)}>
-              <i className="bi bi-trash"></i>
-            </button>
+          <li key={promoter.id} className="mb-3 p-3 border rounded d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{promoter.name}</strong>
+              <div>
+                <img src={promoter.image} alt={promoter.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }} />
+              </div>
+            </div>
+            <div>
+              <Link
+                onClick={() => handleClick(promoter)}
+                to={`/promoters/${promoter.id}`}
+                className="btn btn-primary btn-sm me-2"
+                title="View"
+              >
+                <i className="bi bi-eye"></i>
+              </Link>
+              <Link
+                onClick={() => handleClick(promoter)}
+                to={`/promoters/${promoter.id}/update`}
+                className="btn btn-secondary btn-sm me-2"
+                title="Edit"
+              >
+                <i className="bi bi-pen"></i>
+              </Link>
+              <Button
+                onClick={() => handleDelete(promoter.id)}
+                variant="danger"
+                size="sm"
+                title="Delete"
+              >
+                <i className="bi bi-trash"></i>
+              </Button>
+            </div>
           </li>
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 

@@ -24,7 +24,7 @@ import TicketCreate from './components/app/TicketCreate';
 import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
-import Promoter from './components/app/User/Promoter/PromoterProfile';
+import Promoter from './components/app/User/Promoter/Promoter';
 import LocationsAdminList from './components/app/User/Admin/LocationsAdminList';
 import LocationsAdminShow from './components/app/User/Admin/LocationsAdminShow';
 
@@ -43,6 +43,12 @@ import LocationsPromoterShow from './components/app/User/Promoter/LocationsPromo
 import LocationsPromoterCreate from './components/app/User/Promoter/LocationsPromoterCreate';
 import PassesPromoterList from './components/app/User/Promoter/PassesPromoterList';
 import PassesPromoterShow from './components/app/User/Promoter/PassesPromoteShow';
+import PassesPromoterCreate from './components/app/User/Promoter/PassesPromoterCreate';
+import RoomsPromoterList from './components/app/User/Promoter/RoomsPromoterList';
+import RoomsPromoterShow from './components/app/User/Promoter/RoomsPromoterShow';
+import RoomsPromoterCreate from './components/app/User/Promoter/RoomsPromoterCreate';
+import RoomsPromoterUpdate from './components/app/User/Promoter/RoomsPromoterUpdate';
+import PassesPromoterUpdate from './components/app/User/Promoter/PassesPromotersUpdate';
 
 function App() {
   const dispatch = useDispatch();
@@ -150,6 +156,14 @@ function App() {
 
                     <Route path="/locations-promoter/:id/passes" element={<PassesPromoterList />} />
                     <Route path="/passes-promoter/:id" element={<PassesPromoterShow />} />
+                    <Route path="/passes-promoter/create/:id" element={<PassesPromoterCreate />} />
+                    <Route path="/passes-promoter/:id/update" element={<PassesPromoterUpdate />} />
+
+                    <Route path="/rooms-promoter" element={<RoomsPromoterList />} />
+                    <Route path="/rooms-promoter/:id" element={<RoomsPromoterShow />} />
+                    <Route path="/rooms-promoter/:id/update" element={<RoomsPromoterUpdate />} />
+
+                    <Route path="/rooms-promoter/create" element={<RoomsPromoterCreate />} />
 
                     <Route path="/notfound" element={<NotFound />} />
                     <Route path="*" element={<Navigate to="/notfound" />} />

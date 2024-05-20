@@ -117,6 +117,8 @@ export const TicketCreate = () => {
             price: ticketPrice,
           })
         });
+        window.location.href = `/tickets`;
+
         if (!response.ok) {
           console.error('Error al realizar la compra para la entrada', i + 1, ':', response.statusText);
         }
