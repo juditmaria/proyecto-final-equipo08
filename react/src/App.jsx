@@ -25,8 +25,24 @@ import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
 import Promoter from './components/app/User/Promoter/PromoterProfile';
+import LocationsAdminList from './components/app/User/Admin/LocationsAdminList';
+import LocationsAdminShow from './components/app/User/Admin/LocationsAdminShow';
 
 import TicketShow from './components/app/TicketShow';
+import Admin from './components/app/User/Admin/Admin';
+import UserList from './components/app/User/Admin/UserList';
+import UserShow from './components/app/User/Admin/UserShow';
+import PromoterList from './components/app/User/Admin/PromoterList';
+import PromoterShow from './components/app/User/Admin/PromoterShow';
+import MoviesAdminList from './components/app/User/Admin/MoviesAdminList';
+import MoviesAdminShow from './components/app/User/Admin/MoviesAdminShow';
+import MoviesAdminCreate from './components/app/User/Admin/MoviesAdminCreate';
+import MoviesAdminUpdate from './components/app/User/Admin/MoviesAdminUpdate';
+import LocationsPromoterList from './components/app/User/Promoter/LocationsPromoterList';
+import LocationsPromoterShow from './components/app/User/Promoter/LocationsPromotersShow';
+import LocationsPromoterCreate from './components/app/User/Promoter/LocationsPromoterCreate';
+import PassesPromoterList from './components/app/User/Promoter/PassesPromoterList';
+import PassesPromoterShow from './components/app/User/Promoter/PassesPromoteShow';
 
 function App() {
   const dispatch = useDispatch();
@@ -115,6 +131,26 @@ function App() {
                     <Route path="/tickets" element={<TicketShow />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/promoter" element={<Promoter />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/users" element={<UserList />} />
+                    <Route path="/users/:id" element={<UserShow />} />
+                    <Route path="/promoters" element={<PromoterList />} />
+                    <Route path="/promoters/:id" element={<PromoterShow />} />
+
+                    <Route path="/locations-admin" element={<LocationsAdminList />} />
+                    <Route path="/locations-admin/:id" element={<LocationsAdminShow />} />
+                    <Route path="/movies-admin" element={<MoviesAdminList />} />
+                    <Route path="/movies-admin/:id" element={<MoviesAdminShow />} />
+                    <Route path="/movies-admin/:id/update" element={<MoviesAdminUpdate />} />
+                    <Route path="/movies-admin/create" element={<MoviesAdminCreate />} />
+
+                    <Route path="/locations-promoter" element={<LocationsPromoterList />} />
+                    <Route path="/locations-promoter/:id" element={<LocationsPromoterShow />} />
+                    <Route path="/locations-promoter/create" element={<LocationsPromoterCreate/>} />
+
+                    <Route path="/locations-promoter/:id/passes" element={<PassesPromoterList />} />
+                    <Route path="/passes-promoter/:id" element={<PassesPromoterShow />} />
+
                     <Route path="/notfound" element={<NotFound />} />
                     <Route path="*" element={<Navigate to="/notfound" />} />
                   </Routes>

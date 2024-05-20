@@ -85,50 +85,47 @@ class MovieController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $movie = Movie::find($id);
+{
+    $movie = Movie::find($id);
 
-        if (!$movie) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Movie not found'
-            ], 404);
-        }
-
-        $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'director' => 'required|string',
-            'length' => 'required|integer',
-            'type' => 'required|string',
-            'release_year' => 'required|integer',
-            'trailer' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para la imagen
-        ]);
-
-        $movieData = $request->except('image');
-
-        // Si se carga una nueva imagen, guardarla en el almacenamiento
-        if ($request->hasFile('image')) {
-            // Eliminar la imagen anterior si existe
-            if ($movie->image) {
-                Storage::delete('public/uploads/' . $movie->image);
-            }
-
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/uploads', $imageName);
-            $movieData['image'] = 'storage/uploads/' . $imageName;
-        }
-
-        $movie->update($movieData);
-
+    if (!$movie) {
         return response()->json([
-            'success' => true,
-            'message' => 'Movie updated successfully',
-            'data' => $movie
-        ], 200);
+            'success' => false,
+            'message' => 'Movie not found'
+        ], 404);
     }
+
+    $request->validate([
+        'title' => 'required|string',
+        'description' => 'required|string',
+        'director' => 'required|string',
+        'length' => 'required|integer',
+        'type' => 'required|string',
+        'release_year' => 'required|integer',
+        'trailer' => 'nullable|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para la imagen
+    ]);
+
+    $movieData = $request->except('image');
+
+    // Si se carga una nueva imagen, guardarla en el almacenamiento
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->storeAs('public/uploads', $imageName);
+        $movieData['image'] = 'storage/uploads/' . $imageName;
+    }
+
+    $movie->update($movieData);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Movie updated successfully',
+        'data' => $movie
+    ], 200);
+}
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -136,7 +133,7 @@ class MovieController extends Controller
     public function destroy(string $id)
     {
         $movie = Movie::find($id);
-
+        
         if (!$movie) {
             return response()->json([
                 'success' => false,
