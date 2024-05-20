@@ -26,6 +26,8 @@ import { URL_API } from './constants';
 import { Modal, Button } from 'react-bootstrap';
 import Profile from './components/app/User/Profile';
 import Promoter from './components/app/User/Promoter/Promoter';
+import PromoterProfile from './components/app/User/Promoter/PromoterProfile';
+
 import LocationsAdminList from './components/app/User/Admin/LocationsAdminList';
 import LocationsAdminShow from './components/app/User/Admin/LocationsAdminShow';
 
@@ -166,6 +168,8 @@ function App() {
                     <Route path="/movies-admin/:id" element={<MoviesAdminShow />} />
                     <Route path="/movies-admin/:id/update" element={<MoviesAdminUpdate />} />
                     <Route path="/movies-admin/create" element={<MoviesAdminCreate />} />
+
+                    <Route path="/profile-promoter" element={<PromoterProfile />} />
 
                     <Route path="/locations-promoter" element={<LocationsPromoterList />} />
                     <Route path="/locations-promoter/:id" element={<LocationsPromoterShow />} />

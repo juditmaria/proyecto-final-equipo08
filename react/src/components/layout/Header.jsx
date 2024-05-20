@@ -20,6 +20,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 
 import Image from 'react-bootstrap/Image';
+import Logo from '../../assets/logo.png';
 import ProfileDefaultImage from '../../assets/profileDefault.jpg';
  
 const Header = () => {
@@ -100,18 +101,16 @@ return (
     <Container>
       <Navbar.Brand>
         <Link to="/" className="text-decoration-none text-dark">
-          CINEVERSE
+          <Image src={Logo} className="logoImgMenu" />
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
         <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-          <Link to="/link2" className="nav-link">Link</Link>
-          <NavDropdown title="Link" id="navbarScrollingDropdown">
-            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+          <NavDropdown title="¿Quiénes somos?" id="navbarScrollingDropdown">
+            <NavDropdown.Item  href="/about">Sobre nosotros</NavDropdown.Item>
+            <NavDropdown.Divider className="bg-secondary"/>
+            <NavDropdown.Item href="/terms">Términos y condiciones</NavDropdown.Item>
           </NavDropdown>
         </Nav>
 
