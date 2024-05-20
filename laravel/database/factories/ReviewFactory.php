@@ -33,4 +33,8 @@ class ReviewFactory extends Factory
             },
         ];
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> hotfix-react

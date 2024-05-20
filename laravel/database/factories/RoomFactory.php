@@ -28,4 +28,8 @@ class RoomFactory extends Factory
             'hour' => $this->faker->time('H:i'),
         ];
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> hotfix-react

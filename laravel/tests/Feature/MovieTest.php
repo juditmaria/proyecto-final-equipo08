@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile; // Agregar esta línea
 
 use App\Models\Movie;
 
@@ -28,10 +29,18 @@ class MovieTest extends TestCase
     {
         // Generar datos de película utilizando el factory
         $movieData = Movie::factory()->make()->toArray();
+<<<<<<< HEAD
 
         // Almacenar la película
         $response = $this->postJson('/api/movies', $movieData);
 
+=======
+        $movieData['image'] = UploadedFile::fake()->image('test.jpg');
+    
+        // Almacenar la película
+        $response = $this->postJson('/api/movies', $movieData);
+    
+>>>>>>> hotfix-react
         // Verificar respuesta 201 (creado)
         $response->assertStatus(201)
             ->assertJson([
@@ -39,25 +48,37 @@ class MovieTest extends TestCase
             ]);
         
         // Verificar si la película está en la base de datos
+<<<<<<< HEAD
+=======
+        unset($movieData['image']); // La imagen no estará en la base de datos
+>>>>>>> hotfix-react
         $this->assertDatabaseHas('movies', $movieData);
     }
     
+    
     public function test_movie_show()
     {
+<<<<<<< HEAD
         // Generar una película de ejemplo
+=======
+>>>>>>> hotfix-react
         $movie = Movie::factory()->create();
 
-        // Consultar una película por su ID
-        $response = $this->getJson("/api/movies/$movie->id");
+        $response = $this->getJson("/api/movies/{$movie->id}");
 
+<<<<<<< HEAD
         // Verificar respuesta OK
+=======
+>>>>>>> hotfix-react
         $response->assertOk();
     }
+    
 
     public function test_movie_update()
     {
         // Generar una película de ejemplo
         $movie = Movie::factory()->create();
+<<<<<<< HEAD
 
         // Generar datos actualizados de la película utilizando el factory
         $updatedMovieData = Movie::factory()->make()->toArray();
@@ -65,9 +86,20 @@ class MovieTest extends TestCase
         // Actualizar la película
         $response = $this->putJson("/api/movies/$movie->id", $updatedMovieData);
 
+=======
+    
+        // Generar datos actualizados de la película utilizando el factory
+        $updatedMovieData = Movie::factory()->make()->toArray();
+        $updatedMovieData['image'] = UploadedFile::fake()->image('updated_image.jpg');
+    
+        // Actualizar la película
+        $response = $this->putJson("/api/movies/{$movie->id}", $updatedMovieData);
+    
+>>>>>>> hotfix-react
         // Verificar respuesta OK
         $response->assertOk();
     }
+    
 
     public function test_movie_delete()
     {
@@ -99,5 +131,4 @@ class MovieTest extends TestCase
             }
         }
     }
-    
 }

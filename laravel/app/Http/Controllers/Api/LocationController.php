@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage; 
 use App\Models\Location;
 
 class LocationController extends Controller
@@ -24,8 +24,8 @@ class LocationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Files not found'
-            ], 500);
+                'message' => 'Locations not found'
+            ], 404);
         }
     }
 
@@ -39,10 +39,20 @@ class LocationController extends Controller
             'direction' => 'required|string',
             'phone' => 'required|string',
             'promoter_id' => 'required|exists:promoters,id',
-            'pass_id' => 'required|exists:passes,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $location = Location::create($request->all());
+        $locationData = $request->except('image');
+
+        // Si se carga una imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $locationData['image'] = 'storage/uploads/' . $imageName;
+        }
+
+        $location = Location::create($locationData);
 
         return response()->json([
             'success' => true,
@@ -89,10 +99,25 @@ class LocationController extends Controller
             'direction' => 'required|string',
             'phone' => 'required|string',
             'promoter_id' => 'required|exists:promoters,id',
-            'pass_id' => 'required|exists:passes,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $location->update($request->all());
+        $locationData = $request->except('image');
+
+        // Si se carga una nueva imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen anterior si existe
+            if ($location->image) {
+                Storage::delete($location->image);
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $locationData['image'] = 'storage/uploads/' . $imageName;
+        }
+
+        $location->update($locationData);
 
         return response()->json([
             'success' => true,
@@ -113,6 +138,11 @@ class LocationController extends Controller
                 'success' => false,
                 'message' => 'Location not found'
             ], 404);
+        }
+
+        // Eliminar la imagen si existe
+        if ($location->image) {
+            Storage::delete($location->image);
         }
 
         $location->delete();

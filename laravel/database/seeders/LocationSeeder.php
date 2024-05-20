@@ -20,7 +20,7 @@ class LocationSeeder extends Seeder
             'direction' => 'Calle Ejemplo 123',
             'phone' => '123456789', // Número de teléfono de la ubicación
             'promoter_id' => 1, // ID del promotor asociado
-            'pass_id' => 1, // ID del pase asociado
+            'image' => 'public/ejemplo.jpg', // Ruta de la imagen de ejemplo
         ]);
 
         // También puedes usar la factory para crear múltiples ubicaciones de prueba

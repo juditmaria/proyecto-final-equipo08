@@ -1,0 +1,208 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  
+}
+
+/* make the customizations */
+.mid {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+.menu-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+.blue{
+  color: #24C8FF;
+}
+
+.red{
+  color: #F0142D;
+}
+
+/* Estilos base para el fondo */
+// body {
+//   background-image: url('../src/assets/background.jpg');
+//   background-size: cover;
+// }
+
+// /* Media query para pantallas pequeñas */
+// @media (max-width: 768px) {
+//   body {
+//       background-size: 100% auto;
+//   }
+// }
+
+/* Otras media queries según sea necesario */
+
+
+
+
+
+// LocationList.scss
+
+.location-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); // Sombra
+}
+.location-link:hover {
+  background-color: rgba(255, 255, 255, 0.256); /* Cambia el color de fondo al pasar el ratón por encima */
+  transition: background-color 0.3s ease; /* Añade una transición suave */
+}
+
+
+.text-left{
+  text-align: start;
+}
+
+.location-promoter {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 30px;
+    height: auto;
+    margin-right: 10px;
+  }
+}
+
+.movie-image {
+  height: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .page-link {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+}
+
+.ticket-selection {
+  text-align: center;
+  margin-top: 20px;
+
+  .ticket-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .ticket-count {
+      margin: 0 10px;
+      font-size: 1.5rem;
+    }
+  }
+
+  .ticket-price {
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.navbar-custom {
+  background-color: transparent !important;
+  border-radius: 10px;
+  
+}
+
+.nav-link.text-white {
+  color: white !important;
+}
+
+.navbar-custom.expanded {
+  background-color: rgba(255, 255, 255, 0.147) !important; /* Fondo semi-transparente al expandirse */
+}
+
+.profile-photo{
+  border-radius: 20px;
+}
+
+/* PassesList.css */
+
+
+
+/* Media queries para tamaños de pantalla grandes (escritorio) */
+@media (min-width: 992px) {
+  .movie-image {
+    max-width: 200px; /* Tamaño máximo para las imágenes en pantallas grandes */
+  }
+}
+
+.ticket-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.ticket-card {
+  background-color: #181818;  // Color de fondo claro
+  border: 1px solid #dee2e6;  // Borde sutil
+  border-radius: 8px;         // Esquinas redondeadas
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  // Sombra sutil
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;           // Ancho máximo para las tarjetas
+}
+
+.ticket-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.ticket-card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+
+$body-bg: rgb(0, 0, 0);
+$body-color: white;
+$link-color: white;
+$link-decoration: none;
+// variables.scss
+$navbar-bg: transparent;
+$navbar-text-color: #fff;
+$navbar-hover-color: #ccc;
+
+
+
+//Profile
+.profileImgMenu {
+  width: 30px;
+  margin-left: 1%;
+}
+.profileImg {
+  width: 200px;
+  margin-left: 1%;
+}
+
+//NotFound
+.not-found-image {
+  width: 25%; /* Ajusta el tamaño de la imagen según sea necesario */
+  filter: invert(1); /* Aplica el filtro de color blanco */
+}
+
+/* import bootstrap to set changes */
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-icons/font/bootstrap-icons.css';

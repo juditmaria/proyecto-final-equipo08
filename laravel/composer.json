@@ -8,7 +8,12 @@
         "php": "^8.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
+<<<<<<< HEAD
         "laravel/tinker": "^2.9"
+=======
+        "laravel/tinker": "^2.9",
+        "symfony/polyfill-mbstring": "^1.29"
+>>>>>>> hotfix-react
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

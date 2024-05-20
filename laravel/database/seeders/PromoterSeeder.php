@@ -19,6 +19,7 @@ class PromoterSeeder extends Seeder
             'name' => 'Promotor de Ejemplo',
             // Puedes definir aquí el ID del usuario asociado si es necesario
             'user_id' => 1,
+            'image' => null, // Ajusta según tus necesidades
         ]);
 
         // También puedes usar la factory para crear múltiples promotores de prueba

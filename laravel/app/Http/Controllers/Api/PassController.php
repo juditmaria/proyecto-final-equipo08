@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pass;
-use App\Models\Movie;
-use App\Models\Room;
 
 class PassController extends Controller
 {
@@ -17,7 +15,7 @@ class PassController extends Controller
      */
     public function index()
     {
-        $passes = Pass::all();
+        $passes = Pass::with(['movie', 'room', 'location'])->get();
 
         if ($passes->count() > 0) {
             return response()->json([
@@ -43,8 +41,9 @@ class PassController extends Controller
         $request->validate([
             'movie_id' => 'required|exists:movies,id',
             'room_id' => 'required|exists:rooms,id',
-            'date' => 'required|date_format:Y-m-d',
+            'date' => 'required|date',
             'start_time' => 'required|string',
+            'location_id' => 'required|exists:locations,id',
         ]);
 
         $pass = Pass::create($request->all());
@@ -58,11 +57,20 @@ class PassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pass  $pass
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Pass $pass)
+    public function show($id)
     {
+        $pass = Pass::with(['movie', 'room', 'location'])->find($id);
+
+        if (!$pass) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pass not found'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'data' => $pass
@@ -73,17 +81,27 @@ class PassController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pass  $pass
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Pass $pass)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'movie_id' => 'required|exists:movies,id',
             'room_id' => 'required|exists:rooms,id',
-            'date' => 'required|date_format:Y-m-d',
+            'date' => 'required|date',
             'start_time' => 'required|string',
+            'location_id' => 'required|exists:locations,id',
         ]);
+
+        $pass = Pass::find($id);
+
+        if (!$pass) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pass not found'
+            ], 404);
+        }
 
         $pass->update($request->all());
 
@@ -97,11 +115,20 @@ class PassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pass  $pass
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Pass $pass)
+    public function destroy($id)
     {
+        $pass = Pass::find($id);
+
+        if (!$pass) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pass not found'
+            ], 404);
+        }
+
         $pass->delete();
 
         return response()->json([

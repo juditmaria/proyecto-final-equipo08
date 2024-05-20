@@ -18,17 +18,25 @@ class PromoterTest extends TestCase
      */
     public function test_promoter_list()
     {
+<<<<<<< HEAD
         // Crea registros de promotor y pase
         Promoter::factory()->create();
 
         // List all promoters using API web service
+=======
+        // Crea registros de promotor
+        Promoter::factory()->create();
+
+        // Listar todos los promotores usando el servicio web API
+>>>>>>> hotfix-react
         $response = $this->getJson("/api/promoters");
-        // Check OK response
+        // Verificar respuesta OK
         $this->_test_ok($response);
     }
  
     public function test_promoter_store()
     {
+<<<<<<< HEAD
         //User create
         $user = User::factory()->create();
 
@@ -36,24 +44,38 @@ class PromoterTest extends TestCase
         $promoterData = [
             'name' => 'Nuevo Promotor',
             'user_id' => $user->id, // Change it to an existing user ID if necessary
+=======
+        // Crear un usuario
+        $user = User::factory()->create();
+
+        // Crear datos del promotor
+        $promoterData = [
+            'name' => 'Nuevo Promotor',
+            'user_id' => $user->id, // Cambiar a un ID de usuario existente si es necesario
+            'image' => null, // Ajusta según tus necesidades
+>>>>>>> hotfix-react
         ];
 
-        // Store the promoter
+        // Almacenar el promotor
         $response = $this->postJson('/api/promoters', $promoterData);
 
-        // Check created response
+        // Verificar respuesta creada
         $response->assertStatus(201)
             ->assertJson([
                 'success' => true,
             ]);
         
-        // Check if the promoter is in the database
+        // Verificar si el promotor está en la base de datos
         $this->assertDatabaseHas('promoters', $promoterData);
     }
     
     public function test_promoter_read()
     {
+<<<<<<< HEAD
         // Create a sample promoter using factory
+=======
+        // Crear un promotor de ejemplo
+>>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Consultar un promotor por su ID
@@ -65,7 +87,11 @@ class PromoterTest extends TestCase
 
     public function test_promoter_update()
     {
+<<<<<<< HEAD
         // Crear un promotor de ejemplo usando factory
+=======
+        // Crear un promotor de ejemplo
+>>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Datos actualizados del promotor
@@ -80,7 +106,11 @@ class PromoterTest extends TestCase
 
     public function test_promoter_delete()
     {
+<<<<<<< HEAD
         // Crear un promotor de ejemplo usando factory
+=======
+        // Crear un promotor de ejemplo
+>>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Eliminar el promotor
@@ -92,16 +122,16 @@ class PromoterTest extends TestCase
 
     protected function _test_ok($response, $status = 200)
     {
-        // Check JSON response
+        // Verificar respuesta JSON
         $response->assertStatus($status);
-        // Check JSON properties
+        // Verificar propiedades JSON
         $response->assertJson([
             "success" => true,
         ]);
-        // Check if the response data is an array (only for successful requests and if data exists)
+        // Verificar si los datos de respuesta son un array (solo para solicitudes exitosas y si existen datos)
         if ($status === 200 || $status === 201) {
             if ($response->getData()->data ?? false) {
-                // Check JSON dynamic values
+                // Verificar valores dinámicos JSON
                 $response->assertJsonPath("data",
                     fn ($data) => is_array($data)
                 );

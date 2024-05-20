@@ -10,6 +10,7 @@
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
         "axios": "^1.6.4",
+<<<<<<< HEAD
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.31",
         "tailwindcss": "^3.1.0",
@@ -18,5 +19,11 @@
     "dependencies": {
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
+=======
+        "laravel-vite-plugin": "^1.0"
+    },
+    "dependencies": {
+        "sqlite3": "^5.1.7"
+>>>>>>> hotfix-react
     }
 }

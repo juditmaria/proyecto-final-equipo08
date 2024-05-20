@@ -28,4 +28,8 @@ class PromoterFactory extends Factory
             }
         ];
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> hotfix-react

@@ -24,9 +24,11 @@ class DatabaseSeeder extends Seeder
         $this->call(PromoterSeeder::class);
         $this->call(MovieSeeder::class);
         $this->call(RoomSeeder::class);
+        $this->call(LocationSeeder::class);
         $this->call(PassSeeder::class);
         $this->call(TicketSeeder::class);
-        $this->call(LocationSeeder::class);
         $this->call(ReviewSeeder::class);
+        $this->call(ProfileSeeder::class);
+
     }
 }

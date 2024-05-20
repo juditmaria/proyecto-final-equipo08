@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Promoter;
 
 class PromoterController extends Controller
@@ -13,17 +14,17 @@ class PromoterController extends Controller
      */
     public function index()
     {
-        $promoter = Promoter::all();
+        $promoters = Promoter::all();
 
-        if ($promoter->count() > 0) {
+        if ($promoters->count() > 0) {
             return response()->json([
                 'success' => true,
-                'data'    => $promoter
+                'data'    => $promoters
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Files not found'
+                'message' => 'Promoters not found'
             ], 500);
         }
     }
@@ -35,10 +36,21 @@ class PromoterController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'user_id' => 'required|exists:users,id|unique:promoters,user_id', 
+            'user_id' => 'required|exists:users,id|unique:promoters,user_id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $promoter = Promoter::create($request->all());
+        $promoterData = $request->except('image');
+
+        // Si se carga una imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $promoterData['image'] = 'storage/uploads/' . $imageName;
+        }
+
+        $promoter = Promoter::create($promoterData);
 
         return response()->json([
             'success' => true,
@@ -83,9 +95,25 @@ class PromoterController extends Controller
         $request->validate([
             'name' => 'required|string',
             'user_id' => 'nullable|exists:users,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación para la imagen
         ]);
 
-        $promoter->update($request->all());
+        $promoterData = $request->except('image');
+
+        // Si se carga una nueva imagen, guardarla en el almacenamiento
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen anterior si existe
+            if ($promoter->image) {
+                Storage::delete('public/uploads/' . $promoter->image);
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/uploads', $imageName);
+            $promoterData['image'] = 'storage/uploads/' . $imageName;
+        }
+
+        $promoter->update($promoterData);
 
         return response()->json([
             'success' => true,
@@ -97,8 +125,22 @@ class PromoterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Promoter $promoter)
+    public function destroy(string $id)
     {
+        $promoter = Promoter::find($id);
+
+        if (!$promoter) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Promoter not found'
+            ], 404);
+        }
+
+        // Eliminar la imagen si existe
+        if ($promoter->image) {
+            Storage::delete('public/uploads/' . $promoter->image);
+        }
+
         $promoter->delete();
 
         return response()->json([

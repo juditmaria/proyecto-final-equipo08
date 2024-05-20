@@ -20,6 +20,7 @@ class PassSeeder extends Seeder
             'room_id' => 1, // ID de la sala asociada
             'date' => '2024-04-30', // Fecha del pase
             'start_time' => '15:00', // Hora de inicio del pase
+            'location_id' => 1, // ID de la ubicación asociada
         ]);
 
         // También puedes usar la factory para crear múltiples pases de prueba
