@@ -18,17 +18,10 @@ class PromoterTest extends TestCase
      */
     public function test_promoter_list()
     {
-<<<<<<< HEAD
-        // Crea registros de promotor y pase
-        Promoter::factory()->create();
-
-        // List all promoters using API web service
-=======
         // Crea registros de promotor
         Promoter::factory()->create();
 
         // Listar todos los promotores usando el servicio web API
->>>>>>> hotfix-react
         $response = $this->getJson("/api/promoters");
         // Verificar respuesta OK
         $this->_test_ok($response);
@@ -36,15 +29,6 @@ class PromoterTest extends TestCase
  
     public function test_promoter_store()
     {
-<<<<<<< HEAD
-        //User create
-        $user = User::factory()->create();
-
-        // Create promoter data
-        $promoterData = [
-            'name' => 'Nuevo Promotor',
-            'user_id' => $user->id, // Change it to an existing user ID if necessary
-=======
         // Crear un usuario
         $user = User::factory()->create();
 
@@ -53,7 +37,6 @@ class PromoterTest extends TestCase
             'name' => 'Nuevo Promotor',
             'user_id' => $user->id, // Cambiar a un ID de usuario existente si es necesario
             'image' => null, // Ajusta según tus necesidades
->>>>>>> hotfix-react
         ];
 
         // Almacenar el promotor
@@ -71,11 +54,7 @@ class PromoterTest extends TestCase
     
     public function test_promoter_read()
     {
-<<<<<<< HEAD
-        // Create a sample promoter using factory
-=======
         // Crear un promotor de ejemplo
->>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Consultar un promotor por su ID
@@ -87,11 +66,7 @@ class PromoterTest extends TestCase
 
     public function test_promoter_update()
     {
-<<<<<<< HEAD
-        // Crear un promotor de ejemplo usando factory
-=======
         // Crear un promotor de ejemplo
->>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Datos actualizados del promotor
@@ -106,11 +81,7 @@ class PromoterTest extends TestCase
 
     public function test_promoter_delete()
     {
-<<<<<<< HEAD
-        // Crear un promotor de ejemplo usando factory
-=======
         // Crear un promotor de ejemplo
->>>>>>> hotfix-react
         $promoter = Promoter::factory()->create();
 
         // Eliminar el promotor

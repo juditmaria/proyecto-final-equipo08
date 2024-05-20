@@ -30,8 +30,4 @@ class MovieFactory extends Factory
             'trailer' => $this->faker->url,
         ];
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> hotfix-react

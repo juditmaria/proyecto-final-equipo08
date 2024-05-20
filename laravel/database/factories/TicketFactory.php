@@ -30,8 +30,4 @@ class TicketFactory extends Factory
             'movie_id' => Movie::factory(),
         ];
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> hotfix-react
