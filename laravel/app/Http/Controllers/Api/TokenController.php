@@ -67,22 +67,27 @@ class TokenController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password), // Asegúrate de encriptar la contraseña
         ]);
-        
         // Guardar el usuario en la base de datos
         $user->save();
+
+      /*   // Crear perfil de usuario
+        $profile = new Profile([
+            'user_id' => $user->id,
+        ]);
+        // Guardar el perfil en la base de datos
+        $profile->save(); */
     
         // Crear un token para el usuario recién registrado
         $token = $user->createToken('authToken')->plainTextToken;
-        
         // Expiration logic
         $expiresAt = Carbon::now()->addMinutes(50); // Default expiration time
         if ($request->rememberMe === 'Y') {
             $expiresAt = Carbon::now()->addDays(30); // Extend expiration time if rememberMe is true
         }
-
          // Establecer la fecha de vencimiento del token
          $user->tokens()->where('name', 'authToken')->update(['expires_at' => $expiresAt]);
         
+
         // Devolver la respuesta JSON con el token generado y el estado de éxito
         return response()->json([
             'success' => true,
