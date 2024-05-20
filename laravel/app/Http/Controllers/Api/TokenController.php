@@ -93,6 +93,7 @@ class TokenController extends Controller
             'success' => true,
             'authToken' => $token,
             'expiresAt' => $expiresAt,
+            'userId'  => $user->id,
             "userName"  => $user->name,
             "userMail"  => $user->email,
             'tokenType' => 'Bearer',
