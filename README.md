@@ -3,7 +3,7 @@
 ## Preparación de entorno
 Clona el directorio del proyecto:
 
-    git clone https://github.com/juditmaria/projecte-m7.git
+    git clone git@github.com:juditmaria/proyecto-final-equipo08.git
 
 En caso de no tener el composer, instalar **composer** desde cero ('proyecto-final-equipo08'):
 
