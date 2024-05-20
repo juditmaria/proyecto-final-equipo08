@@ -59,13 +59,14 @@ const LocationPromoterShow = () => {
   if (!location) return <div>No location found</div>;
 
   return (
-    <div>
+    <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', padding: '20px' }}>
       <h1>Location Details</h1>
-      <p>Name: {location.name}</p>
-      <p>Email: {location.email}</p>
-      <p>ID: {location.id}</p>
-      <button onClick={handleDelete}>Delete Location</button>
-      <Link to="/locations-promoter">Back to Location List</Link>
+      <p><strong>Name:</strong> {location.name}</p>
+      <p><strong>Location:</strong> {location.direction}</p>
+      <p><strong>Phone:</strong> {location.phone}</p>
+
+      <button style={{ margin: '10px', padding: '8px 16px', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} onClick={handleDelete}>Delete Location</button>
+      <Link style={{ textDecoration: 'none', color: 'blue' }} to="/locations-promoter">Back to Location List</Link>
       {/* Render other location details as needed */}
     </div>
   );

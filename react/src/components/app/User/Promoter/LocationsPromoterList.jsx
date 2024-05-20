@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocations, setSelectedLocation } from '../../../../slices/location/locationSlice';
+import { Button, Container } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const LocationPromoterList = () => {
     const [loading, setLoading] = useState(true);
@@ -10,25 +12,14 @@ const LocationPromoterList = () => {
     const dispatch = useDispatch();
     const locations = useSelector(state => state.location.locations);
     const selectedUser = useSelector(state => state.promoter.promoterId);
-    console.log('Promoter:', selectedUser);
-    console.log('Locations:', locations);
-    
+
     useEffect(() => {
         const fetchLocations = async () => {
             try {
                 const response = await fetch(URL_API + 'locations');
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Fetched locations:', data.data);
-
-                    // Verificar tipo de datos de promoter_id y selectedUser
-                    console.log('Selected User:', selectedUser);
-                    const filteredLocations = data.data.filter(location => {
-                        console.log('Checking location:', location);
-                        return location.promoter_id == selectedUser;
-                    });
-                    console.log('Filtered locations:', filteredLocations);
-
+                    const filteredLocations = data.data.filter(location => location.promoter_id == selectedUser);
                     dispatch(setLocations(filteredLocations));
                 } else {
                     console.error('Error fetching locations:', response.statusText);
@@ -49,14 +40,11 @@ const LocationPromoterList = () => {
         }
     }, [dispatch, selectedUser]);
 
-
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) return <div className="text-center my-5">Loading...</div>;
+    if (error) return <div className="text-center my-5">Error: {error}</div>;
 
     const handleClick = (location) => {
         dispatch(setSelectedLocation(location));
-        console.log('dispatch', location);
     };
 
     const handleDelete = async (locationId) => {
@@ -67,7 +55,6 @@ const LocationPromoterList = () => {
                     method: 'DELETE'
                 });
                 if (response.ok) {
-                    console.log('Location deleted:', locationId);
                     dispatch(setLocations(locations.filter(location => location.id !== locationId)));
                 } else {
                     console.error('Error deleting location:', response.statusText);
@@ -79,29 +66,44 @@ const LocationPromoterList = () => {
     };
 
     return (
-        <div>
-            <h1>Locations</h1>
-            <ul>
+        <Container className="my-5">
+            <h1 className="mb-4 text-center">Locations</h1>
+            <ul className="list-unstyled">
                 {locations.map(location => (
-                    <li key={location.id}>
-                        {location.name} - {location.address} 
-                        <Link onClick={() => handleClick(location)} to={`/locations-promoter/${location.id}`}>
-                            <i className="bi bi-eye"></i>
-                        </Link>
-                        
-                        <button onClick={() => handleDelete(location.id)}>
-                            <i className="bi bi-trash"></i>
-                        </button>
-                        <Link to={`/locations-promoter/${location.id}/passes`}>
-                            Passes
-                        </Link>
+                    <li key={location.id} className="mb-3 p-3 border rounded d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{location.name}</strong> - Direction: {location.direction}
+                        </div>
+                        <div>
+                            <Link
+                                onClick={() => handleClick(location)}
+                                to={`/locations-promoter/${location.id}`}
+                                className="btn btn-primary btn-sm me-2"
+                                title="View"
+                            >
+                                <i className="bi bi-eye"></i>
+                            </Link>
+                            <Button
+                                onClick={() => handleDelete(location.id)}
+                                variant="danger"
+                                size="sm"
+                                title="Delete"
+                            >
+                                <i className="bi bi-trash"></i>
+                            </Button>
+                            <Link
+                                to={`/locations-promoter/${location.id}/passes`}
+                                className="btn btn-secondary btn-sm ms-2"
+                                title="Passes"
+                            >
+                                Passes
+                            </Link>
+                        </div>
                     </li>
                 ))}
-                <Link to={`/locations-promoter/create`}>
-                    Crear
-                </Link>
             </ul>
-        </div>
+            <Link to={`/locations-promoter/create`} className="btn btn-success">Create</Link>
+        </Container>
     );
 };
 

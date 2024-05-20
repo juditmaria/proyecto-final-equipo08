@@ -47,16 +47,16 @@ const ShowRoom = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if (!room) return <div>Room not found</div>;
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error">Error: {error}</div>;
+    if (!room) return <div className="no-room">Room not found</div>;
 
     return (
-        <div>
+        <div className="show-room">
             <h2>{room.name}</h2>
-            <p>Capacity: {room.capacity}</p>
-            <button onClick={handleDeleteRoom}>Delete</button>
-            <Link to="/rooms-promoter">
+            <p><strong>Capacity:</strong> {room.capacity}</p>
+            <button onClick={handleDeleteRoom} className="delete-button">Delete</button>
+            <Link to="/rooms-promoter" className="back-link">
                 <button>Go Back to Rooms Promoter</button>
             </Link>
         </div>
