@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserName, setUserMail, setError } from '../../../slices/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 import { URL_API } from '../../../constants';
 
 import Image from 'react-bootstrap/Image';
@@ -15,6 +16,7 @@ import Form from 'react-bootstrap/Form';
 
 const Profile = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const userId = useSelector((state) => state.auth.userId);
     const userName = useSelector((state) => state.auth.userName);
@@ -92,6 +94,26 @@ const Profile = () => {
         } catch (error) {
             setError('Network error');
         }
+      };
+
+      const handleDelete = async () => {
+        try {
+          const response = await fetch(URL_API+`users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            setError(result.message);
+          } else {
+            setError(result.message || 'No se ha podido eliminar el usuario');
+          }
+        } catch (error) {
+            setError('Network error');
+        }
+        navigate('/');
       };
 
       const handleClick = () => {
@@ -226,7 +248,7 @@ const Profile = () => {
                         )}
                     </Card.Body>
                     <Card.Footer>
-                    <Button variant="outline-danger" size="sm">Borrar cuenta</Button>
+                    <Button onClick={handleDelete} variant="outline-danger" size="sm">Borrar cuenta</Button>
                     </Card.Footer>
                 </Card>
             </div>

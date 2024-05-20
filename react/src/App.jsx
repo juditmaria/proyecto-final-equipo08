@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
-import { setPromoterId } from './slices/promoter/promoterSlice';
+import { setProfileId, setProfileImg } from './slices/profile/profileSlice';
+import { setPromoterId, setPromoterName } from './slices/promoter/promoterSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 
@@ -42,7 +43,10 @@ function App() {
     const storedUserName = localStorage.getItem('userName');
     const storedUserMail = localStorage.getItem('userMail');
     const storedRole = localStorage.getItem('role');
+    const storedProfileId = localStorage.getItem('profileId');
+    const storedProfileImg = localStorage.getItem('profileImg');
     const storedPromoterId = localStorage.getItem('promoterId');
+    const storedPromoterName = localStorage.getItem('promoterName');
     const storedRememberMe = localStorage.getItem('rememberMe');
 
     if (storedAuthToken) {
@@ -66,7 +70,10 @@ function App() {
           dispatch(setUserName(storedUserName));
           dispatch(setUserMail(storedUserMail));
           dispatch(setRole(storedRole));
+          dispatch(setProfileId(storedProfileId));
+          dispatch(setProfileImg(storedProfileImg));
           dispatch(setPromoterId(storedPromoterId));
+          dispatch(setPromoterName(storedPromoterName));
           dispatch(setRememberMe(storedRememberMe));
         } else {
           throw new Error('Usuario no autenticado o token inválido.');
@@ -83,7 +90,10 @@ function App() {
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
+        localStorage.removeItem('profileId');
+        localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
+        localStorage.removeItem('promoterName');
         localStorage.removeItem('rememberMe');
 
         dispatch(setAuthToken(''));
@@ -91,7 +101,10 @@ function App() {
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
+        dispatch(setProfileId(''));
+        dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
+        dispatch(setPromoterName(''));
         dispatch(setRememberMe('N'));
       });
     }

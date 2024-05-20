@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setPromoterName, setError } from '../../../../slices/promoter/promoterSlice';
+import { useNavigate } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 
 import Image from 'react-bootstrap/Image';
@@ -14,6 +15,8 @@ import Form from 'react-bootstrap/Form';
 
 const Promoter = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const promoterName = useSelector((state) => state.promoter.promoterName);
   const promoterId = localStorage.getItem('promoterId');
   // const promoterName = localStorage.getItem('promoterName');
@@ -54,6 +57,26 @@ const Promoter = () => {
       } catch (error) {
           setError('Network error');
       }
+    };
+
+    const handleDelete = async () => {
+      try {
+        const response = await fetch(URL_API+`promoters/${promoterId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (response.ok) {
+          setError(result.message);
+        } else {
+          setError(result.message || 'No se ha podido eliminar el promotor');
+        }
+      } catch (error) {
+          setError('Network error');
+      }
+      navigate('/');
     };
 
     const handleClick = () => {
@@ -133,7 +156,7 @@ const Promoter = () => {
                 )}
             </Card.Body>
             <Card.Footer>
-              <Button variant="outline-danger" size="sm">Borrar cuenta</Button>
+              <Button onClick={handleDelete} variant="outline-danger" size="sm">Borrar promotor</Button>
             </Card.Footer>
           </Card>
       </div>
