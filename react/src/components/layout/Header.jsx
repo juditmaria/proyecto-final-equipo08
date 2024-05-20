@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from '../../slices/auth/authSlice';
 import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
-import { setPromoterId } from '../../slices/promoter/promoterSlice';
+import { setPromoterId, setPromoterName } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 
 //STYLE
@@ -28,7 +28,7 @@ const Header = () => {
   const profileImg = useSelector((state) => state.profile.profileImg);
   
   const role = localStorage.getItem('role');
-    const promoterId = localStorage.getItem('promoterId');
+  const promoterId = localStorage.getItem('promoterId');
 
   const dispatch = useDispatch();
 
@@ -53,6 +53,7 @@ const Header = () => {
         dispatch(setProfileId(''));
         dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
+        dispatch(setPromoterName(''));
         dispatch(setRememberMe('N'));
         localStorage.removeItem('authToken'); // Limpiar el token en el almacenamiento local
         localStorage.removeItem('userId');
@@ -62,6 +63,7 @@ const Header = () => {
         localStorage.removeItem('profileId');
         localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
+        localStorage.removeItem('promoterName');
         localStorage.removeItem('rememberMe');
       } else {
         console.error('Error al cerrar sesión:', response.statusText);

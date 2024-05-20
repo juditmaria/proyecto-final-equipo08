@@ -4,6 +4,7 @@ import Login from './Login';
 import Register from './Register';
 import { setIsLogin } from '../../slices/auth/authSlice'; // Importamos la acción setIsLogin del authSlice
 
+
 const LoginRegister = () => {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.auth.isLogin); // Obtenemos el estado isLogin del authSlice

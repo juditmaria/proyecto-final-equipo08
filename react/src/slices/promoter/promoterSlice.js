@@ -5,7 +5,8 @@ export const promoterSlice = createSlice({
   initialState: { 
     promoterId: "",
     promoterName: "",
-    promoterImg: "", 
+    promoterImg: "",
+    error: null
   }, 
   reducers: {
     setPromoterId: (state, action) => {
@@ -17,10 +18,16 @@ export const promoterSlice = createSlice({
     setPromoterImg: (state, action) => {
         state.promoterImg = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    clearError: (state) => {
+        state.error = null;
+    } 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setPromoterId, setPromoterName, setPromoterImg } = promoterSlice.actions
+export const { setPromoterId, setPromoterName, setPromoterImg, setError, clearError } = promoterSlice.actions
 
 export const promoterReducer = promoterSlice.reducer

@@ -16,6 +16,11 @@ class Profile extends Model
         'image', // Asegúrate de incluir el campo image en $fillable
     ];
 
+/*     public function user()
+    {
+        return $this->belongsTo(User::class);
+    } */
+
     /**
      * Save the image to disk and return the path.
      */

@@ -3,8 +3,9 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
-import { setPromoterId } from './slices/promoter/promoterSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
+import { setProfileId, setProfileImg } from './slices/profile/profileSlice';
+import { setPromoterId, setPromoterName } from './slices/promoter/promoterSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
 
@@ -60,10 +61,14 @@ function App() {
 
   useEffect(() => {
     const storedAuthToken = localStorage.getItem('authToken');
+    const storedUserId = localStorage.getItem('userId');
     const storedUserName = localStorage.getItem('userName');
     const storedUserMail = localStorage.getItem('userMail');
     const storedRole = localStorage.getItem('role');
+    const storedProfileId = localStorage.getItem('profileId');
+    const storedProfileImg = localStorage.getItem('profileImg');
     const storedPromoterId = localStorage.getItem('promoterId');
+    const storedPromoterName = localStorage.getItem('promoterName');
     const storedRememberMe = localStorage.getItem('rememberMe');
 
     if (storedAuthToken) {
@@ -83,10 +88,14 @@ function App() {
       .then(data => {
         if (data.is_token_valid) {
           dispatch(setAuthToken(storedAuthToken));
+          dispatch(setUserId(storedUserId));
           dispatch(setUserName(storedUserName));
           dispatch(setUserMail(storedUserMail));
           dispatch(setRole(storedRole));
+          dispatch(setProfileId(storedProfileId));
+          dispatch(setProfileImg(storedProfileImg));
           dispatch(setPromoterId(storedPromoterId));
+          dispatch(setPromoterName(storedPromoterName));
           dispatch(setRememberMe(storedRememberMe));
         } else {
           throw new Error('Usuario no autenticado o token inválido.');
@@ -99,17 +108,25 @@ function App() {
         setShowError(true);
 
         localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
+        localStorage.removeItem('profileId');
+        localStorage.removeItem('profileImg');
         localStorage.removeItem('promoterId');
+        localStorage.removeItem('promoterName');
         localStorage.removeItem('rememberMe');
 
         dispatch(setAuthToken(''));
+        dispatch(setUserId(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));
+        dispatch(setProfileId(''));
+        dispatch(setProfileImg(''));
         dispatch(setPromoterId(''));
+        dispatch(setPromoterName(''));
         dispatch(setRememberMe('N'));
       });
     }
