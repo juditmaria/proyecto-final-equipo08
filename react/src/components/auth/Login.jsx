@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe, setError } from '../../slices/auth/authSlice';
 import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
-import { setPromoterId } from '../../slices/promoter/promoterSlice';
+import { setPromoterId, setPromoterName } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
@@ -157,10 +157,13 @@ const Login = ({ setLogin }) => {
 
       //Guarda en una variable el codigo que extrae el valor
       const promoterId = userPromoter.id;
+      const promoterName = userPromoter.name;
       // Guardar en el almacenamiento local del navegador y en el estado
       localStorage.setItem('promoterId', promoterId);
+      localStorage.setItem('promoterName', promoterName);
       // Actualizamos el estado en el slice
       dispatch(setPromoterId(promoterId));
+      dispatch(setPromoterName(promoterName));
 
       navigate('/');
     } catch (error) {

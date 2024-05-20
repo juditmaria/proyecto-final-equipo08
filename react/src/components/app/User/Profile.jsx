@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setError } from '../../../slices/auth/authSlice';
-import { setUserName, setUserMail } from '../../../slices/auth/authSlice';
+import { setUserName, setUserMail, setError } from '../../../slices/auth/authSlice';
 import { URL_API } from '../../../constants';
 
 import Image from 'react-bootstrap/Image';
@@ -49,8 +48,6 @@ const Profile = () => {
     const [iconSave, setIconSave] = useState(false);
     const [iconSee, setIconSee] = useState(false);
     const [close, setClose] = useState(false);
-    const toggleClose = () => setClose(!close);
-
     
     const [showInputGroup, setShowInputGroup] = useState(false);
     const toggleInputGroup = () => setShowInputGroup(!showInputGroup);
@@ -105,14 +102,18 @@ const Profile = () => {
 
       const handleClickPassword = () => {
         togglePasswordVisibility();
-        
+      };
+
+      const handleClickClose = () => {
+        toggleInputGroup();
+        setNewUserPassword("");
       };
       
     return (
         <>    
             <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
                 <Card border={cardBorder} style={{ width: '30rem', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '1%', }}>
-                  
+                    
                     {userType && <small className="text-muted">{userType}</small>}
 
                     {/* <small className="text-muted">
@@ -123,7 +124,7 @@ const Profile = () => {
                                 "Un gran poder conlleva una gran responsabilidad".
                             </Alert>
                         </small> */}
-                      
+                        
                     <div className="d-flex justify-content-center mt-3">
                         <Image src={ProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
                     </div>
@@ -159,11 +160,11 @@ const Profile = () => {
                                     <InputGroup.Text
                                         className='bg-dark d-flex justify-content-center align-items-center'
                                         style={{ cursor: 'pointer' }}
-                                        onMouseEnter={() => setIconSave(true)}
-                                        onMouseLeave={() => setIconSave(false)}
+                                        onMouseEnter={() => setIconSee(true)}
+                                        onMouseLeave={() => setIconSee(false)}
                                         onClick={handleClickPassword}
                                     >
-                                        <i className={`bi ${iconSave ? 'bi-eye-fill' : 'bi-eye'}`}></i>
+                                        <i className={`bi ${iconSee ? 'bi-eye-fill' : 'bi-eye'}`}></i>
                                     </InputGroup.Text>
                                 </InputGroup>
 
@@ -171,18 +172,18 @@ const Profile = () => {
                                     <InputGroup.Text
                                         className='bg-dark'
                                         style={{ cursor: 'pointer' }}
-                                        onMouseEnter={() => setIconSee(true)}
-                                        onMouseLeave={() => setIconSee(false)}
+                                        onMouseEnter={() => setIconSave(true)}
+                                        onMouseLeave={() => setIconSave(false)}
                                         onClick={handleClick}
                                     >
-                                        <i className={`bi ${iconSee ? 'bi-floppy-fill' : 'bi-floppy'}`}></i>
+                                        <i className={`bi ${iconSave ? 'bi-floppy-fill' : 'bi-floppy'}`}></i>
                                     </InputGroup.Text>
                                     <InputGroup.Text
                                         className='bg-dark'
                                         style={{ cursor: 'pointer' }}
                                         onMouseEnter={() => setClose(true)}
                                         onMouseLeave={() => setClose(false)}
-                                        onClick={toggleInputGroup}
+                                        onClick={handleClickClose}
                                     >
                                         <i className={`text-danger bi ${close ? 'bi-x-lg' : 'bi-x'}`}></i>
                                     </InputGroup.Text>
@@ -197,11 +198,10 @@ const Profile = () => {
                                         cursor: 'pointer',
                                         borderBottom: `2px solid ${colorBorder}`
                                     }}
-                                    
                                 >
                                     {userName}
                                 </Card.Title>
-                                    <Card.Title 
+                                <Card.Title 
                                     onClick={toggleInputGroup}
                                     className='p-1'
                                     style={{ 
@@ -231,7 +231,6 @@ const Profile = () => {
                 </Card>
             </div>
         </>
-        
     )
 }
 
