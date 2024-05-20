@@ -3,7 +3,7 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from './userContext';
-import { setAuthToken, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe } from './slices/auth/authSlice';
 import { setPromoterId } from './slices/promoter/promoterSlice';
 
 import LoginRegister from './components/auth/LoginRegister';
@@ -38,6 +38,7 @@ function App() {
 
   useEffect(() => {
     const storedAuthToken = localStorage.getItem('authToken');
+    const storedUserId = localStorage.getItem('userId');
     const storedUserName = localStorage.getItem('userName');
     const storedUserMail = localStorage.getItem('userMail');
     const storedRole = localStorage.getItem('role');
@@ -61,6 +62,7 @@ function App() {
       .then(data => {
         if (data.is_token_valid) {
           dispatch(setAuthToken(storedAuthToken));
+          dispatch(setUserId(storedUserId));
           dispatch(setUserName(storedUserName));
           dispatch(setUserMail(storedUserMail));
           dispatch(setRole(storedRole));
@@ -77,6 +79,7 @@ function App() {
         setShowError(true);
 
         localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
         localStorage.removeItem('userName');
         localStorage.removeItem('userMail');
         localStorage.removeItem('role');
@@ -84,6 +87,7 @@ function App() {
         localStorage.removeItem('rememberMe');
 
         dispatch(setAuthToken(''));
+        dispatch(setUserId(''));
         dispatch(setUserName(''));
         dispatch(setUserMail(''));
         dispatch(setRole(''));

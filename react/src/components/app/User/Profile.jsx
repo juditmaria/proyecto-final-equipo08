@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
-import { setProfileImg } from '../../../slices/profile/profileSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setError } from '../../../slices/auth/authSlice';
+import { setUserName } from '../../../slices/auth/authSlice';
+import { URL_API } from '../../../constants';
 
 import Image from 'react-bootstrap/Image';
 import ProfileDefaultImage from '../../../assets/profileDefault.jpg';
@@ -13,6 +15,9 @@ import Form from 'react-bootstrap/Form';
 // import Alert from 'react-bootstrap/Alert';
 
 const Profile = () => {
+    const dispatch = useDispatch();
+
+    const userId = useSelector((state) => state.auth.userId);
     const userName = useSelector((state) => state.auth.userName);
     const userMail = useSelector((state) => state.auth.userMail);
     const profileImg = useSelector((state) => state.profile.profileImg);
@@ -21,21 +26,24 @@ const Profile = () => {
     const promoterId = localStorage.getItem('promoterId');
 
     // Determinar el borde del Card
-    let color = 'info';
+    let cardBorder = 'info';
     let userType = (
         <p className='text-info m-0'><i className="bi bi-person-fill inline-block"></i> {' '} Usuario</p>
     );
+    let colorBorder = "#0dcaf0";
 
     if (role === '1') {
-        color = 'danger';
+        cardBorder = 'danger';
         userType = (
             <p className='text-danger m-0'><i className="bi bi-shield-shaded inline-block"></i> {' '} Administrador</p>
         )
+        colorBorder = "#dc3545";
     } else if (promoterId && promoterId !== '' && role !== '1') {
-        color = 'primary';
+        cardBorder = 'primary';
         userType = (
             <p className='text-primary m-0'><i className="bi bi-shop inline-block"></i> {' '} Promotor</p>
-        )   
+        )
+        colorBorder = "#0d6efd";   
     }
 
     const [iconSave, setIconSave] = useState(false);
@@ -43,21 +51,58 @@ const Profile = () => {
     const [showInputGroup, setShowInputGroup] = useState(false);
     const toggleInputGroup = () => setShowInputGroup(!showInputGroup);
 
+    const [newUserName, setNewUserName] = useState(userName);
+
+    const handleUpdate = async () => {
+        try {
+          const response = await fetch(URL_API+`users/${userId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              name: newUserName,
+              email: 'asd6@gmail.com',
+              password: '123123123',
+            }),
+          });
+    
+          const result = await response.json();
+    
+          if (response.ok) {
+            setError(result.message);
+            localStorage.setItem('userName', newUserName);
+            dispatch(setUserName(newUserName));
+          } else {
+            setError(result.message || 'Something went wrong');
+          }
+        } catch (error) {
+            setError('Network error');
+        }
+      };
+
+      const handleClick = () => {
+        toggleInputGroup();
+        handleUpdate();
+        // Llama a más funciones si es necesario
+      };
+      
     return (
         <>    
             <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
-                <Card border={color} style={{ width: '30rem', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '1%', }}>
+                <Card border={cardBorder} style={{ width: '30rem', background: 'rgba(255, 255, 255, 0.1)', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '1%', }}>
                   
                     {userType && <small className="text-muted">{userType}</small>}
 
                     {/* <small className="text-muted">
-                        <Alert variant="danger" dismissible>
-                            <i className="bi bi-shield-fill-exclamation admin inline-block"></i> 
-                            {' '} Administrador
-                            <br />
-                            "Un gran poder conlleva una gran responsabilidad".
-                        </Alert>
-                    </small> */}
+                            <Alert variant="danger" dismissible>
+                                <i className="bi bi-shield-fill-exclamation admin inline-block"></i> 
+                                {' '} Administrador
+                                <br />
+                                "Un gran poder conlleva una gran responsabilidad".
+                            </Alert>
+                        </small> */}
                       
                     <div className="d-flex justify-content-center mt-3">
                         <Image src={ProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
@@ -67,14 +112,16 @@ const Profile = () => {
                     {showInputGroup ? (
                             <InputGroup className="mb-3">
                                 <Form.Control
-                                    placeholder={userName}
+                                    value={newUserName}
+                                    onChange={(e) => setNewUserName(e.target.value)}
                                     aria-label="Recipient's username"
+                                    placeholder={userName}
                                 />
                                 <InputGroup.Text
                                     className='bg-dark'
                                     onMouseEnter={() => setIconSave(true)}
                                     onMouseLeave={() => setIconSave(false)}
-                                    onClick={toggleInputGroup}
+                                    onClick={handleClick}
                                 >
                                     <i className={`bi ${iconSave ? 'bi-floppy-fill' : 'bi-floppy'}`}></i>
                                 </InputGroup.Text>
@@ -82,12 +129,14 @@ const Profile = () => {
                         ) : (
                             <Card.Title 
                                 onClick={toggleInputGroup}
+                                className='p-1'
                                 style={{ 
                                     cursor: 'pointer',
-                                    borderBottom: `2px solid ${color}` 
+                                    borderBottom: `2px solid ${colorBorder}`
                                 }}
+                                 
                             >
-                                <div border="">{userName}</div>
+                                {userName}
                             </Card.Title>
                         )}
                         <Card.Text className='text-muted'>{userMail}</Card.Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setRememberMe, setError } from '../../slices/auth/authSlice';
@@ -6,6 +6,7 @@ import { setProfileId, setProfileImg } from '../../slices/profile/profileSlice';
 import { setPromoterId } from '../../slices/promoter/promoterSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 
 //STYLE
 import Container from 'react-bootstrap/Container';
@@ -22,9 +23,15 @@ const Login = ({ setLogin }) => {
 
   const navigate = useNavigate();
 
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleCheckboxChange = () => {
     dispatch(setRememberMe('Y')); 
   };
+
+  const handleCloseErrorModal = () => setShowErrorModal(false);
+
 
   const handleLogin = async (data) => {
     const { email, password } = data;
@@ -46,6 +53,8 @@ const Login = ({ setLogin }) => {
       if (!responseLogin.ok) {
         throw new Error(responseLoginData.message || 'Usuario y/o contraseña incorrectos');
       }
+
+      // const { authToken, userId, userName, userMail, role } = responseLoginData;
 
       const authToken = responseLoginData.authToken;
       const userId = responseLoginData.userId;
@@ -80,29 +89,46 @@ const Login = ({ setLogin }) => {
       const responseProfilesData = await responseProfiles.json();
 
       if (!responseProfiles.ok) {
-        throw new Error(responseProfilesData.message || 'Usuario y/o contraseña incorrectos');
+        throw new Error(responseProfilesData.message || 'Error en los datos de los perfiles');
       }  
-/*       console.log("responseProfilesData", responseProfilesData.data);
- */
-       // Acceder a la propiedad 'data' que contiene el array de perfiles
-       const profilesArray = responseProfilesData.data;
 
-      // Encontrar el perfil correspondiente al userId
+      const profilesArray = responseProfilesData.data;
+
+      //Devuelve true o false si encuentra el user_id o no
+      const userExists = profilesArray.some(profile => profile.user_id === userId);
+
+      if (userExists) {
+        // Encontrar el perfil correspondiente al userId y devuelve el primer elemento que cumpla la condición
       const userProfile = profilesArray.find(profile => profile.user_id === userId);
+      /*       console.log("responseProfilesData", responseProfilesData.data);
+       */
+             // Acceder a la propiedad 'data' que contiene el array de perfiles
       
-      /* console.log("userProfile", userProfile);
-      console.log("userProfile id: ", userProfile.id); */ 
-
-      //Guarda en una variable el codigo que extrae el valor
-      const profileId = userProfile.id;
-      const profileImg = userProfile.image;
-
-      // Guardar en el almacenamiento local del navegador y en el estado
-      localStorage.setItem('profileId', profileId);
-      localStorage.setItem('profileImg', profileImg);
-      // Actualizamos el estado en el slice
-      dispatch(setProfileId(profileId));
-      dispatch(setProfileImg(profileImg));
+            // Uso en tu código
+            // try {
+            //   const userProfile = handleUserProfile(profilesArray, userId);
+             
+              /* console.log("userProfile", userProfile);
+              console.log("userProfile id: ", userProfile.id); */ 
+      
+              //Guarda en una variable el codigo que extrae el valor
+              const profileId = userProfile.id;
+              const profileImg = userProfile.image;
+      
+              // Guardar en el almacenamiento local del navegador y en el estado
+              localStorage.setItem('profileId', profileId);
+              localStorage.setItem('profileImg', profileImg);
+              // Actualizamos el estado en el slice
+              dispatch(setProfileId(profileId));
+              dispatch(setProfileImg(profileImg));
+            // } catch (error) {
+            //   // Manejo del error
+            //   console.error(error.message);
+            //   // Muestra el mensaje de error en la UI o realiza otras acciones necesarias
+            // }
+      } else{
+        console.error('Perfil no encontrado para el usuario actual');
+      }
 
       //Promoter
       const responsePromoters = await fetch(URL_API + 'promoters', {
@@ -140,9 +166,11 @@ const Login = ({ setLogin }) => {
     } catch (error) {
       console.error('Error de login:', error);
       dispatch(setError(error.message || 'Usuario y/o contraseña incorrectos')); // Despachamos la acción setError con el mensaje de error
+      setErrorMessage(error.message);
+      setShowErrorModal(true);
     }
-
   };
+  
   return (
     <>
       <Container>
@@ -209,6 +237,22 @@ const Login = ({ setLogin }) => {
             Inicia sesión
           </Button>
         </Form>
+
+        <Modal show={showErrorModal} onHide={handleCloseErrorModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Error de inicio de sesión</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseErrorModal}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         <hr className='p-2'/>
 

@@ -1,8 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, setUserId, setUserName, setUserMail, setRole, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
-import { setProfileImg } from '../../slices/profile/profileSlice';
-import { setPromoterId } from '../../slices/promoter/promoterSlice';
+import { setAuthToken, setUserId, setUserName, setUserMail, setFormData, clearFormData, setRememberMe, setError } from '../../slices/auth/authSlice';
 import { URL_API } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +19,6 @@ const Register = ({ setLogin }) => {
   const handleCheckboxChange = () => {
     dispatch(setRememberMe('Y')); 
   };
-
 
   const handleChange = (e) => {
     dispatch(setFormData({ ...formData, [e.target.name]: e.target.value }));
@@ -66,30 +63,26 @@ const Register = ({ setLogin }) => {
       const userId = responseData.userId;
       const userName = responseData.userName;
       const userMail = responseData.userMail;
-      const role = responseData.role;
-      const promoterId = responseData.promoterId;
+      const roleDefault = '0';
       // Guardar el authToken en el almacenamiento local del navegador y en el estado
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('userId', userId);
       localStorage.setItem('userName', userName);
       localStorage.setItem('userMail', userMail);
-      localStorage.setItem('role', role);
-      localStorage.setItem('promoterId', promoterId);
+      localStorage.setItem('role', roleDefault);
       localStorage.setItem('rememberMe', rememberMe);
       // Actualizar el estado en el slice de autenticación 
       dispatch(setAuthToken(authToken)); // Actualizamos el estado del token en el slice de autenticación
       dispatch(setUserId(userId));
       dispatch(setUserName(userName));
       dispatch(setUserMail(userMail));
-      dispatch(setRole(role));
-      dispatch(setPromoterId(promoterId));
       dispatch(setRememberMe(rememberMe));
 
       // Limpiar el formData después del registro exitoso
       dispatch(clearFormData());
 
       // Maneja la respuesta como desees
-      console.log("Usuario registrado con éxito", formData, authToken, userName, userMail, rememberMe);
+      console.log("Usuario registrado con éxito", formData, authToken, userId, userName, userMail, rememberMe);
       //console.log("Token de autenticación:", authToken);
 
       setLogin(true);
