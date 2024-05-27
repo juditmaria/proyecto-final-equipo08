@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setPromoterName, setError } from '../../../../slices/promoter/promoterSlice';
+import { setPromoterId, setPromoterName, setError } from '../../../../slices/promoter/promoterSlice';
 import { useNavigate } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 
@@ -19,6 +19,7 @@ const Promoter = () => {
 
   const promoterName = useSelector((state) => state.promoter.promoterName);
   const promoterId = localStorage.getItem('promoterId');
+  const userId = localStorage.getItem('userId');
   // const promoterName = localStorage.getItem('promoterName');
   
   // Determinar el borde del Card
@@ -31,6 +32,40 @@ const Promoter = () => {
   const toggleInputGroup = () => setShowInputGroup(!showInputGroup);
 
   const [newPromoterName, setNewPromoterName] = useState(promoterName);
+  const [createPromoterName, setCreatePromoterName] = useState("");
+
+  const handleCreate = async () => {
+    const formData = new FormData();
+    formData.append('user_id', userId);
+    formData.append('name', createPromoterName);
+   /*  if (image) {
+      formData.append('image', image);
+    } */
+    try {
+      const response = await fetch(URL_API + 'promoters', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      console.log(result);
+
+      if (response.ok) {
+        dispatch(setPromoterId(result.data.id));
+        dispatch(setPromoterName(createPromoterName));
+        localStorage.setItem('promoterId', result.data.id);
+        localStorage.setItem('promoterName', createPromoterName);
+      } else {
+        dispatch(setError(result.message || 'Error al crear el promotor'));
+      }
+    } catch(error) {
+      dispatch(setError('Error de red'));
+    }
+  }
  
   const handleUpdate = async () => {
       try {
@@ -98,43 +133,45 @@ const Promoter = () => {
             <p className='m-0 text-muted'><i className="bi bi-person-vcard-fill inline-block"></i> {' '} Perfil de Promotor</p>
           </small>
             
-          <div className="d-flex justify-content-center mt-3">
-              <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
-          </div>
-          <Card.Body>
-            {showInputGroup ? (
+          {promoterId != "" ? (
               <>
-                <InputGroup className="mb-3">
-                    <Form.Control
-                        value={newPromoterName}
-                        onChange={(e) => setNewPromoterName(e.target.value)}
-                        aria-label="Nuevo nombre de promotor"
-                        placeholder={promoterName}
-                    />
-                </InputGroup>
+                <div className="d-flex justify-content-center mt-3">
+                  <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
+                </div>
+                <Card.Body>
+                {showInputGroup ? (
+                  <>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            value={newPromoterName}
+                            onChange={(e) => setNewPromoterName(e.target.value)}
+                            aria-label="Nuevo nombre de promotor"
+                            placeholder={promoterName}
+                        />
+                    </InputGroup>
 
-                <InputGroup className='d-flex justify-content-center align-items-center'>
-                    <InputGroup.Text
-                        className='bg-dark'
-                        style={{ cursor: 'pointer' }}
-                        onMouseEnter={() => setIconSave(true)}
-                        onMouseLeave={() => setIconSave(false)}
-                        onClick={handleClick}
-                    >
-                        <i className={`bi ${iconSave ? 'bi-floppy-fill' : 'bi-floppy'}`}></i>
-                    </InputGroup.Text>
-                    <InputGroup.Text
-                        className='bg-dark'
-                        style={{ cursor: 'pointer' }}
-                        onMouseEnter={() => setClose(true)}
-                        onMouseLeave={() => setClose(false)}
-                        onClick={handleClickClose}
-                    >
-                        <i className={`text-danger bi ${close ? 'bi-x-lg' : 'bi-x'}`}></i>
-                    </InputGroup.Text>
-                </InputGroup>
-              </>
-                ) : (
+                    <InputGroup className='d-flex justify-content-center align-items-center'>
+                        <InputGroup.Text
+                            className='bg-dark'
+                            style={{ cursor: 'pointer' }}
+                            onMouseEnter={() => setIconSave(true)}
+                            onMouseLeave={() => setIconSave(false)}
+                            onClick={handleClick}
+                        >
+                            <i className={`bi ${iconSave ? 'bi-floppy-fill' : 'bi-floppy'}`}></i>
+                        </InputGroup.Text>
+                        <InputGroup.Text
+                            className='bg-dark'
+                            style={{ cursor: 'pointer' }}
+                            onMouseEnter={() => setClose(true)}
+                            onMouseLeave={() => setClose(false)}
+                            onClick={handleClickClose}
+                        >
+                            <i className={`text-danger bi ${close ? 'bi-x-lg' : 'bi-x'}`}></i>
+                        </InputGroup.Text>
+                    </InputGroup>
+                  </>
+                  ) : (
                     <>
                       <Card.Title 
                           onClick={toggleInputGroup}
@@ -153,11 +190,32 @@ const Promoter = () => {
                           <small>Se pueden comprar efectos especiales, no la magia.</small>
                       </Card.Title> 
                     </>
-                )}
-            </Card.Body>
-            <Card.Footer>
-              <Button onClick={handleDelete} variant="outline-danger" size="sm">Borrar promotor</Button>
-            </Card.Footer>
+                  )}
+                </Card.Body>
+                <Card.Footer>
+                  <Button onClick={handleDelete} variant="outline-danger" size="sm">Borrar promotor</Button>
+                </Card.Footer>
+              </>
+            ) : (
+              <>
+                <div className="d-flex justify-content-center mt-3">
+                  <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
+                </div>
+                <Card.Body>
+                  <InputGroup className="mb-3">
+                  <Form.Control
+                      value={createPromoterName}
+                      onChange={(e) => setCreatePromoterName(e.target.value)}
+                      aria-label="Nombre de Promotor"
+                      placeholder="Nombre de Promotor"
+                  />
+                  </InputGroup>                     
+                </Card.Body>
+                <Card.Footer>
+                  <Button onClick={handleCreate} variant="success">Crear promotor</Button>
+                </Card.Footer>
+              </>
+            )}
           </Card>
       </div>
     </>

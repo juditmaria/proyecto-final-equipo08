@@ -57,6 +57,20 @@ const PassesAdminUpdate = () => {
         const fetchPass = async () => {
             try {
                 const response = await fetch(`${URL_API}passes/${id}`);
+              /*   const response = await fetch(`${URL_API}passes/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        movie_id: movieId,
+                        room_id: roomId,
+                        date: format(date, 'yyyy-MM-dd'), 
+                        start_time: startTime,
+                        location_id: id
+                    })
+                }); */
+
                 if (response.ok) {
                     const data = await response.json();
                     const passData = data.data;

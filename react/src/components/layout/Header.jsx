@@ -90,11 +90,11 @@ const Header = () => {
       buttonBorder = 'primary';
   } 
   
-  if (promoterId && promoterId !== '') {
+/*   if (promoterId && promoterId !== '') {
     itemPromoter = (
       <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>
     );
-  }
+  } */
 
 return (
   <Navbar expand="lg" className="bg-body-tertiary body">
@@ -136,7 +136,8 @@ return (
                 <Dropdown.Item href="/tickets">Tickets</Dropdown.Item>
 {/*             {promoterId == undefined && <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>}*/}
                 {/* {role == "1" && <Dropdown.Item href="/admin">Administración</Dropdown.Item>}   */}
-                {itemPromoter}
+                <Dropdown.Item href="/promoter">Promotor</Dropdown.Item>
+                {/* itemPromoter */}
                 {itemAdmin}
                 <Dropdown.Item onClick={logout} >Cierra sesión</Dropdown.Item>
               </Dropdown.Menu>

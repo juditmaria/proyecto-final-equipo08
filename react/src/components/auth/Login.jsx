@@ -151,19 +151,29 @@ const Login = ({ setLogin }) => {
       // Encontrar el perfil correspondiente al userId
       const userPromoter = promotersArray.find(promoter => promoter.user_id === userId);
       
-      console.log("userPromoter", userPromoter);
-      /* console.log("userProfile", userProfile);
-      console.log("userProfile id: ", userProfile.id); */ 
+      if (!userPromoter) {
+        // Si no se encuentra un promoter, guardar null en localStorage
+        localStorage.setItem('promoterId', "");
+    } else if (userPromoter) {
+        console.log("userPromoter", userPromoter);
+        /* console.log("userProfile", userProfile);
+        console.log("userProfile id: ", userProfile.id); */ 
 
-      //Guarda en una variable el codigo que extrae el valor
-      const promoterId = userPromoter.id;
-      const promoterName = userPromoter.name;
-      // Guardar en el almacenamiento local del navegador y en el estado
-      localStorage.setItem('promoterId', promoterId);
-      localStorage.setItem('promoterName', promoterName);
-      // Actualizamos el estado en el slice
-      dispatch(setPromoterId(promoterId));
-      dispatch(setPromoterName(promoterName));
+        //Guarda en una variable el codigo que extrae el valor
+        const promoterId = userPromoter.id;
+        const promoterName = userPromoter.name;
+        // Guardar en el almacenamiento local del navegador y en el estado
+        localStorage.setItem('promoterId', promoterId);
+        localStorage.setItem('promoterName', promoterName);
+        // Actualizamos el estado en el slice
+        dispatch(setPromoterId(promoterId));
+        dispatch(setPromoterName(promoterName));
+    } else {
+        // Si ocurre algún error inesperado, lanzar un error o hacer un console log
+        console.error('El promotor está dando problemas');
+    }
+
+      
 
       navigate('/');
     } catch (error) {

@@ -10,6 +10,13 @@ const MovieList = () => {
     const fetchMovies = async () => {
       try {
         const response = await fetch(URL_API + 'movies');
+/*         const response = await fetch(URL_API + 'movies', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }) */
         if (response.ok) {
           const data = await response.json();
           setMovies(data.data);
