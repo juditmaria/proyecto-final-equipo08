@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPasses } from '../../../../slices/passes/passesSlice';
+import { Button, Container, ListGroup } from 'react-bootstrap';
 
 const PassesPromoterShow = () => {
-    const { id } = useParams(); // Obtiene el ID del pase de los parámetros de la URL
+    const { id } = useParams();
     const dispatch = useDispatch();
     const passes = useSelector(state => state.passes.passes);
-    
+
     const [pass, setPass] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,7 +17,7 @@ const PassesPromoterShow = () => {
     useEffect(() => {
         const fetchPass = async () => {
             try {
-                const response = await fetch(`${URL_API}passes/${id}`); // Utiliza el ID del pase en la URL
+                const response = await fetch(`${URL_API}passes/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setPass(data.data);
@@ -31,7 +32,7 @@ const PassesPromoterShow = () => {
         };
 
         fetchPass();
-    }, [id]); // Asegúrate de incluir el ID en las dependencias del efecto
+    }, [id]);
 
     const handleDelete = async () => {
         const confirmDelete = window.confirm('Are you sure you want to delete this pass?');
@@ -42,7 +43,6 @@ const PassesPromoterShow = () => {
                 });
                 if (response.ok) {
                     console.log('Pass deleted:', id);
-                    // Actualizar la lista de pases después de la eliminación
                     dispatch(setPasses(passes.filter(pass => pass.id !== id)));
                 } else {
                     console.error('Error deleting pass:', response.statusText);
@@ -57,14 +57,20 @@ const PassesPromoterShow = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            <h1>Pass Details</h1>
-            <p>
-                Movie: {pass.movie_id} - Room: {pass.room_id} - Location: {pass.location_id} - Date: {pass.date} - Time: {pass.start_time}
-            </p>
-            <button onClick={handleDelete}>Delete Pass</button>
-            <button onClick={() => window.history.back()}>Back to Passes List</button>
-        </div>
+        <Container className="my-5">
+            <h1 className="mb-4">Pass Details</h1>
+            <ListGroup variant="flush" style={{ margin: '0 auto', maxWidth: '30%' }}>
+                <ListGroup.Item><strong>Movie:</strong> {pass.movie_id}</ListGroup.Item>
+                <ListGroup.Item><strong>Room:</strong> {pass.room_id}</ListGroup.Item>
+                <ListGroup.Item><strong>Location:</strong> {pass.location_id}</ListGroup.Item>
+                <ListGroup.Item><strong>Date:</strong> {pass.date}</ListGroup.Item>
+                <ListGroup.Item><strong>Time:</strong> {pass.start_time}</ListGroup.Item>
+            </ListGroup>
+            <div className="mt-3 d-flex justify-content-center">
+                <Button variant="danger" className="me-2" onClick={handleDelete}>Delete Pass</Button>
+                <Button variant="secondary" onClick={() => window.history.back()}>Back to Passes List</Button>
+            </div>
+        </Container>
     );
 };
 

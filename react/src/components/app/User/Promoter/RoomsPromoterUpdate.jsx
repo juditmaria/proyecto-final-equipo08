@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { URL_API } from '../../../../constants';
+import { Form, Button, Container, Alert, Spinner, Row, Col } from 'react-bootstrap';
 
 const RoomPromoterUpdate = () => {
     const { id } = useParams();
@@ -55,7 +56,6 @@ const RoomPromoterUpdate = () => {
                 })
             });
             if (response.ok) {
-                // Redirige al usuario a la lista de salas después de actualizar la sala
                 window.location.href = '/rooms-promoter';
             } else {
                 setError('Error updating room');
@@ -67,63 +67,71 @@ const RoomPromoterUpdate = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-
     return (
-        <div>
-            <h2>Update Room</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name:</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
+        <Container className="my-5">
+            <h2 className="mb-4 text-center">Update Room</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {loading ? (
+                <div className="text-center">
+                    <Spinner animation="border" />
                 </div>
-                <div>
-                    <label>Capacity:</label>
-                    <input
-                        type="number"
-                        value={capacity}
-                        onChange={(e) => setCapacity(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Number of Lines:</label>
-                    <input
-                        type="number"
-                        value={numLine}
-                        onChange={(e) => setNumLine(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Number of Seats per Line:</label>
-                    <input
-                        type="number"
-                        value={numSeat}
-                        onChange={(e) => setNumSeat(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Hour:</label>
-                    <input
-                        type="text"
-                        value={hour}
-                        onChange={(e) => setHour(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Updating...' : 'Update'}
-                </button>
-            </form>
-        </div>
+            ) : (
+                <Form onSubmit={handleSubmit}>
+                    <Row>
+                        <Col md={{ span: 4, offset: 4 }}>
+                            <Form.Group controlId="formRoomName" className="mb-3">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formRoomCapacity" className="mb-3">
+                                <Form.Label>Capacity</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={capacity}
+                                    onChange={(e) => setCapacity(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formRoomNumLine" className="mb-3">
+                                <Form.Label>Number of Lines</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={numLine}
+                                    onChange={(e) => setNumLine(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formRoomNumSeat" className="mb-3">
+                                <Form.Label>Number of Seats per Line</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={numSeat}
+                                    onChange={(e) => setNumSeat(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formRoomHour" className="mb-3">
+                                <Form.Label>Hour</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={hour}
+                                    onChange={(e) => setHour(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" disabled={loading} className="w-25">
+                                {loading ? 'Updating...' : 'Update'}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
+        </Container>
     );
 };
 

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { URL_API } from '../../../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPasses, setLoading, setError, setSelectedPassId } from '../../../../slices/passes/passesSlice'; // Importa la acción setSelectedPassId
+import { URL_API } from '../../../../constants';
+import { setPasses, setLoading, setError, setSelectedPassId } from '../../../../slices/passes/passesSlice';
+import { Button, Container } from 'react-bootstrap';
 
 const PassesPromoterList = () => {
     const { id } = useParams();
@@ -41,7 +42,6 @@ const PassesPromoterList = () => {
                 });
                 if (response.ok) {
                     console.log('Pass deleted:', passId);
-                    // Actualizar la lista de pases después de la eliminación
                     dispatch(setPasses(passes.filter(pass => pass.id !== passId)));
                 } else {
                     console.error('Error deleting pass:', response.statusText);
@@ -52,40 +52,52 @@ const PassesPromoterList = () => {
         }
     };
 
-    // Función para manejar el clic en el botón "Show"
     const handleShowPass = (passId) => {
-        // Despacha la acción para guardar el ID del pase seleccionado en el estado de Redux
         dispatch(setSelectedPassId(passId));
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) return <div className="text-center my-5">Loading...</div>;
+    if (error) return <div className="text-center my-5">Error: {error}</div>;
 
     return (
-        <div>
-            <h1>Passes for Location {id}</h1>
-            <ul>
+        <Container className="my-5">
+            <h1 className="mb-4 text-center">Passes for Location {id}</h1>
+            <ul className="list-unstyled">
                 {passes.map(pass => (
-                    <li key={pass.id}>
-                        Movie: {pass.movie_id} - Room: {pass.room_id} - Location: {pass.location_id} - Date: {pass.date} - Time: {pass.start_time}
-                        <button onClick={() => handleDelete(pass.id)}>
-                            Delete
-                        </button>
-                        {/* Usa la función handleShowPass para manejar el clic en el botón "Show" */}
-                        <Link onClick={() => handleShowPass(pass.id)} to={`/passes-promoter/${pass.id}`}>
-                            Show
-                        </Link>
-                        {/* Agrega un enlace para actualizar el pase */}
-                        <Link to={`/passes-promoter/${pass.id}/update`}>
-                            Update
-                        </Link>
+                    <li key={pass.id} className="mb-3 p-3 border rounded d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Movie:</strong> {pass.movie_id} - <strong>Room:</strong> {pass.room_id} - <strong>Location:</strong> {pass.location_id} - <strong>Date:</strong> {pass.date} - <strong>Time:</strong> {pass.start_time}
+                        </div>
+                        <div>
+                            <Link
+                                onClick={() => handleShowPass(pass.id)}
+                                to={`/passes-promoter/${pass.id}`}
+                                className="btn btn-primary btn-sm me-2"
+                                title="Show"
+                            >
+                                <i className="bi bi-eye"></i>
+                            </Link>
+                            <Button
+                                onClick={() => handleDelete(pass.id)}
+                                variant="danger"
+                                size="sm"
+                                title="Delete"
+                            >
+                                <i className="bi bi-trash"></i>
+                            </Button>
+                            <Link
+                                to={`/passes-promoter/${pass.id}/update`}
+                                className="btn btn-secondary btn-sm ms-2"
+                                title="Update"
+                            >
+                                Update
+                            </Link>
+                        </div>
                     </li>
                 ))}
-                <Link to={`/passes-promoter/create/${id}`}>
-                    Crear Passe
-                </Link>
             </ul>
-        </div>
+            <Link to={`/passes-promoter/create/${id}`} className="btn btn-success">Create Pass</Link>
+        </Container>
     );
 };
 

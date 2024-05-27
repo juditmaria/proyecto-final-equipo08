@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { URL_API } from '../../../../constants';
+import { Form, Button, Container, Alert, Spinner, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { URL_API } from '../../../../constants';
 import { setPasses } from '../../../../slices/passes/passesSlice';
-import { format } from 'date-fns'; // Importa la función de formateo de date-fns
+import { format } from 'date-fns';
 
 const PassesAdminUpdate = () => {
     const dispatch = useDispatch();
@@ -15,10 +16,10 @@ const PassesAdminUpdate = () => {
     const [roomId, setRoomId] = useState('');
     const [date, setDate] = useState(new Date());
     const [startTime, setStartTime] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [movies, setMovies] = useState([]); // Estado para almacenar la lista de películas
-    const [rooms, setRooms] = useState([]); // Estado para almacenar la lista de salas
+    const [movies, setMovies] = useState([]);
+    const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -26,7 +27,7 @@ const PassesAdminUpdate = () => {
                 const response = await fetch(`${URL_API}movies`);
                 if (response.ok) {
                     const data = await response.json();
-                    setMovies(data.data); // Guarda la lista de películas en el estado
+                    setMovies(data.data);
                 } else {
                     setError('Error fetching movies');
                 }
@@ -40,37 +41,25 @@ const PassesAdminUpdate = () => {
                 const response = await fetch(`${URL_API}rooms`);
                 if (response.ok) {
                     const data = await response.json();
-                    setRooms(data.data); // Guarda la lista de salas en el estado
+                    setRooms(data.data);
                 } else {
                     setError('Error fetching rooms');
                 }
             } catch (error) {
                 setError('Error fetching rooms');
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchMovies();
         fetchRooms();
-    }, []); // Ejecuta la solicitud solo una vez al montar el componente
+    }, []);
 
     useEffect(() => {
         const fetchPass = async () => {
             try {
                 const response = await fetch(`${URL_API}passes/${id}`);
-              /*   const response = await fetch(`${URL_API}passes/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        movie_id: movieId,
-                        room_id: roomId,
-                        date: format(date, 'yyyy-MM-dd'), 
-                        start_time: startTime,
-                        location_id: id
-                    })
-                }); */
-
                 if (response.ok) {
                     const data = await response.json();
                     const passData = data.data;
@@ -101,17 +90,14 @@ const PassesAdminUpdate = () => {
                 body: JSON.stringify({
                     movie_id: movieId,
                     room_id: roomId,
-                    date: format(date, 'yyyy-MM-dd'), // Formatea la fecha antes de enviarla
+                    date: format(date, 'yyyy-MM-dd'),
                     start_time: startTime,
                     location_id: id
                 })
             });
-            console.log('response', response)
             if (response.ok) {
-                // Actualiza el estado de los pases después de la actualización
                 const updatedPass = await response.json();
                 dispatch(setPasses(updatedPass));
-                // Redirige al usuario a la lista de pases después de la actualización
                 window.location.href = `/locations-promoter/${id}/passes`;
             } else {
                 setError('Error updating pass');
@@ -123,53 +109,62 @@ const PassesAdminUpdate = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-
     return (
-        <div>
-            <h1>Update Pass</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Movie:</label>
-                    <select value={movieId} onChange={(e) => setMovieId(e.target.value)}>
-                        <option value="">Select a movie</option>
-                        {/* Mapea la lista de películas para crear las opciones del desplegable */}
-                        {movies.map(movie => (
-                            <option key={movie.id} value={movie.id}>{movie.title}</option>
-                        ))}
-                    </select>
+        <Container className="my-5">
+            <h2 className="mb-4 text-center">Update Pass</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {loading ? (
+                <div className="text-center">
+                    <Spinner animation="border" />
                 </div>
-                <div>
-                    <label>Room:</label>
-                    <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-                        <option value="">Select a room</option>
-                        {/* Mapea la
-                {/* Mapea la lista de salas para crear las opciones del desplegable */}
-                        {rooms.map(room => (
-                            <option key={room.id} value={room.id}>{room.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Date:</label>
-                    <DatePicker
-                        selected={date}
-                        onChange={date => setDate(date)}
-                        dateFormat="yyyy-MM-dd"
-                    />
-                </div>
-                <div>
-                    <label>Start Time:</label>
-                    <input
-                        type="text"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Update</button>
-            </form>
-        </div>
+            ) : (
+                <Form onSubmit={handleSubmit}>
+                    <Row>
+                        <Col md={{ span: 4, offset: 4 }}>
+                            <Form.Group controlId="formMovie" className="mb-3">
+                                <Form.Label>Movie:</Form.Label>
+                                <Form.Select value={movieId} onChange={(e) => setMovieId(e.target.value)}>
+                                    <option value="">Select a movie</option>
+                                    {movies.map(movie => (
+                                        <option key={movie.id} value={movie.id}>{movie.title}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group controlId="formRoom" className="mb-3">
+                                <Form.Label>Room:</Form.Label>
+                                <Form.Select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+                                    <option value="">Select a room</option>
+                                    {rooms.map(room => (
+                                        <option key={room.id} value={room.id}>{room.name}</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group controlId="formDate" className="mb-3">
+                                <Form.Label>Date:</Form.Label>
+                                <DatePicker
+                                    selected={date}
+                                    onChange={date => setDate(date)}
+                                    dateFormat="yyyy-MM-dd"
+                                    className="form-control"
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formStartTime" className="mb-3">
+                                <Form.Label>Start Time:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={startTime}
+                                    onChange={(e) => setStartTime(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" disabled={loading} className="w-25">
+                                {loading ? 'Updating...' : 'Update'}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
+        </Container>
     );
 };
 

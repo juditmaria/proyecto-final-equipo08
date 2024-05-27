@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { URL_API } from '../../../../constants';
+import { URL_API, URL } from '../../../../constants';
 
 const LocationPromoterShow = () => {
   const selectedLocationId = useSelector(state => state.location.selectedLocation?.id);
@@ -41,8 +41,8 @@ const LocationPromoterShow = () => {
           method: 'DELETE'
         });
         if (response.ok) {
-          console.log('Usuario eliminado:', selectedLocationId);
-          // Aquí podrías realizar cualquier acción adicional después de la eliminación del usuario
+          console.log('Location deleted:', selectedLocationId);
+          // Aquí podrías realizar cualquier acción adicional después de la eliminación del location
         } else {
           console.error('Error deleting location:', response.statusText);
           // Manejo de errores si la eliminación no fue exitosa
@@ -54,20 +54,46 @@ const LocationPromoterShow = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!location) return <div>No location found</div>;
+  if (loading) return <div className="text-center mt-5">Loading...</div>;
+  if (error) return <div className="text-center mt-5">Error: {error}</div>;
+  if (!location) return <div className="text-center mt-5">No location found</div>;
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', padding: '20px' }}>
+    <div className="container mt-5">
       <h1>Location Details</h1>
-      <p><strong>Name:</strong> {location.name}</p>
-      <p><strong>Location:</strong> {location.direction}</p>
-      <p><strong>Phone:</strong> {location.phone}</p>
-
-      <button style={{ margin: '10px', padding: '8px 16px', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} onClick={handleDelete}>Delete Location</button>
-      <Link style={{ textDecoration: 'none', color: 'blue' }} to="/locations-promoter">Back to Location List</Link>
-      {/* Render other location details as needed */}
+      <div className="card m-4">
+        <div className="row no-gutters">
+          <div className="col-md-5">
+            <img
+              src={URL + location.image} // Ruta de la imagen de la ubicación
+              className="card-img"
+              alt="Location"
+            />
+          </div>
+          <div className="col-md-4">
+            <div className="card-body ">
+              <p className="card-text"><strong>Name:</strong> {location.name}</p>
+              <hr />
+              <p className="card-text"><strong>Location:</strong> {location.direction}</p>
+              <hr />
+              <p className="card-text"><strong>Phone:</strong> {location.phone}</p>
+              <hr />
+              <button 
+                className="btn btn-danger m-2"
+                onClick={handleDelete}
+              >
+                Delete Location
+              </button>
+              <Link 
+                className="btn btn-primary"
+                to="/locations-promoter"
+              >
+                Back to Location List
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
