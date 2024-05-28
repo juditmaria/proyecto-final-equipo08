@@ -211,6 +211,43 @@ $navbar-hover-color: #ccc;
   filter: invert(1); /* Aplica el filtro de color blanco */
 }
 
+/* Crear imagen de perfil de promotor */
+.image-upload-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.image-upload-wrapper img {
+  display: block;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  transition: filter 0.3s ease; /* Añadido para la transición suave del filtro */
+
+}
+
+.overlay {
+  position: absolute;
+  top: 50;
+  left: 100;
+  width: 150px;
+  height: 150px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.image-upload-wrapper:hover .overlay {
+  opacity: 1;
+}
+
 /* import bootstrap to set changes */
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
