@@ -77,31 +77,41 @@ const Promoter = () => {
   }
  
   const handleUpdate = async () => {
-      try {
-        const response = await fetch(URL_API+`promoters/${promoterId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            name: newPromoterName,
-          }),
-        });
+    if (!newPromoterName.trim()) {
+      dispatch(setError('El nombre del promotor es obligatorio'));
+      return;
+    }
   
-        const result = await response.json();
-  
-        if (response.ok) {
-          setError(result.message);
-          localStorage.setItem('promoterName', newPromoterName);
-          dispatch(setPromoterName(newPromoterName));
-        } else {
-          setError(result.message || 'Something went wrong');
-        }
-      } catch (error) {
-          setError('Network error');
+    const formData = new FormData();
+    formData.append('name', newPromoterName);
+    if (createImage) {
+      formData.append('image', createImage);
+    }
+    try {
+      const response = await fetch(URL_API+`promoters/${promoterId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: newPromoterName
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setError(result.message);
+        localStorage.setItem('promoterName', newPromoterName);
+        dispatch(setPromoterName(newPromoterName));
+      } else {
+        setError(result.message || 'Something went wrong');
       }
-    };
+    } catch (error) {
+        setError('Network error');
+    }
+  };
 
     const handleDelete = async () => {
       try {
@@ -157,29 +167,30 @@ const Promoter = () => {
             
           {promoterId != "" ? (
               <>
-                <div className="image-upload-wrapper mt-3" onClick={handleImageClick}>
-                  <div className="d-flex justify-content-center position-relative">
-                    <div className="d-flex justify-content-center">
-                      {promoterImg ? (
-                          <Image src={promoterImg} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
-                      ) : (
-                          <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
-                      )}
-                      <div className="overlay">
-                        <i className="bi bi-arrow-up-circle-fill fs-1"></i>
-                      </div>
-                    </div>                  
-                  </div>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                  />
-                </div>
+                
                 <Card.Body>
                 {showInputGroup ? (
                   <>
+                    <div className="image-upload-wrapper mt-3" onClick={handleImageClick}>
+                      <div className="d-flex justify-content-center position-relative">
+                        <div className="d-flex justify-content-center">
+                          {promoterImg ? (
+                              <Image src={promoterImg} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
+                          ) : (
+                              <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px' }} />
+                          )}
+                          <div className="overlay">
+                            <i className="bi bi-pencil-fill fs-1"></i>
+                          </div>
+                        </div>                  
+                      </div>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                      />
+                    </div>
                     <InputGroup className="mb-3">
                         <Form.Control
                             value={newPromoterName}
@@ -212,6 +223,22 @@ const Promoter = () => {
                   </>
                   ) : (
                     <>
+                    <div className="image-upload-wrapper mt-3" onClick={toggleInputGroup}>
+                      <div className="d-flex justify-content-center position-relative">
+                        <div className="d-flex justify-content-center">
+                          {promoterImg ? (
+                              <Image src={promoterImg} roundedCircle className="profileImg" style={{ width: '150px', height: '150px', cursor: 'pointer' }} />
+                          ) : (
+                              <Image src={PromoterProfileDefaultImage} roundedCircle className="profileImg" style={{ width: '150px', height: '150px', cursor: 'pointer' }} />
+                          )}
+                        </div>                  
+                      </div>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: 'none' }}
+                      />
+                    </div>
                       <Card.Title 
                           onClick={toggleInputGroup}
                           className='p-1'
