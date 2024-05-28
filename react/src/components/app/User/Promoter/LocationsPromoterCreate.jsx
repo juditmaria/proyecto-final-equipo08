@@ -4,7 +4,7 @@ import { URL_API } from '../../../../constants';
 import { setLocations } from '../../../../slices/location/locationSlice';
 import { Form, Button, Container, Alert, Spinner, Row, Col } from 'react-bootstrap';
 
-const LocationAdminCreate = () => {
+const LocationPromoterCreate = () => {
     const dispatch = useDispatch();
     const selectedUser = useSelector(state => state.promoter.promoterId);
     
@@ -33,7 +33,7 @@ const LocationAdminCreate = () => {
             if (response.ok) {
                 const newLocation = await response.json();
                 dispatch(setLocations(prevLocations => [...prevLocations, newLocation]));
-                window.location.href = '/locations-admin';
+                window.location.href = '/locations-promoter';
             } else {
                 setError('Error creating location');
             }
@@ -103,4 +103,4 @@ const LocationAdminCreate = () => {
     );
 };
 
-export default LocationAdminCreate;
+export default LocationPromoterCreate;

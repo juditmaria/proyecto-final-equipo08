@@ -16,10 +16,12 @@ const PassesPromoterList = () => {
         const fetchPasses = async () => {
             dispatch(setLoading(true));
             try {
-                const response = await fetch(`${URL_API}passes?location_id=${id}`);
+                const response = await fetch(`${URL_API}passes`);
                 if (response.ok) {
                     const data = await response.json();
-                    dispatch(setPasses(data.data));
+                    console.log(data.data);
+                    const filteredPasses = data.data.filter(pass => pass.location_id === parseInt(id, 10));
+                    dispatch(setPasses(filteredPasses));
                 } else {
                     dispatch(setError('Error fetching passes'));
                 }
@@ -66,7 +68,7 @@ const PassesPromoterList = () => {
                 {passes.map(pass => (
                     <li key={pass.id} className="mb-3 p-3 border rounded d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>Movie:</strong> {pass.movie_id} - <strong>Room:</strong> {pass.room_id} - <strong>Location:</strong> {pass.location_id} - <strong>Date:</strong> {pass.date} - <strong>Time:</strong> {pass.start_time}
+                            <strong>Movie:</strong> {pass.movie.title} - <strong>Room:</strong> {pass.room.name} - <strong>Location:</strong> {pass.location.name} - <strong>Date:</strong> {pass.date} - <strong>Time:</strong> {pass.start_time}
                         </div>
                         <div>
                             <Link
