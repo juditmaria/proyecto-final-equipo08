@@ -92,6 +92,15 @@ const LocationPromoterList = () => {
                                 <i className="bi bi-trash"></i>
                             </Button>
                             <Link
+                                to={`/locations-promoter/${location.id}/update`}
+                                variant=""
+                                size="sm"
+                                title="Update"
+                                className="btn btn-secondary btn-sm"
+                            >
+                                <i className="bi bi-pencil"></i> 
+                            </Link>
+                            <Link
                                 to={`/locations-promoter/${location.id}/passes`}
                                 className="btn btn-secondary btn-sm ms-2"
                                 title="Passes"

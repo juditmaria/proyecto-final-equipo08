@@ -44,6 +44,7 @@ import MoviesAdminUpdate from './components/app/User/Admin/MoviesAdminUpdate';
 import LocationsPromoterList from './components/app/User/Promoter/LocationsPromoterList';
 import LocationsPromoterShow from './components/app/User/Promoter/LocationsPromotersShow';
 import LocationsPromoterCreate from './components/app/User/Promoter/LocationsPromoterCreate';
+import LocationsPromoterUpdate from './components/app/User/Promoter/LocationsPromoterUpdate';
 import PassesPromoterList from './components/app/User/Promoter/PassesPromoterList';
 import PassesPromoterShow from './components/app/User/Promoter/PassesPromoteShow';
 import PassesPromoterCreate from './components/app/User/Promoter/PassesPromoterCreate';
@@ -173,6 +174,8 @@ function App() {
 
                     <Route path="/locations-promoter" element={<LocationsPromoterList />} />
                     <Route path="/locations-promoter/:id" element={<LocationsPromoterShow />} />
+                    <Route path="/locations-promoter/:id/update" element={<LocationsPromoterUpdate />} />
+
                     <Route path="/locations-promoter/create" element={<LocationsPromoterCreate/>} />
 
                     <Route path="/locations-promoter/:id/passes" element={<PassesPromoterList />} />

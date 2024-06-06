@@ -73,9 +73,8 @@ Route::apiResource('locations', LocationController::class);
 Route::get('/locations', [LocationController::class, 'index']);
 Route::post('/locations', [LocationController::class, 'store']);
 Route::get('/locations/{location}', [LocationController::class, 'show']);
-Route::put('/locations/{location}', [LocationController::class, 'update']);
+Route::post('/locations/{location}', [LocationController::class, 'update']);
 Route::delete('/locations/{location}', [LocationController::class, 'destroy']);
-Route::post('/locations/{location}', [LocationController::class, 'update_workaround']);
 
 
 // PASSES ///////////////////////////////////////////////////////////////////

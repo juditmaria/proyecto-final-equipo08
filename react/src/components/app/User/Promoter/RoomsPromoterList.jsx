@@ -67,13 +67,13 @@ const RoomPromoterList = () => {
                                 title="Delete"
                                 className="me-2"
                             >
-                                <i className="bi bi-trash"></i> Delete
+                                <i className="bi bi-trash"></i> 
                             </Button>
                             <Link to={`/rooms-promoter/${room.id}`} className="btn btn-primary btn-sm me-2" title="Show">
-                                <i className="bi bi-eye"></i> Show
+                                <i className="bi bi-eye"></i> 
                             </Link>
                             <Link to={`/rooms-promoter/${room.id}/update`} className="btn btn-secondary btn-sm" title="Update">
-                                <i className="bi bi-pencil"></i> Update
+                                <i className="bi bi-pencil"></i> 
                             </Link>
                         </div>
                     </li>

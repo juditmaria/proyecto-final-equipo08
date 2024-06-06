@@ -92,7 +92,7 @@ const PassesPromoterList = () => {
                                 className="btn btn-secondary btn-sm ms-2"
                                 title="Update"
                             >
-                                Update
+                                <i className="bi bi-pencil"></i>
                             </Link>
                         </div>
                     </li>
